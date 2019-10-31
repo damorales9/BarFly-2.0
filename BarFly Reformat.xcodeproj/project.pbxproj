@@ -14,6 +14,7 @@
 		0EC363E2236B230C00116650 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E0236B230C00116650 /* Main.storyboard */; };
 		0EC363E4236B230D00116650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E3236B230D00116650 /* Assets.xcassets */; };
 		0EC363E7236B230D00116650 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E5236B230D00116650 /* LaunchScreen.storyboard */; };
+		0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363F0236B2E0400116650 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		0EC363E3236B230D00116650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0EC363E6236B230D00116650 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0EC363E8236B230D00116650 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EC363F0236B2E0400116650 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.release.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.release.xcconfig"; sourceTree = "<group>"; };
 		5A3D1A0593E8D9C65FB0D5DC /* Pods-BarFly Reformat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.debug.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.debug.xcconfig"; sourceTree = "<group>"; };
 		D597B0A76368C04C2BF9830B /* Pods_BarFly_Reformat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BarFly_Reformat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 				0EC363E3236B230D00116650 /* Assets.xcassets */,
 				0EC363E5236B230D00116650 /* LaunchScreen.storyboard */,
 				0EC363E8236B230D00116650 /* Info.plist */,
+				0EC363F0236B2E0400116650 /* GoogleService-Info.plist */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -80,7 +83,6 @@
 				5A3D1A0593E8D9C65FB0D5DC /* Pods-BarFly Reformat.debug.xcconfig */,
 				28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -155,6 +157,7 @@
 				0EC363E7236B230D00116650 /* LaunchScreen.storyboard in Resources */,
 				0EC363E4236B230D00116650 /* Assets.xcassets in Resources */,
 				0EC363E2236B230C00116650 /* Main.storyboard in Resources */,
+				0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,28 +195,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
