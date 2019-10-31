@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import Firebase
+import Photos
+
 
 class SecondViewController: UIViewController {
 
+    //VARS
+    var user: User?
+    
+    //UI
+    
+    @IBOutlet weak var profile: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
