@@ -23,7 +23,9 @@ class LoginVC: UIViewController {
     @IBOutlet weak var create: UIButton!
     
     override func  viewDidLoad() {
-        login.layer.cornerRadius = 20;
+        login.layer.cornerRadius = 10;
+        create.layer.cornerRadius = 10;
+        
     }
     
 }
