@@ -11,8 +11,8 @@
         <array key="Roboto-Light.ttf">
             <string>Roboto-Light</string>
         </array>
-        <array key="Roboto-ThinItalic.ttf">
-            <string>Roboto-ThinItalic</string>
+        <array key="Roboto-Thin.ttf">
+            <string>Roboto-Thin</string>
         </array>
     </customFonts>
     <scenes>
@@ -87,7 +87,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MX3-vL-K0Z">
-                                <rect key="frame" x="100" y="528.5" width="214" height="39"/>
+                                <rect key="frame" x="100" y="538.5" width="214" height="39"/>
                                 <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="23"/>
                                 <state key="normal" title="Login">
@@ -97,26 +97,13 @@
                                     <segue destination="49e-Tb-3d3" kind="presentation" modalPresentationStyle="fullScreen" id="A0b-2G-wV3"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Login and start the party" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="70a-CC-c4U">
-                                <rect key="frame" x="100" y="225" width="214.5" height="24"/>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="juS-uc-G7Z">
-                                <rect key="frame" x="72" y="384" width="4.5" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Roboto-ThinItalic" family="Roboto" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.058155415100000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="sexy_waiter69@aol.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8yu-5R-8V0">
                                 <rect key="frame" x="75" y="428" width="264" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0K-Ry-eLa">
-                                <rect key="frame" x="97.5" y="578.5" width="219" height="39"/>
+                                <rect key="frame" x="97.5" y="588.5" width="219" height="39"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="23"/>
                                 <state key="normal" title="Create a new account">
                                     <color key="titleColor" red="0.22581844749999999" green="0.24749884129999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -127,21 +114,28 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to start the party!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve6-Ou-eAe">
+                                <rect key="frame" x="59.5" y="280.5" width="295" height="35.5"/>
+                                <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="75" id="0Iy-Ow-PzY"/>
                             <constraint firstItem="MX3-vL-K0Z" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-100" id="2Ll-mm-3SZ"/>
+                            <constraint firstItem="ve6-Ou-eAe" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="-150" id="3hv-ib-Pdk"/>
                             <constraint firstItem="MX3-vL-K0Z" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="100" id="9cY-gR-FQe"/>
-                            <constraint firstItem="70a-CC-c4U" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="BXK-Np-dOM"/>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="top" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="30" id="Cbr-IG-Yap"/>
-                            <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="150" id="FE9-gc-0jQ"/>
-                            <constraint firstItem="MX3-vL-K0Z" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="100" id="PR8-LF-pYV"/>
+                            <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="160" id="FE9-gc-0jQ"/>
+                            <constraint firstItem="MX3-vL-K0Z" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="110" id="PR8-LF-pYV"/>
                             <constraint firstItem="8yu-5R-8V0" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="75" id="Url-t1-iCk"/>
                             <constraint firstItem="8yu-5R-8V0" firstAttribute="top" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="-20" id="WYF-fi-Ak9"/>
                             <constraint firstItem="8yu-5R-8V0" firstAttribute="bottom" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="30" id="hHX-Ub-giF"/>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="bottom" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="80" id="u2d-4d-awo"/>
                             <constraint firstItem="8yu-5R-8V0" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-75" id="v08-bE-a1k"/>
+                            <constraint firstItem="ve6-Ou-eAe" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="y4F-Ts-jve"/>
                             <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="yIc-Q5-5af"/>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-75" id="yS2-ta-ESc"/>
                         </constraints>
@@ -150,7 +144,6 @@
                     <connections>
                         <outlet property="create" destination="Q0K-Ry-eLa" id="2z2-Lm-XJg"/>
                         <outlet property="email" destination="8yu-5R-8V0" id="U3D-cR-l9h"/>
-                        <outlet property="label" destination="70a-CC-c4U" id="Qvn-l4-S7w"/>
                         <outlet property="login" destination="MX3-vL-K0Z" id="1g5-aY-kV9"/>
                         <outlet property="password" destination="Q76-TZ-LxY" id="HLF-9V-pIk"/>
                     </connections>
