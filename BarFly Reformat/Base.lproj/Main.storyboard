@@ -138,7 +138,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-<<<<<<< HEAD
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="75" id="0Iy-Ow-PzY"/>
@@ -157,9 +156,6 @@
                             <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="yIc-Q5-5af"/>
                             <constraint firstItem="Q76-TZ-LxY" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-75" id="yS2-ta-ESc"/>
                         </constraints>
-=======
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
->>>>>>> map
                         <viewLayoutGuide key="safeArea" id="clr-a2-duD"/>
                     </view>
                     <connections>
