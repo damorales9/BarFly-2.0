@@ -11,9 +11,6 @@
         <array key="Roboto-Light.ttf">
             <string>Roboto-Light</string>
         </array>
-        <array key="Roboto-Thin.ttf">
-            <string>Roboto-Thin</string>
-        </array>
         <array key="Roboto-ThinItalic.ttf">
             <string>Roboto-ThinItalic</string>
         </array>
@@ -24,18 +21,18 @@
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="First View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                <rect key="frame" x="131.5" y="399.5" width="151" height="43"/>
+                                <rect key="frame" x="131.5" y="426.5" width="151" height="43"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by FirstViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5M-7J-77L">
-                                <rect key="frame" x="110" y="450.5" width="194.5" height="17"/>
+                                <rect key="frame" x="110" y="477.5" width="194.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -61,7 +58,7 @@
             <objects>
                 <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v5t-2T-4cv">
@@ -89,21 +86,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MX3-vL-K0Z">
-                                <rect key="frame" x="102" y="529" width="88" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MX3-vL-K0Z">
+                                <rect key="frame" x="100" y="528.5" width="214" height="39"/>
+                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="23"/>
                                 <state key="normal" title="Login">
-                                    <color key="titleColor" red="0.22581844749999999" green="0.24749884129999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="49e-Tb-3d3" kind="show" id="A0b-2G-wV3"/>
+                                    <segue destination="49e-Tb-3d3" kind="presentation" modalPresentationStyle="fullScreen" id="A0b-2G-wV3"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login and start the party" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="70a-CC-c4U">
-                                <rect key="frame" x="102" y="225" width="211.5" height="23.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Login and start the party" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="70a-CC-c4U">
+                                <rect key="frame" x="100" y="225" width="214.5" height="24"/>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -114,40 +110,45 @@
                                 <color key="textColor" red="1" green="0.058155415100000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="enter dat password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q76-TZ-LxY">
-                                <rect key="frame" x="67" y="469" width="280" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="sexy_waiter69@aol.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8yu-5R-8V0">
-                                <rect key="frame" x="67" y="419" width="280" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="sexy_waiter69@aol.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8yu-5R-8V0">
+                                <rect key="frame" x="75" y="428" width="264" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="/" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kva-pX-fRK">
-                                <rect key="frame" x="204" y="537" width="7" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0K-Ry-eLa">
-                                <rect key="frame" x="224" y="529" width="90" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0K-Ry-eLa">
+                                <rect key="frame" x="97.5" y="578.5" width="219" height="39"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="23"/>
-                                <state key="normal" title="Create">
+                                <state key="normal" title="Create a new account">
                                     <color key="titleColor" red="0.22581844749999999" green="0.24749884129999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="enter dat password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q76-TZ-LxY">
+                                <rect key="frame" x="75" y="478" width="264" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Q76-TZ-LxY" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="75" id="0Iy-Ow-PzY"/>
+                            <constraint firstItem="MX3-vL-K0Z" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-100" id="2Ll-mm-3SZ"/>
+                            <constraint firstItem="MX3-vL-K0Z" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="100" id="9cY-gR-FQe"/>
+                            <constraint firstItem="70a-CC-c4U" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="BXK-Np-dOM"/>
+                            <constraint firstItem="Q76-TZ-LxY" firstAttribute="top" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="30" id="Cbr-IG-Yap"/>
+                            <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="150" id="FE9-gc-0jQ"/>
+                            <constraint firstItem="MX3-vL-K0Z" firstAttribute="centerY" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="100" id="PR8-LF-pYV"/>
+                            <constraint firstItem="8yu-5R-8V0" firstAttribute="leading" secondItem="PI7-Hh-k3t" secondAttribute="leading" constant="75" id="Url-t1-iCk"/>
+                            <constraint firstItem="8yu-5R-8V0" firstAttribute="top" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="-20" id="WYF-fi-Ak9"/>
+                            <constraint firstItem="8yu-5R-8V0" firstAttribute="bottom" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="30" id="hHX-Ub-giF"/>
+                            <constraint firstItem="Q76-TZ-LxY" firstAttribute="bottom" secondItem="PI7-Hh-k3t" secondAttribute="centerY" constant="80" id="u2d-4d-awo"/>
+                            <constraint firstItem="8yu-5R-8V0" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-75" id="v08-bE-a1k"/>
+                            <constraint firstItem="Q0K-Ry-eLa" firstAttribute="centerX" secondItem="PI7-Hh-k3t" secondAttribute="centerX" id="yIc-Q5-5af"/>
+                            <constraint firstItem="Q76-TZ-LxY" firstAttribute="trailing" secondItem="PI7-Hh-k3t" secondAttribute="trailing" constant="-75" id="yS2-ta-ESc"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="clr-a2-duD"/>
                     </view>
                     <connections>
                         <outlet property="create" destination="Q0K-Ry-eLa" id="2z2-Lm-XJg"/>
-                        <outlet property="divider" destination="PI7-Hh-k3t" id="rKT-3e-XbK"/>
                         <outlet property="email" destination="8yu-5R-8V0" id="U3D-cR-l9h"/>
                         <outlet property="label" destination="70a-CC-c4U" id="Qvn-l4-S7w"/>
                         <outlet property="login" destination="MX3-vL-K0Z" id="1g5-aY-kV9"/>

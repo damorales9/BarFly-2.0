@@ -17,14 +17,13 @@ class LoginVC: UIViewController {
     
     //UI
     @IBOutlet weak var label: UILabel!
-    @IBOutlet var divider: UIView!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var login: UIButton!
     @IBOutlet weak var create: UIButton!
     
     override func  viewDidLoad() {
-        
+        login.layer.cornerRadius = 20;
     }
     
 }
