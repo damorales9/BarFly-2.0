@@ -12,5 +12,8 @@ struct User {
     var uid:String?
     var name:String?
     var bar:String?
-    var admin:String?
+    var admin:Bool?
+    var email: String?
+    var friends: [String?]
+    var requests: [String?]
 }

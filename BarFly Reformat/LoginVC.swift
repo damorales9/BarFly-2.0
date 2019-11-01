@@ -8,14 +8,39 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class LoginVC: UIViewController {
     
-    //VAR
+    /*
+     * ----------------------------------
+     * Constants
+     * ----------------------------------
+     */
     
+    public static let NO_BAR = "nil"
+    public static let NO_NAME = "nil"
+    public static let NO_ADMIN = "no"
+    public static let YES_ADMIN = "yes"
+    public static let END_REQUESTS = "end"
+    public static let FIRST_FRIEND = "001"
+    public static let USER_DATABASE = "User Info"
     
+   /*
+    * ----------------------------------
+    * Non-UI Variables
+    * ----------------------------------
+    */
+    var validEmail = false
+    var validPassword = false
     
-    //UI
+    /*
+     * ----------------------------------
+     * UI Variables
+     * ----------------------------------
+     */
+    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
@@ -25,12 +50,20 @@ class LoginVC: UIViewController {
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var passwordLbl: UILabel!
     
+    /*
+     * ----------------------------------
+     * Overriden Component Methods
+     * ----------------------------------
+     */
     
     override func viewDidLoad() {
-        email.layer.cornerRadius = 15;
-        password.layer.cornerRadius = 15;
-        login.layer.cornerRadius = 10;
-        create.layer.cornerRadius = 10;
+        
+        email.layer.cornerRadius = 15
+        password.layer.cornerRadius = 15
+        login.layer.cornerRadius = 10
+        create.layer.cornerRadius = 10
+        
+        login.isEnabled = false
 
         email.addTarget(self, action: #selector(emailChange), for: UIControl.Event.editingChanged)
         
@@ -39,6 +72,23 @@ class LoginVC: UIViewController {
         
         self.hideKeyboardWhenTappedAround()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+    
+        if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
+            self.email.text = email
+            self.password.text = password
+            login(email: email, password: password)
+        }
+        
+//      performSegue(withIdentifier: "hasLogin", sender: self)
+      }
+    
+    /*
+     * ----------------------------------
+     * Obj-c Methods
+     * ----------------------------------
+     */
     
     @objc func emailChange() {
         
@@ -53,6 +103,14 @@ class LoginVC: UIViewController {
             UIView.animate(withDuration: 1) {
                 self.emailLbl.alpha -= 1
             }
+        }
+        
+        if(email.text!.contains("@") && email.text!.contains(".")) {
+            print("enabled button")
+            login.isEnabled = true
+        } else {
+            print("disabled button")
+            login.isEnabled = false
         }
     
     }
@@ -69,12 +127,79 @@ class LoginVC: UIViewController {
                 self.passwordLbl.alpha -= 1
             }
         }
+        
+//        if(password.text!.count > 6) {
+//            validPassword = true;
+//            if(validEmail) {
+//                print("enabling button")
+//                login.isEnabled = true
+//            }
+//        }
+//        else {
+//            validPassword = false
+//            login.isEnabled = false
+//        }
     }
+    
+    /*
+     * ----------------------------------
+     * Outlet Methods
+     * ----------------------------------
+     */
+    
+    @IBAction func loginButtonClicked(_ sender: Any) {
+        if let email =  email.text, let password = password.text {
+            login(email: email, password: password)
+        }
+    }
+    
+    /*
+     * ----------------------------------
+     * Private Methods
+     * ----------------------------------
+     */
+    
+    func login(email: String, password: String) {
+        
+        
+        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
+            
+            if error != nil {
+                print(error?.localizedDescription ?? "Unidentified Error")
+                return
+            } else {
+            
+            
+                UserDefaults.standard.set(self.email.text, forKey: "email")
+                UserDefaults.standard.set(self.password.text, forKey:  "password")
+                
+                let uid = Auth.auth().currentUser!.uid
+                print("UID is \(uid)")
+                let firestore = Firestore.firestore()
+                let userRef = firestore.collection(LoginVC.USER_DATABASE)
+                let docRef = userRef.document("\(uid)")
+                docRef.getDocument { (document, error) in
+                    
+                    let name = ((document!.get("name")) as! String)
+                    let bar = ((document!.get("bar")) as! String)
+                    let admin = ((document!.get("admin")) as! Bool)
+                    let friends = ((document!.get("friends")) as! [String])
+                    let requests = ((document!.get("requests")) as! [String])
+                    AppDelegate.user = User(uid: uid, name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests)
+                }
+                
+                self.performSegue(withIdentifier: "hasLogin", sender: self)
+                
+            }
+            
+        })
+        
+
+    }
+    
 }
 
 
-
-// Put this piece of code anywhere you like
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))

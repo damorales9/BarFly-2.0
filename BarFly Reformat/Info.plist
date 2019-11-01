@@ -78,5 +78,9 @@
         <string>RobotoCondensed-LightItalic.ttf</string>
         <string>RobotoCondensed-Regular.ttf</string>
     </array>
+    <key>NSCameraUsageDescription</key>
+    <string>This app wants to take pictures.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app wants to use your photos.</string>
 </dict>
 </plist>
