@@ -22,10 +22,25 @@ class LoginVC: UIViewController {
     @IBOutlet weak var login: UIButton!
     @IBOutlet weak var create: UIButton!
     
-    override func  viewDidLoad() {
+    override func viewDidLoad() {
         login.layer.cornerRadius = 10;
         create.layer.cornerRadius = 10;
         
+        
+        self.hideKeyboardWhenTappedAround()
     }
     
+}
+
+// Put this piece of code anywhere you like
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

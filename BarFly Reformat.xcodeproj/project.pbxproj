@@ -29,6 +29,7 @@
 		6FE48DCC236B55DF00487E27 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE48DC0236B55DF00487E27 /* Roboto-Light.ttf */; };
 		6FE48DCD236B55DF00487E27 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE48DC1236B55DF00487E27 /* Roboto-Medium.ttf */; };
 		6FE48DCE236B55DF00487E27 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE48DC2236B55DF00487E27 /* Roboto-ThinItalic.ttf */; };
+		6FE48DD0236BBD6800487E27 /* CreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48DCF236BBD6800487E27 /* CreateVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		6FE48DC0236B55DF00487E27 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		6FE48DC1236B55DF00487E27 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		6FE48DC2236B55DF00487E27 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
+		6FE48DCF236BBD6800487E27 /* CreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVC.swift; sourceTree = "<group>"; };
 		D597B0A76368C04C2BF9830B /* Pods_BarFly_Reformat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BarFly_Reformat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -104,6 +106,7 @@
 				0EC363F0236B2E0400116650 /* GoogleService-Info.plist */,
 				6FE48D95236B397900487E27 /* User.swift */,
 				6FE48D97236B3A8700487E27 /* LoginVC.swift */,
+				6FE48DCF236BBD6800487E27 /* CreateVC.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				0EC363DF236B230C00116650 /* SecondViewController.swift in Sources */,
 				0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */,
 				0EC363DD236B230C00116650 /* FirstViewController.swift in Sources */,
+				6FE48DD0236BBD6800487E27 /* CreateVC.swift in Sources */,
 				6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

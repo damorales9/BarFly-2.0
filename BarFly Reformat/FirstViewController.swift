@@ -27,7 +27,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             locationManager.startUpdatingLocation()
         }
         myMapView.delegate = self
-        myMapView.mapType = .standard
+//       myMapView.mapType = .standard
+        
         myMapView.isZoomEnabled = true
         myMapView.isScrollEnabled = true
         
@@ -39,7 +40,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         
-        myMapView.mapType = MKMapType.standard
+//        myMapView.mapType = MKMapType.standard
         
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: locValue, span: span)
