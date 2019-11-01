@@ -23,6 +23,7 @@ class LoginVC: UIViewController {
     @IBOutlet weak var create: UIButton!
     
     @IBOutlet weak var emailLbl: UILabel!
+    @IBOutlet weak var passwordLbl: UILabel!
     
     
     override func viewDidLoad() {
@@ -30,26 +31,42 @@ class LoginVC: UIViewController {
         password.layer.cornerRadius = 15;
         login.layer.cornerRadius = 10;
         create.layer.cornerRadius = 10;
+
+        email.addTarget(self, action: #selector(emailChange), for: UIControl.Event.editingChanged)
         
-        emailLbl.isOpaque = true
-        emailLbl.alpha = 0
-        
-        email.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        password.addTarget(self, action: #selector(passwordChange), for: UIControl.Event.editingChanged)
 
         
         self.hideKeyboardWhenTappedAround()
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+    @objc func emailChange() {
         
+        //animate email lbl
         if(self.email.text!.count > 0 && emailLbl.alpha == 0) {
             UIView.animate(withDuration: 1) {
                 self.emailLbl.alpha += 1
             }
         }
         else if(self.email.text!.count == 0 && emailLbl.alpha == 1) {
+            
             UIView.animate(withDuration: 1) {
                 self.emailLbl.alpha -= 1
+            }
+        }
+    
+    }
+    
+    @objc func passwordChange() {
+        //animate pw lbl
+        if(self.password.text!.count > 0 && passwordLbl.alpha == 0) {
+            UIView.animate(withDuration: 1) {
+                self.passwordLbl.alpha += 1
+            }
+        }
+        else if(self.password.text!.count == 0 && passwordLbl.alpha == 1) {
+            UIView.animate(withDuration: 1) {
+                self.passwordLbl.alpha -= 1
             }
         }
     }
