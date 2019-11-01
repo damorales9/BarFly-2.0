@@ -9,6 +9,7 @@
 import MapKit
 import UIKit
 import CoreLocation
+import GoogleMapsTileOverlay
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -26,6 +27,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
+        addCustomOverlay()
         myMapView.delegate = self
 //       myMapView.mapType = .standard
         
@@ -53,6 +55,25 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         myMapView.addAnnotation(annotation)
         
         //centerMap(locValue)
+    }
+    
+    private func addCustomOverlay() {
+        guard let jsonURL = Bundle.main.url(forResource: "overlay", withExtension: "json") else { return }
+
+        do {
+            let gmTileOverlay = try GoogleMapsTileOverlay(jsonURL: jsonURL)
+            gmTileOverlay.canReplaceMapContent = true
+            myMapView.addOverlay(gmTileOverlay)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let tileOverlay = overlay as? MKTileOverlay {
+            return MKTileOverlayRenderer(tileOverlay: tileOverlay)
+        }
+        return MKOverlayRenderer(overlay: overlay)
     }
 
 
