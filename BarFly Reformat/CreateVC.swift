@@ -17,9 +17,16 @@ class CreateVC: UIViewController {
     
     //UI
     @IBOutlet weak var create: UIButton!
+    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var email: UITextField!
+    @IBOutlet weak var password: UITextField!
     
     override func viewDidLoad() {
         create.layer.cornerRadius = 10;
+        email.layer.cornerRadius = 15;
+        password.layer.cornerRadius = 15;
+        name.layer.cornerRadius = 15;
+
         
         self.hideKeyboardWhenTappedAround()
     }
