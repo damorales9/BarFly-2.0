@@ -199,6 +199,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             // Provide an image view to use as the accessory view's detail view.
             markerAnnotationView.detailCalloutAccessoryView = UIImageView(image: UIImage(named: annotation.imageName!))
             let rightButton = UIButton(type: .detailDisclosure)
+            rightButton.tintColor = .green
             //let leftButton = UIButton(type: .infoDark)
             //markerAnnotationView.leftCalloutAccessoryView?.addSubview(amount)
             markerAnnotationView.rightCalloutAccessoryView = rightButton
