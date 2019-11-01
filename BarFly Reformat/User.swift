@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct User {
     var uid:String?
@@ -16,4 +17,6 @@ struct User {
     var email: String?
     var friends: [String?]
     var requests: [String?]
+    var profileURL: String?
+
 }

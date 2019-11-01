@@ -185,7 +185,8 @@ class LoginVC: UIViewController {
                     let admin = ((document!.get("admin")) as! Bool)
                     let friends = ((document!.get("friends")) as! [String])
                     let requests = ((document!.get("requests")) as! [String])
-                    AppDelegate.user = User(uid: uid, name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests)
+                    let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
+                    AppDelegate.user = User(uid: uid, name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
                 }
                 
                 self.performSegue(withIdentifier: "hasLogin", sender: self)

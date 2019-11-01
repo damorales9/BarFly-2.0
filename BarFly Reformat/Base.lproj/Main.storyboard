@@ -126,8 +126,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="4" translatesAutoresizingMaskIntoConstraints="NO" id="v5t-2T-4cv">
-                                <rect key="frame" x="2" y="0.0" width="410" height="896"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="v5t-2T-4cv">
+                                <rect key="frame" x="2" y="0.5" width="410" height="895"/>
                             </imageView>
                             <label userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3l-hE-WoW">
                                 <rect key="frame" x="0.0" y="576" width="414" height="320"/>
@@ -518,11 +518,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="4" width="174" height="175"/>
         <image name="camera" catalog="system" width="64" height="48"/>
         <image name="first" width="30" height="30"/>
         <image name="logo" width="1024" height="1024"/>
         <image name="pencil.and.outline" catalog="system" width="64" height="58"/>
+        <image name="person.circle.fill" catalog="system" width="64" height="60"/>
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>

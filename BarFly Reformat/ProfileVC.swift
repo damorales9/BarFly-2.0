@@ -9,7 +9,9 @@
 import UIKit
 import FirebaseAuth
 import Photos
-
+import FirebaseStorage
+import FirebaseFirestore
+import FirebaseUI
 
 class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -46,6 +48,20 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
             name.text = user.name
             email.text = user.email
             password.text = UserDefaults.standard.string(forKey: "password")
+            
+            let placeholder = UIImage( named: "person.circle.fill")
+            
+            if (user.profileURL != "") {
+            
+                let storage = Storage.storage()
+                let httpsReference = storage.reference(forURL: user.profileURL!)
+                
+                self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                    
+            } else {
+                self.profileImage.image = placeholder
+            }
+
         }
             
         self.colorPicker.delegate = self
@@ -112,12 +128,48 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
         return pickerData[row]
     }
     
+    func saveFIRData(){
+        self.uploadMedia(image: profileImage.image!){ url in
+            self.saveImage(userName: Auth.auth().currentUser!.uid, profileImageURL: url!){ success in
+                if (success != nil){
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            }
+        }
+    }
+    
+    func uploadMedia(image :UIImage, completion: @escaping ((_ url: URL?) -> ())) {
+        let uid = (Auth.auth().currentUser?.uid)!
+        let uidStr = uid + ".png"
+        let storageRef = Storage.storage().reference().child(uidStr)
+        let imgData = self.profileImage.image?.pngData()
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/png"
+        storageRef.putData(imgData!, metadata: metaData) { (metadata, error) in
+            if error == nil{
+                storageRef.downloadURL(completion: { (url, error) in
+                    completion(url)
+                })
+            }else{
+                print("error in save image")
+                completion(nil)
+            }
+        }
+    }
+    
+    func saveImage(userName:String, profileImageURL: URL , completion: @escaping ((_ url: URL?) -> ())){
+        Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
+    }
+    
 }
 
 extension ProfileVC: ImagePickerDelegate {
 
     func didSelect(image: UIImage?) {
         self.profileImage.image = image
+        
+        self.saveFIRData()
     }
 }
 
