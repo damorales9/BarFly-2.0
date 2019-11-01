@@ -88,20 +88,35 @@
             </objects>
             <point key="canvasLocation" x="850.72463768115949" y="-306.02678571428572"/>
         </scene>
-        <!--View Controller-->
+        <!--Bar ListVC-->
         <scene sceneID="8Ag-I4-IDy">
             <objects>
-                <viewController id="UGw-Jw-KbG" sceneMemberID="viewController">
+                <viewController id="UGw-Jw-KbG" customClass="BarListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kNX-Ek-r6U">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="ERs-MI-CqO"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="919-7s-lTf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1612" y="-306"/>
+        </scene>
+        <!--Bar DetailsVC-->
+        <scene sceneID="T0h-eb-C5s">
+            <objects>
+                <viewController storyboardIdentifier="BarDetailsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="x3o-nF-eXS" customClass="BarDetailsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JsX-JR-asX">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="H4A-Ch-dSo"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3G2-38-IKW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2445" y="-303"/>
         </scene>
         <!--Profile-->
         <scene sceneID="wg7-f3-ORb">
