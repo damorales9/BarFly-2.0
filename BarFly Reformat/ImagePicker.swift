@@ -30,6 +30,7 @@ open class ImagePicker: NSObject {
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = true
         self.pickerController.mediaTypes = ["public.image"]
+        self.pickerController.allowsEditing = true
     }
     
     private func action(for type: UIImagePickerController.SourceType, title: String) -> UIAlertAction? {
