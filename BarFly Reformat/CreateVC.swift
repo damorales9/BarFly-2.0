@@ -22,17 +22,20 @@ class CreateVC: UIViewController {
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var username: UITextField!
     
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var passwordLbl: UILabel!
     @IBOutlet weak var errorLbl: UILabel!
+    @IBOutlet weak var usernameLbl: UILabel!
     
     override func viewDidLoad() {
-        create.layer.cornerRadius = 10;
-        email.layer.cornerRadius = 15;
-        password.layer.cornerRadius = 15;
-        name.layer.cornerRadius = 15;
+        create.layer.cornerRadius = 10
+        email.layer.cornerRadius = 15
+        password.layer.cornerRadius = 15
+        name.layer.cornerRadius = 15
+        username.layer.cornerRadius = 15
 
         
         name.addTarget(self, action: #selector(nameChange), for: UIControl.Event.editingChanged)
@@ -41,22 +44,45 @@ class CreateVC: UIViewController {
         
         password.addTarget(self, action: #selector(passwordChange), for: UIControl.Event.editingChanged)
         
+        username.addTarget(self, action: #selector(usernameChange), for: UIControl.Event.editingChanged)
+        
         create.isEnabled = false
         errorLbl.isHidden = true
+        
+        emailChange()
+        passwordChange()
+        nameChange()
+        usernameChange()
         
         
         self.hideKeyboardWhenTappedAround()
     }
     
     func enableDisableLogin() {
-        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6 && name.text!.count > 0) {
-                   print("enabled button")
+        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6 && name.text!.count > 0  && username.text!.count > 0 && !username.text!.contains(" ")) {
                    create.isEnabled = true
                } else {
-                   print("disabled button")
                    create.isEnabled = false
                }
            
+    }
+    
+    @objc func usernameChange() {
+        //animate email lbl
+        if(self.username.text!.count > 0 && usernameLbl.alpha == 0) {
+            UIView.animate(withDuration: 1) {
+                self.usernameLbl.alpha += 1
+            }
+        }
+        else if(self.username.text!.count == 0 && usernameLbl.alpha == 1) {
+            
+            UIView.animate(withDuration: 1) {
+                self.usernameLbl.alpha -= 1
+            }
+        }
+        
+        errorLbl.isHidden = true
+        enableDisableLogin()
     }
     
     @objc func emailChange() {
@@ -118,36 +144,57 @@ class CreateVC: UIViewController {
     
     @IBAction func createClicked(_ sender: Any) {
         if let email = email.text, let password = password.text, let name = name.text{
-                   
-                   Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
-                       
-                       if error != nil {
-                            self.errorLbl.text = error?.localizedDescription
+            
+            if let username = username.text {
+                
+                let db = Firestore.firestore()
+                db.collection(LoginVC.USER_DATABASE).whereField("username", isEqualTo: username)
+                  .getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        self.errorLbl.text = "Error getting documents: \(err)"
                         self.errorLbl.isHidden = false
-                       } else {
-                           
-                        UserDefaults.standard.set(self.email.text, forKey: "email")
-                        UserDefaults.standard.set(self.password.text, forKey:  "password")
-                           
-                        let uid = Auth.auth().currentUser!.uid
-                           let firestore = Firestore.firestore()
-                        let userRef = firestore.collection(LoginVC.USER_DATABASE)
-                        let docRef = userRef.document("\(uid)")
-                           docRef.getDocument { (document, error) in
-                               let bar = LoginVC.NO_BAR
-                               let admin = LoginVC.NO_ADMIN
-                               let friends = [String]()
-                            let requests = [String]()
+                        return
+                    } else {
+                        if(querySnapshot?.documents.count == 0) {
+                        
+                            //once username is verified as valid
                             
-                            AppDelegate.user = User(uid: uid,name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: "")
-                           }
-                           
-                       
-                           self.updateUIDatabase()
-                       }
-                       
-                   })
-               }
+                            Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
+                                
+                                if error != nil {
+                                     self.errorLbl.text = error?.localizedDescription
+                                 self.errorLbl.isHidden = false
+                                } else {
+                                    
+                                 UserDefaults.standard.set(self.email.text, forKey: "email")
+                                 UserDefaults.standard.set(self.password.text, forKey:  "password")
+                                 
+                                     let bar = LoginVC.NO_BAR
+                                     let admin = LoginVC.NO_ADMIN
+                                     let friends = [String]()
+                                     let requests = [String]()
+                                     
+                                    AppDelegate.user = User(uid: Auth.auth().currentUser!.uid,name: name, username: username, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: "")
+                                    }
+                                    
+                                
+                                    self.updateUIDatabase()
+                                
+                            })
+                            
+                            
+                            
+                        }  else {
+                            self.errorLbl.text = "Username is taken"
+                            self.errorLbl.isHidden = false
+                            return
+                        }
+                    }
+                }
+            }
+                   
+                   
+        }
     }
     
     func updateUIDatabase() {
@@ -175,11 +222,13 @@ class CreateVC: UIViewController {
                    
                    if !beenAdded {
                        
+                    print("It hasnt been added")
                        
                        let docData: [String: Any] = [
                         "uid" : user.uid!,
                            "name": user.name ?? "",
                            "bar" : user.bar ?? "nil",
+                           "username" : user.username!,
                            "admin" : user.admin ?? false,
                            "profileURL": user.profileURL ?? "",
                            "email": user.email!,

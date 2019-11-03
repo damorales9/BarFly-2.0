@@ -87,6 +87,10 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
                 self.changeProfile.alpha -= 1
                 self.color.alpha -= 1
             })
+            
+            if(profileImage.image != nil) {
+                self.saveFIRData()
+            }
         }
         name.isEnabled = editting
         email.isEnabled = editting
@@ -94,7 +98,6 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
         password.isSecureTextEntry = !editting
         
         //save changes made
-        self.saveFIRData()
     }
     
     @IBAction func changeProfileClicked(_ sender: UIButton) {

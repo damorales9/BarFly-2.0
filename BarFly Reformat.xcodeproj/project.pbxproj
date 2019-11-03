@@ -24,6 +24,7 @@
 		0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCC40E236E632000D7757D /* BarTapGesture.swift */; };
 		0EDA8A31236CD525002B0FD4 /* BarDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDA8A2F236CD525002B0FD4 /* BarDetailsVC.swift */; };
 		6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A861236E544D005E55A6 /* SocialVC.swift */; };
+		6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A863236E6D74005E55A6 /* SearchVC.swift */; };
 		6FE48D96236B397900487E27 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48D95236B397900487E27 /* User.swift */; };
 		6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48D97236B3A8700487E27 /* LoginVC.swift */; };
 		6FE48DC3236B55DF00487E27 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE48DB7236B55DF00487E27 /* Roboto-BlackItalic.ttf */; };
@@ -64,6 +65,7 @@
 		28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.release.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.release.xcconfig"; sourceTree = "<group>"; };
 		5A3D1A0593E8D9C65FB0D5DC /* Pods-BarFly Reformat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.debug.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.debug.xcconfig"; sourceTree = "<group>"; };
 		6F79A861236E544D005E55A6 /* SocialVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialVC.swift; sourceTree = "<group>"; };
+		6F79A863236E6D74005E55A6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		6FE48D95236B397900487E27 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6FE48D97236B3A8700487E27 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		6FE48DB7236B55DF00487E27 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				6FE48DD3236CCA7600487E27 /* ImagePicker.swift */,
 				6F79A861236E544D005E55A6 /* SocialVC.swift */,
 				0ECCC40E236E632000D7757D /* BarTapGesture.swift */,
+				6F79A863236E6D74005E55A6 /* SearchVC.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				0EDA8A31236CD525002B0FD4 /* BarDetailsVC.swift in Sources */,
 				0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */,
 				0E5137F1236C56E5008C00AB /* BarListVC.swift in Sources */,
+				6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */,
 				0EC363DD236B230C00116650 /* FirstViewController.swift in Sources */,
 				6FE48DD2236C79A000487E27 /* TabBarController.swift in Sources */,
 				6FE48DD4236CCA7600487E27 /* ImagePicker.swift in Sources */,
@@ -472,13 +476,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H4ZHS68DBP;
+				DEVELOPMENT_TEAM = YKBU84V37T;
 				INFOPLIST_FILE = "BarFly Reformat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.LoFi.BarFly-2.0";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.LoFi.BarFly-Reformat";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

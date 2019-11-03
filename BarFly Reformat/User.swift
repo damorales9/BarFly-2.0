@@ -12,6 +12,7 @@ import FirebaseFirestore
 struct User {
     var uid:String?
     var name:String?
+    var username: String?
     var bar:String?
     var admin:Bool?
     var email: String?
