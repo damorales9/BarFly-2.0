@@ -29,8 +29,12 @@ open class ImagePicker: NSObject {
     
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = true
-        self.pickerController.mediaTypes = ["public.image"]
+        self.pickerController.mediaTypes = ["public.image", "public.video"]
         self.pickerController.allowsEditing = true
+        
+        //WTF
+        
+        
     }
     
     private func action(for type: UIImagePickerController.SourceType, title: String) -> UIAlertAction? {
@@ -64,6 +68,7 @@ open class ImagePicker: NSObject {
             alertController.popoverPresentationController?.sourceView = sourceView
             alertController.popoverPresentationController?.sourceRect = sourceView.bounds
             alertController.popoverPresentationController?.permittedArrowDirections = [.down, .up]
+        
         }
 
         self.presentationController?.present(alertController, animated: true)
@@ -74,6 +79,8 @@ open class ImagePicker: NSObject {
         
         self.delegate?.didSelect(image: image)
     }
+    
+    
 }
 
 extension ImagePicker: UIImagePickerControllerDelegate {

@@ -13,7 +13,7 @@ import FirebaseStorage
 import FirebaseFirestore
 import FirebaseUI
 
-class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class ProfileVC: UIViewController {
     
     
    
@@ -22,8 +22,6 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
     var imagePicker: ImagePicker!
     var editting = false
     
-    var pickerData = ["Black Color", "White Color", "System Blue Color"]
-    
     //UI
     @IBOutlet var profileImage: UIImageView!
     @IBOutlet weak var edit: UIButton!
@@ -31,45 +29,49 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var changeProfile: UIButton!
-    @IBOutlet weak var colorPicker: UIPickerView!
-    @IBOutlet weak var color: UIButton!
+    @IBOutlet weak var username: UITextField!
+    
+    @IBOutlet weak var fieldView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        color.layer.cornerRadius = 5
         edit.layer.cornerRadius = 5
         changeProfile.layer.cornerRadius =  5
+        
+        fieldView.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.75)
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
         if let user = AppDelegate.user {
             name.text = user.name
             email.text = user.email
+            username.text = user.username
             password.text = UserDefaults.standard.string(forKey: "password")
             
             let placeholder = UIImage( named: "person.circle.fill")
             
-            if (user.profileURL != "") {
             
+            print("profileURL is \(user.profileURL)")
+            
+            if (user.profileURL != "") {
+                
+                SDImageCache.shared.clearMemory()
+                SDImageCache.shared.clearDisk()
+                
                 let storage = Storage.storage()
                 let httpsReference = storage.reference(forURL: user.profileURL!)
                 
                 self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+            
                     
             } else {
                 self.profileImage.image = placeholder
             }
 
         }
-            
-        self.colorPicker.delegate = self
-        self.colorPicker.dataSource = self
-    }
-
-    @IBAction func colorClicked(_ sender: Any) {
-        colorPicker.isHidden = !colorPicker.isHidden
+        
     }
     
     @IBAction func editButtonClicked(_ sender: Any) {
@@ -78,14 +80,14 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
             UIView.animate(withDuration: 1, animations: {
                 self.edit.setTitle("Done", for: .normal)
                 self.changeProfile.alpha += 1
-                self.color.alpha += 1
+    
             })
         } else {
             editting = false
             UIView.animate(withDuration: 1, animations: {
                 self.edit.setTitle("Edit", for: .normal)
                 self.changeProfile.alpha -= 1
-                self.color.alpha -= 1
+                
             })
             
             if(profileImage.image != nil) {
@@ -95,7 +97,9 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
         name.isEnabled = editting
         email.isEnabled = editting
         password.isEnabled = editting
+        username.isEnabled = editting
         password.isSecureTextEntry = !editting
+        
         
         //save changes made
     }
@@ -127,11 +131,6 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
         email.textColor = clr
         password.textColor = clr
         
-        colorPicker.isHidden = true
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
     }
     
     func saveFIRData(){

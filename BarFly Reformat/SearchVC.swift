@@ -35,7 +35,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
         
         // Reload the table
         
-        tableView.rowHeight = 50
+        tableView.rowHeight = 60
         
         tableView.reloadData()
         
@@ -69,7 +69,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
                     
                     if (username.contains(self.resultSearchController.searchBar.text!.lowercased())) {
                         print("adding \(username)")
-                        let u = User(uid: document?.documentID, name: name, bar: bar, friends: friends, requests: requests, profileURL: profileURL)
+                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, requests: requests, profileURL: profileURL)
                         
                         var dup = false
                         for i in self.filteredTableData {
@@ -120,30 +120,55 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
             cell.textLabel?.text = filteredTableData[indexPath.row].username
             cell.detailTextLabel?.text = filteredTableData[indexPath.row].name
             
-            let placeholder = UIImage( named: "person.circle.fill")
             
+            cell.imageView?.clipsToBounds = true
+            cell.imageView?.layer.cornerRadius = 24
+            cell.imageView?.layer.borderWidth = 1
+            cell.imageView?.layer.borderColor = UIColor.white.cgColor
+            cell.imageView?.contentMode = .scaleToFill
+            
+            var placeholder: UIImage?
+            if #available(iOS 13.0, *) {
+                placeholder = UIImage(systemName: "person.circle")
+            } else {
+                // Fallback on earlier versions
+                placeholder = UIImage(named: "profile")
+            }
+
             if (filteredTableData[indexPath.row].profileURL != "") {
-            
+
                 let storage = Storage.storage()
                 let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].profileURL!)
-                
+
+
                 cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-                    
+
+
             } else {
                 cell.imageView?.image = placeholder
             }
             
-            cell.imageView?.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
-            cell.imageView?.clipsToBounds = true
-            cell.imageView?.layer.cornerRadius = 20
-            cell.imageView?.layer.borderWidth = 1
-            cell.imageView?.layer.borderColor = UIColor.white.cgColor
-            cell.imageView?.layer.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
+            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+            
             
             return cell
         }
         else {
             return cell
         }
+    }
+}
+
+extension UIImage {
+    func resizeImageWithBounds(bounds: CGSize) -> UIImage {
+        let horizontalRatio = bounds.width/size.width
+        let verticalRatio = bounds.height/size.height
+        let ratio = max(horizontalRatio, verticalRatio)
+        let newSize = CGSize(width: size.width * ratio, height: size.height * ratio)
+        UIGraphicsBeginImageContextWithOptions(newSize, true, 0)
+        draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
     }
 }
