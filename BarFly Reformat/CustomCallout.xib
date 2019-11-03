@@ -14,38 +14,51 @@
             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQc-c1-k52">
-                    <rect key="frame" x="0.0" y="0.0" width="150" height="130"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="Pfz-dB-YrB">
-                            <rect key="frame" x="46" y="50" width="52" height="72"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="72" id="kni-Ed-b0M"/>
-                            </constraints>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Plant Bitch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJf-sX-Lzu">
-                            <rect key="frame" x="8" y="12" width="134" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.70588235294117641" green="0.99607843137254903" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
-                    <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    <constraints>
-                        <constraint firstItem="AJf-sX-Lzu" firstAttribute="top" secondItem="AQc-c1-k52" secondAttribute="top" constant="12" id="ZpK-Bg-HRT"/>
-                        <constraint firstAttribute="trailing" secondItem="Pfz-dB-YrB" secondAttribute="trailing" constant="52" id="cvJ-bA-g7e"/>
-                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="leading" secondItem="AQc-c1-k52" secondAttribute="leading" constant="46" id="oJL-qi-WGN"/>
-                        <constraint firstAttribute="centerX" secondItem="AJf-sX-Lzu" secondAttribute="centerX" id="rkS-yM-gUZ"/>
-                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="top" secondItem="AJf-sX-Lzu" secondAttribute="bottom" constant="17" id="vGU-Lf-l4g"/>
-                    </constraints>
-                </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrowtriangle.down.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vRt-4o-HlQ">
                     <rect key="frame" x="53" y="126" width="44" height="14.5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" red="0.70588235294117641" green="0.99607843137254903" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQc-c1-k52">
+                    <rect key="frame" x="0.0" y="0.0" width="150" height="130"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="Pfz-dB-YrB">
+                            <rect key="frame" x="0.0" y="0.0" width="150" height="130"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="130" id="kni-Ed-b0M"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Plant Bitch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJf-sX-Lzu">
+                            <rect key="frame" x="8" y="20" width="134" height="21"/>
+                            <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.70588235294117641" green="0.99607843137254903" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="centerY" secondItem="AJf-sX-Lzu" secondAttribute="centerY" constant="34.5" id="0Fh-FW-RlG"/>
+                        <constraint firstItem="AJf-sX-Lzu" firstAttribute="top" secondItem="AQc-c1-k52" secondAttribute="top" constant="20" id="DnA-o9-Ype"/>
+                        <constraint firstItem="AJf-sX-Lzu" firstAttribute="leading" secondItem="AQc-c1-k52" secondAttribute="leading" constant="8" id="NB8-1a-s6D"/>
+                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="centerX" secondItem="AJf-sX-Lzu" secondAttribute="centerX" id="YF6-Ae-Y8u"/>
+                        <constraint firstAttribute="trailing" secondItem="Pfz-dB-YrB" secondAttribute="trailing" id="cvJ-bA-g7e"/>
+                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="centerY" secondItem="AQc-c1-k52" secondAttribute="centerY" id="hx1-UL-Yqi"/>
+                        <constraint firstAttribute="bottom" secondItem="AJf-sX-Lzu" secondAttribute="bottom" constant="89" id="isc-w7-Xll"/>
+                        <constraint firstAttribute="trailing" secondItem="AJf-sX-Lzu" secondAttribute="trailing" constant="8" id="lNI-81-ELN"/>
+                        <constraint firstItem="Pfz-dB-YrB" firstAttribute="leading" secondItem="AQc-c1-k52" secondAttribute="leading" id="oJL-qi-WGN"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22z-gt-EYJ">
+                    <rect key="frame" x="52" y="58" width="47" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -57,6 +70,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="amntPeople" destination="22z-gt-EYJ" id="xhQ-9q-fba"/>
                 <outlet property="image" destination="Pfz-dB-YrB" id="2Z5-0x-cYf"/>
                 <outlet property="title" destination="AJf-sX-Lzu" id="757-Mq-bmz"/>
                 <outlet property="view" destination="AQc-c1-k52" id="RxY-8g-glR"/>

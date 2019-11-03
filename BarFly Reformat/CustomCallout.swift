@@ -13,6 +13,8 @@ class CustomCallout: UIView {
     @IBOutlet var title: UILabel!
     @IBOutlet var image: UIImageView!
     @IBOutlet var view: UIView!
+    @IBOutlet var amntPeople: UILabel!
+    
     
     /*
     // Only override draw() if you perform custom drawing.

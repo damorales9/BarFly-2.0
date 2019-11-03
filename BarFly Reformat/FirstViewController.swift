@@ -10,18 +10,20 @@ import MapKit
 import UIKit
 import CoreLocation
 import GoogleMapsTileOverlay
+import FirebaseFirestore
+import FirebaseStorage
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet var myNavBar: UINavigationBar!
     @IBOutlet var myMapView: MKMapView!
-    let locationManager = CLLocationManager()
+    var locationManager = CLLocationManager()
     var pointAnnotation:CustomPointAnnotation!
     var pinAnnotationView:MKPinAnnotationView!
     
-    private var allAnnotations: [MKAnnotation]?
+    public static var allAnnotations = [MKAnnotation]()
     
-    public var allBars: [CustomBarAnnotation]?
+    public static var allBars = [CustomBarAnnotation]()
     
     private var displayedAnnotations: [MKAnnotation]? {
         willSet {
@@ -55,22 +57,36 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         myMapView.isScrollEnabled = true
         myMapView.setUserTrackingMode(.none, animated: true)
         
+        
         let theCharles = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.531190, longitude: -1.235914))
         theCharles.title = NSLocalizedString("The Charles", comment: "The Charles")
         theCharles.imageName = "logo"
-        
+        /*
         let stalkingHorse = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 54.9792, longitude: 1.6147))
         stalkingHorse.title = NSLocalizedString("Stalking Horse", comment: "Stalking Horse")
         stalkingHorse.imageName = "logo"
+        */
         
-        allAnnotations = [theCharles, stalkingHorse]
-        allBars = [theCharles, stalkingHorse]
+        FirstViewController.allAnnotations.append(theCharles)
+        //allBars = [theCharles, stalkingHorse]
         
+        //print(allBars)
+        print(FirstViewController.allAnnotations)
         showAllAnnotations(self)
         
         
         if let coor = myMapView.userLocation.location?.coordinate{
             myMapView.setCenter(coor, animated: true)
+        }
+        if let userLocation = locationManager.location?.coordinate {
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 3500, longitudinalMeters: 3500)
+            myMapView.setRegion(viewRegion, animated: false)
+        }
+
+        //self.locationManager = locationManager
+
+        DispatchQueue.main.async {
+            self.locationManager.startUpdatingLocation()
         }
     
     }
@@ -110,8 +126,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     */
     @IBAction private func showAllAnnotations(_ sender: Any) {
         // User tapped "All" button in the bottom toolbar
-        displayedAnnotations = allAnnotations
+        displayedAnnotations = FirstViewController.allAnnotations
     }
+    
     
     private func addCustomOverlay() {
         guard let jsonURL = Bundle.main.url(forResource: "overlay", withExtension: "json") else { return }
@@ -137,11 +154,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
+        /*
         guard !annotation.isKind(of: MKUserLocation.self) else {
             // Make a fast exit if the annotation is the `MKUserLocation`, as it's not an annotation view we wish to customize.
             return nil
         }
+        */
         
         var annotationView: MKAnnotationView?
         
@@ -174,6 +192,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         if view.annotation is MKUserLocation
         {
             // Don't proceed with custom callout
@@ -183,8 +202,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let barAnnotation = view.annotation as! CustomBarAnnotation
         let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCallout
-        calloutView.image.image = UIImage(named: barAnnotation.imageName!)
+        let storage = Storage.storage()
+        let httpsReference = storage.reference(forURL: barAnnotation.imageName!)
+        let placeholder = UIImage( named: "profile_picture_placeholder.png")
+        calloutView.image.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+        //calloutView.image.image = UIImage(named: barAnnotation.imageName!)
+        calloutView.amntPeople.text = "10"
+        calloutView.amntPeople.layer.cornerRadius = 10
+        calloutView.image.layer.cornerRadius = 20
         calloutView.title.text = barAnnotation.title!
+        calloutView.title.layer.cornerRadius = 10
         calloutView.layer.cornerRadius = 25
         calloutView.view.layer.cornerRadius = 20
         let gesture = BarTapGesture(target: self, action: #selector(barTapped))
@@ -192,15 +219,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         calloutView.view.addGestureRecognizer(gesture)
         
-        /*
-        let lbl = UILabel(frame: CGRect(x: 100, y: 235, width: 50, height: 30))
-        lbl.text = "▼"
-        lbl.font = UIFont.systemFont(ofSize: 24)
-        lbl.textAlignment = .center
-        
-        calloutView.addSubview(lbl)
-        */
-        // 3
         calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.30)
         view.addSubview(calloutView)
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
@@ -228,23 +246,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             markerAnnotationView.canShowCallout = true
             markerAnnotationView.glyphTintColor = UIColor.black
             markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-            
-            /*
-            let lblTitle: UILabel = {
-                let lbl = UILabel()
-                lbl.text = "10 attendies"
-                lbl.font = UIFont.boldSystemFont(ofSize: 12)
-                lbl.textColor = UIColor.black
-                lbl.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
-                lbl.textAlignment = .center
-                lbl.adjustsFontSizeToFitWidth = true
-                lbl.adjustsFontForContentSizeCategory = true
-                lbl.translatesAutoresizingMaskIntoConstraints = false
-                
-                return lbl
-            }()
-            */
-            
             
             // Provide an image view to use as the accessory view's detail view.
             //markerAnnotationView.detailCalloutAccessoryView = UIImageView(image: UIImage(named: annotation.imageName!))
