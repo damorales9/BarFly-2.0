@@ -27,6 +27,8 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     
     var title: String?
     
+    var view: CustomCallout?
+    
     //var subtitle: String?
     
     var imageName: String?

@@ -210,12 +210,17 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.amntPeople.text = "10"
         calloutView.amntPeople.layer.cornerRadius = 10
         calloutView.image.layer.cornerRadius = 20
+        let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+        calloutView.image.layer.borderColor = color.cgColor
+        calloutView.image.layer.borderWidth = 4
         calloutView.title.text = barAnnotation.title!
         calloutView.title.layer.cornerRadius = 10
-        calloutView.layer.cornerRadius = 25
+        calloutView.layer.cornerRadius = 20
         calloutView.view.layer.cornerRadius = 20
         let gesture = BarTapGesture(target: self, action: #selector(barTapped))
         gesture.bar = barAnnotation
+        
+        barAnnotation.view = calloutView
         
         calloutView.view.addGestureRecognizer(gesture)
         
@@ -225,17 +230,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        if view.isKind(of: CustomCallout.self)
-        {
-            for subview in view.subviews
-            {
-                subview.removeFromSuperview()
-            }
-        }
+        let bar = view.annotation as! CustomBarAnnotation
+        bar.view?.removeFromSuperview()
+        
     }
     
     @objc func barTapped(sender: BarTapGesture) {
         
+    
     }
     
     private func setupBarAnnotationView(for annotation: CustomBarAnnotation, on mapView: MKMapView) -> MKAnnotationView {
