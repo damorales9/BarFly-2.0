@@ -201,7 +201,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.addSubview(lbl)
         */
         // 3
-        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.39)
+        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.30)
         view.addSubview(calloutView)
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
     }
