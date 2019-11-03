@@ -49,6 +49,7 @@ class LoginVC: UIViewController {
     
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var passwordLbl: UILabel!
+    @IBOutlet weak var errorLbl: UILabel!
     
     /*
      * ----------------------------------
@@ -78,7 +79,9 @@ class LoginVC: UIViewController {
         if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
             self.email.text = email
             self.password.text = password
-            login(email: email, password: password)
+            //login(email: email, password: password)
+            
+            enableDisableLogin()
         }
         
 //      performSegue(withIdentifier: "hasLogin", sender: self)
@@ -105,13 +108,8 @@ class LoginVC: UIViewController {
             }
         }
         
-        if(email.text!.contains("@") && email.text!.contains(".")) {
-            print("enabled button")
-            login.isEnabled = true
-        } else {
-            print("disabled button")
-            login.isEnabled = false
-        }
+        errorLbl.isHidden = true
+        enableDisableLogin()
     
     }
     
@@ -128,17 +126,20 @@ class LoginVC: UIViewController {
             }
         }
         
-//        if(password.text!.count > 6) {
-//            validPassword = true;
-//            if(validEmail) {
-//                print("enabling button")
-//                login.isEnabled = true
-//            }
-//        }
-//        else {
-//            validPassword = false
-//            login.isEnabled = false
-//        }
+        errorLbl.isHidden = true
+        enableDisableLogin()
+    
+    }
+    
+    func enableDisableLogin() {
+        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6) {
+                   print("enabled button")
+                   login.isEnabled = true
+               } else {
+                   print("disabled button")
+                   login.isEnabled = false
+               }
+           
     }
     
     /*
@@ -165,7 +166,8 @@ class LoginVC: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil {
-                print(error?.localizedDescription ?? "Unidentified Error")
+                self.errorLbl.isHidden = false
+                self.errorLbl.text = (error?.localizedDescription ?? "Unidentified Error")
                 return
             } else {
             
@@ -180,15 +182,20 @@ class LoginVC: UIViewController {
                 let docRef = userRef.document("\(uid)")
                 docRef.getDocument { (document, error) in
                     
-                    let name = ((document!.get("name")) as! String)
-                    let bar = ((document!.get("bar")) as! String)
-                    let admin = ((document!.get("admin")) as! Bool)
-                    let friends = ((document!.get("friends")) as! [String])
-                    let requests = ((document!.get("requests")) as! [String])
-                    let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
-                    AppDelegate.user = User(uid: uid, name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
+                    if(error != nil) {
+                        self.errorLbl.isHidden = false
+                        self.errorLbl.text = (error?.localizedDescription ?? "Unidentified Error")
+                    } else {
+            
+                        let name = ((document!.get("name")) as! String)
+                        let bar = ((document!.get("bar")) as! String)
+                        let admin = ((document!.get("admin")) as! Bool)
+                        let friends = ((document!.get("friends")) as! [String])
+                        let requests = ((document!.get("requests")) as! [String])
+                        let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
+                        AppDelegate.user = User(uid: uid, name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
+                        }
                 }
-                
                 self.performSegue(withIdentifier: "hasLogin", sender: self)
                 
             }

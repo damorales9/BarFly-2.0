@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class CreateVC: UIViewController {
     
@@ -24,6 +26,7 @@ class CreateVC: UIViewController {
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var passwordLbl: UILabel!
+    @IBOutlet weak var errorLbl: UILabel!
     
     override func viewDidLoad() {
         create.layer.cornerRadius = 10;
@@ -38,8 +41,22 @@ class CreateVC: UIViewController {
         
         password.addTarget(self, action: #selector(passwordChange), for: UIControl.Event.editingChanged)
         
+        create.isEnabled = false
+        errorLbl.isHidden = true
+        
         
         self.hideKeyboardWhenTappedAround()
+    }
+    
+    func enableDisableLogin() {
+        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6 && name.text!.count > 0) {
+                   print("enabled button")
+                   create.isEnabled = true
+               } else {
+                   print("disabled button")
+                   create.isEnabled = false
+               }
+           
     }
     
     @objc func emailChange() {
@@ -56,6 +73,8 @@ class CreateVC: UIViewController {
                 self.emailLbl.alpha -= 1
             }
         }
+        
+        enableDisableLogin()
     
     }
     
@@ -73,6 +92,8 @@ class CreateVC: UIViewController {
                 self.passwordLbl.alpha -= 1
             }
         }
+        
+        enableDisableLogin()
     
     }
     
@@ -90,6 +111,39 @@ class CreateVC: UIViewController {
                 self.nameLbl.alpha -= 1
             }
         }
+    }
     
+    @IBAction func createClicked(_ sender: Any) {
+        if let email = email.text, let password = password.text {
+                   
+                   Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
+                       
+                       if error != nil {
+                            self.errorLbl.text = error?.localizedDescription
+                       } else {
+                           
+                        UserDefaults.standard.set(self.email.text, forKey: "email")
+                        UserDefaults.standard.set(self.password.text, forKey:  "password")
+                           
+                           var uid = Auth.auth().currentUser!.uid
+                           let firestore = Firestore.firestore()
+                           var userRef = firestore.collection(LoginVC.USER_DATABASE)
+                           var docRef = userRef.document("\(uid)")
+                           docRef.getDocument { (document, error) in
+                               let name = LoginVC.NO_NAME
+                               let bar = LoginVC.NO_BAR
+                               let admin = LoginVC.NO_ADMIN
+                               var friends = [String]()
+                                var requests = 
+                               friends.append(LoginVC.FIRST_FRIEND)
+                            AppDelegate.user = User(uid:uid,name:name, bar:bar, admin:admin, friends:friends, requests: )
+                           }
+                           
+                       
+                           self.updateUIDatabase()
+                       }
+                       
+                   })
+               }
     }
 }

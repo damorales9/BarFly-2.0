@@ -92,6 +92,9 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
         email.isEnabled = editting
         password.isEnabled = editting
         password.isSecureTextEntry = !editting
+        
+        //save changes made
+        self.saveFIRData()
     }
     
     @IBAction func changeProfileClicked(_ sender: UIButton) {
@@ -167,9 +170,11 @@ class ProfileVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource 
 extension ProfileVC: ImagePickerDelegate {
 
     func didSelect(image: UIImage?) {
-        self.profileImage.image = image
         
-        self.saveFIRData()
+        if let image = image {
+            self.profileImage.image = image
+        }
+        
     }
 }
 
