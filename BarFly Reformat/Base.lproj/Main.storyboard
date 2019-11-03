@@ -332,7 +332,6 @@
                                 </state>
                                 <connections>
                                     <action selector="createClicked:" destination="3gp-lJ-PdH" eventType="touchUpInside" id="q23-QQ-g3W"/>
-                                    <segue destination="49e-Tb-3d3" kind="presentation" modalPresentationStyle="fullScreen" id="MTY-FO-JaB"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Create a password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tfA-vg-Upv">
@@ -438,6 +437,7 @@
                         <outlet property="nameLbl" destination="u2W-kE-bcM" id="yuz-Ws-Nn4"/>
                         <outlet property="password" destination="tfA-vg-Upv" id="0F9-yH-qm1"/>
                         <outlet property="passwordLbl" destination="uid-G9-kdX" id="zP9-Nd-2ar"/>
+                        <segue destination="49e-Tb-3d3" kind="presentation" identifier="wasCreated" modalPresentationStyle="fullScreen" id="PCB-dy-sTD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pfa-5D-q1T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -646,6 +646,6 @@
         <image name="star" catalog="system" width="64" height="58"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MTY-FO-JaB"/>
+        <segue reference="PCB-dy-sTD"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -74,6 +74,7 @@ class CreateVC: UIViewController {
             }
         }
         
+        errorLbl.isHidden = true
         enableDisableLogin()
     
     }
@@ -93,6 +94,7 @@ class CreateVC: UIViewController {
             }
         }
         
+        errorLbl.isHidden = true
         enableDisableLogin()
     
     }
@@ -111,32 +113,33 @@ class CreateVC: UIViewController {
                 self.nameLbl.alpha -= 1
             }
         }
+        
     }
     
     @IBAction func createClicked(_ sender: Any) {
-        if let email = email.text, let password = password.text {
+        if let email = email.text, let password = password.text, let name = name.text{
                    
                    Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
                        
                        if error != nil {
                             self.errorLbl.text = error?.localizedDescription
+                        self.errorLbl.isHidden = false
                        } else {
                            
                         UserDefaults.standard.set(self.email.text, forKey: "email")
                         UserDefaults.standard.set(self.password.text, forKey:  "password")
                            
-                           var uid = Auth.auth().currentUser!.uid
+                        let uid = Auth.auth().currentUser!.uid
                            let firestore = Firestore.firestore()
-                           var userRef = firestore.collection(LoginVC.USER_DATABASE)
-                           var docRef = userRef.document("\(uid)")
+                        let userRef = firestore.collection(LoginVC.USER_DATABASE)
+                        let docRef = userRef.document("\(uid)")
                            docRef.getDocument { (document, error) in
-                               let name = LoginVC.NO_NAME
                                let bar = LoginVC.NO_BAR
                                let admin = LoginVC.NO_ADMIN
-                               var friends = [String]()
-                                var requests = 
-                               friends.append(LoginVC.FIRST_FRIEND)
-                            AppDelegate.user = User(uid:uid,name:name, bar:bar, admin:admin, friends:friends, requests: )
+                               let friends = [String]()
+                            let requests = [String]()
+                            
+                            AppDelegate.user = User(uid: uid,name: name, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: "")
                            }
                            
                        
@@ -146,4 +149,59 @@ class CreateVC: UIViewController {
                    })
                }
     }
+    
+    func updateUIDatabase() {
+           
+           
+        if let user = AppDelegate.user {
+               
+               //Adding uid to databse if first time login
+               
+               var beenAdded = false
+               let db = Firestore.firestore()
+               db.collection(LoginVC.USER_DATABASE).getDocuments { (snapshot, error) in
+                   
+                   if error != nil {
+                        self.errorLbl.text = "Error when getting UID list from firebase"
+                        self.errorLbl.isHidden = false
+                        return
+                   }
+                   
+                   for document in (snapshot?.documents)!{
+                       if user.uid == document.documentID {
+                           beenAdded = true
+                       }
+                   }
+                   
+                   if !beenAdded {
+                       
+                       
+                       let docData: [String: Any] = [
+                        "uid" : user.uid!,
+                           "name": user.name ?? "",
+                           "bar" : user.bar ?? "nil",
+                           "admin" : user.admin ?? false,
+                           "profileURL": user.profileURL ?? "",
+                           "email": user.email!,
+                           "friends": user.friends,
+                           "requests":user.requests
+                       ]
+                    print(docData)
+                       
+                       db.collection(LoginVC.USER_DATABASE).document(user.uid!).setData(docData) { err in
+                           if let err = err {
+                                self.errorLbl.text = "There was a fuqing error with adding the uid to the db \(err)"
+                                self.errorLbl.isHidden = false
+                                return 
+                           }
+                       }
+                       
+                       
+                   }
+                
+                self.performSegue(withIdentifier: "wasCreated", sender: self)
+                
+               }
+           }
+       }
 }

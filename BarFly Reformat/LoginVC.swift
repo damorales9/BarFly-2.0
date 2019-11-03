@@ -21,8 +21,8 @@ class LoginVC: UIViewController {
     
     public static let NO_BAR = "nil"
     public static let NO_NAME = "nil"
-    public static let NO_ADMIN = "no"
-    public static let YES_ADMIN = "yes"
+    public static let NO_ADMIN = false
+    public static let YES_ADMIN = true
     public static let END_REQUESTS = "end"
     public static let FIRST_FRIEND = "001"
     public static let USER_DATABASE = "User Info"
