@@ -12,6 +12,8 @@
 		0E5137F1236C56E5008C00AB /* BarListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F0236C56E5008C00AB /* BarListVC.swift */; };
 		0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */; };
 		0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */; };
+		0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */; };
+		0EAE5C9E236E106C005F9710 /* CustomCallout.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9D236E106C005F9710 /* CustomCallout.xib */; };
 		0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DA236B230C00116650 /* AppDelegate.swift */; };
 		0EC363DD236B230C00116650 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DC236B230C00116650 /* FirstViewController.swift */; };
 		0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DE236B230C00116650 /* ProfileVC.swift */; };
@@ -19,6 +21,7 @@
 		0EC363E4236B230D00116650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E3236B230D00116650 /* Assets.xcassets */; };
 		0EC363E7236B230D00116650 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E5236B230D00116650 /* LaunchScreen.storyboard */; };
 		0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363F0236B2E0400116650 /* GoogleService-Info.plist */; };
+		0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCC40E236E632000D7757D /* BarTapGesture.swift */; };
 		0EDA8A31236CD525002B0FD4 /* BarDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDA8A2F236CD525002B0FD4 /* BarDetailsVC.swift */; };
 		6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A861236E544D005E55A6 /* SocialVC.swift */; };
 		6FE48D96236B397900487E27 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48D95236B397900487E27 /* User.swift */; };
@@ -45,6 +48,8 @@
 		0E5137F0236C56E5008C00AB /* BarListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarListVC.swift; sourceTree = "<group>"; };
 		0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarAnnotation.swift; sourceTree = "<group>"; };
+		0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallout.swift; sourceTree = "<group>"; };
+		0EAE5C9D236E106C005F9710 /* CustomCallout.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCallout.xib; sourceTree = "<group>"; };
 		0EC363D7236B230C00116650 /* BarFly Reformat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BarFly Reformat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC363DA236B230C00116650 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EC363DC236B230C00116650 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 		0EC363E6236B230D00116650 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0EC363E8236B230D00116650 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EC363F0236B2E0400116650 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0ECCC40E236E632000D7757D /* BarTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarTapGesture.swift; sourceTree = "<group>"; };
 		0EDA8A2F236CD525002B0FD4 /* BarDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarDetailsVC.swift; sourceTree = "<group>"; };
 		28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.release.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.release.xcconfig"; sourceTree = "<group>"; };
 		5A3D1A0593E8D9C65FB0D5DC /* Pods-BarFly Reformat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.debug.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +125,8 @@
 				0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */,
 				0EC363DE236B230C00116650 /* ProfileVC.swift */,
 				0EC363E0236B230C00116650 /* Main.storyboard */,
+				0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */,
+				0EAE5C9D236E106C005F9710 /* CustomCallout.xib */,
 				0E5137F0236C56E5008C00AB /* BarListVC.swift */,
 				0E5137EE236BCE47008C00AB /* overlay.json */,
 				0EC363E3236B230D00116650 /* Assets.xcassets */,
@@ -131,6 +139,7 @@
 				6FE48DD1236C79A000487E27 /* TabBarController.swift */,
 				6FE48DD3236CCA7600487E27 /* ImagePicker.swift */,
 				6F79A861236E544D005E55A6 /* SocialVC.swift */,
+				0ECCC40E236E632000D7757D /* BarTapGesture.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -246,6 +255,7 @@
 				6FE48DC6236B55DF00487E27 /* Roboto-Italic.ttf in Resources */,
 				6FE48DCE236B55DF00487E27 /* Roboto-ThinItalic.ttf in Resources */,
 				0EC363E2236B230C00116650 /* Main.storyboard in Resources */,
+				0EAE5C9E236E106C005F9710 /* CustomCallout.xib in Resources */,
 				6FE48DC9236B55DF00487E27 /* Roboto-MediumItalic.ttf in Resources */,
 				0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */,
 			);
@@ -303,6 +313,7 @@
 				6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */,
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
+				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
 				0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */,
 				0EDA8A31236CD525002B0FD4 /* BarDetailsVC.swift in Sources */,
 				0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */,
@@ -311,6 +322,7 @@
 				6FE48DD2236C79A000487E27 /* TabBarController.swift in Sources */,
 				6FE48DD4236CCA7600487E27 /* ImagePicker.swift in Sources */,
 				6FE48DD0236BBD6800487E27 /* CreateVC.swift in Sources */,
+				0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */,
 				0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */,
 				6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */,
 			);

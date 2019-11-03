@@ -57,11 +57,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         let theCharles = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.531190, longitude: -1.235914))
         theCharles.title = NSLocalizedString("The Charles", comment: "The Charles")
-        theCharles.imageName = "0"
+        theCharles.imageName = "logo"
         
         let stalkingHorse = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 54.9792, longitude: 1.6147))
         stalkingHorse.title = NSLocalizedString("Stalking Horse", comment: "Stalking Horse")
-        stalkingHorse.imageName = "1"
+        stalkingHorse.imageName = "logo"
         
         allAnnotations = [theCharles, stalkingHorse]
         allBars = [theCharles, stalkingHorse]
@@ -173,6 +173,52 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if view.annotation is MKUserLocation
+        {
+            // Don't proceed with custom callout
+            return
+        }
+        // 2
+        let barAnnotation = view.annotation as! CustomBarAnnotation
+        let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
+        let calloutView = views?[0] as! CustomCallout
+        calloutView.image.image = UIImage(named: barAnnotation.imageName!)
+        calloutView.title.text = barAnnotation.title!
+        calloutView.layer.cornerRadius = 25
+        calloutView.view.layer.cornerRadius = 20
+        let gesture = BarTapGesture(target: self, action: #selector(barTapped))
+        gesture.bar = barAnnotation
+        
+        calloutView.view.addGestureRecognizer(gesture)
+        
+        /*
+        let lbl = UILabel(frame: CGRect(x: 100, y: 235, width: 50, height: 30))
+        lbl.text = "▼"
+        lbl.font = UIFont.systemFont(ofSize: 24)
+        lbl.textAlignment = .center
+        
+        calloutView.addSubview(lbl)
+        */
+        // 3
+        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.39)
+        view.addSubview(calloutView)
+        mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        if view.isKind(of: CustomCallout.self)
+        {
+            for subview in view.subviews
+            {
+                subview.removeFromSuperview()
+            }
+        }
+    }
+    
+    @objc func barTapped(sender: BarTapGesture) {
+        
+    }
     
     private func setupBarAnnotationView(for annotation: CustomBarAnnotation, on mapView: MKMapView) -> MKAnnotationView {
         let identifier = NSStringFromClass(CustomBarAnnotation.self)
@@ -180,8 +226,10 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout = true
-            markerAnnotationView.markerTintColor = UIColor.blue
+            markerAnnotationView.glyphTintColor = UIColor.black
+            markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
             
+            /*
             let lblTitle: UILabel = {
                 let lbl = UILabel()
                 lbl.text = "10 attendies"
@@ -195,15 +243,18 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 
                 return lbl
             }()
+            */
+            
             
             // Provide an image view to use as the accessory view's detail view.
-            markerAnnotationView.detailCalloutAccessoryView = UIImageView(image: UIImage(named: annotation.imageName!))
-            let rightButton = UIButton(type: .detailDisclosure)
-            rightButton.tintColor = .green
+            //markerAnnotationView.detailCalloutAccessoryView = UIImageView(image: UIImage(named: annotation.imageName!))
+            //let rightButton = UIButton(type: .detailDisclosure)
+            //rightButton.tintColor = UIColor(red: 180, green: 254, blue: 253, alpha: 0)
             //let leftButton = UIButton(type: .infoDark)
             //markerAnnotationView.leftCalloutAccessoryView?.addSubview(amount)
-            markerAnnotationView.rightCalloutAccessoryView = rightButton
-            markerAnnotationView.leftCalloutAccessoryView = lblTitle
+            //markerAnnotationView.rightCalloutAccessoryView = rightButton
+            //markerAnnotationView.leftCalloutAccessoryView = lblTitle
+            
             
         }
         

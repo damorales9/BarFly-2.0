@@ -123,6 +123,48 @@
             <point key="canvasLocation" x="2445" y="-303"/>
         </scene>
         <!--ProfileVC-->
+        <!--View Controller-->
+        <scene sceneID="T8z-th-23P">
+            <objects>
+                <viewController storyboardIdentifier="CustomCalloutVC" id="e7N-KN-fEV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cqw-5D-DHR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bm-lc-y6t" customClass="CustomCalloutView" customModule="BarFly_Reformat" customModuleProvider="target">
+                                <rect key="frame" x="30" y="286" width="364" height="357"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="YEL-uO-wIs">
+                                        <rect key="frame" x="57" y="134" width="250" height="153"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Power Plant Bitch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dwn-bk-6GA">
+                                        <rect key="frame" x="115" y="43" width="134" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" image="YES"/>
+                        </accessibility>
+                        <viewLayoutGuide key="safeArea" id="1Ef-CL-88d"/>
+                    </view>
+                    <connections>
+                        <outlet property="customCallout" destination="4bm-lc-y6t" id="MXW-lf-hew"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q88-ts-j7h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3492.753623188406" y="-328.125"/>
+        </scene>
+        <!--Profile-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController id="8rJ-Kc-sve" customClass="ProfileVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
@@ -588,6 +630,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="2" width="1024" height="768"/>
         <image name="camera" catalog="system" width="64" height="48"/>
         <image name="list.bullet" catalog="system" width="64" height="44"/>
         <image name="location.circle" catalog="system" width="64" height="60"/>
