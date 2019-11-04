@@ -15,11 +15,20 @@ import FirebaseStorage
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBOutlet var barDetails: UIView!
     @IBOutlet var myNavBar: UINavigationBar!
     @IBOutlet var myMapView: MKMapView!
     var locationManager = CLLocationManager()
     var pointAnnotation:CustomPointAnnotation!
     var pinAnnotationView:MKPinAnnotationView!
+    @IBOutlet var barDetailsTitle: UILabel!
+    @IBOutlet var barDetailsImage: UIImageView!
+    @IBOutlet var amntPeople: UILabel!
+    
+    var barDetailsTop: NSLayoutConstraint?
+    var barDetailsBottom: NSLayoutConstraint?
+    
+    
     
     public static var allAnnotations = [MKAnnotation]()
     
@@ -40,6 +49,10 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        barDetails.layer.cornerRadius = 30
+        barDetails.layer.borderWidth = 4
+        let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+        barDetails.layer.borderColor = color.cgColor
         // Do any additional setup after loading the view.
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -71,6 +84,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         //print(allBars)
         print(FirstViewController.allAnnotations)
+        
+        barDetailsTop = NSLayoutConstraint(item: barDetails as Any, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -85)
+        view.addConstraint(barDetailsTop!)
+        //barDetailsBottom = NSLayoutConstraint(item: barDetails as Any, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -400)
+        
         showAllAnnotations(self)
         addCustomOverlay()
         
@@ -228,12 +246,40 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         view.addSubview(calloutView)
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
         
-        self.performSegue(withIdentifier: "barDetails", sender: self)
+        barDetailsTitle.text = barAnnotation.title!
+        barDetailsTitle.layer.cornerRadius = 20
+        barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+        barDetailsImage.layer.cornerRadius = 35
+        amntPeople.layer.cornerRadius = 20
+        
+        
+        UIView.animate(withDuration: 0.5) {
+            self.barDetailsTop?.constant -= 200
+            self.barDetails.layoutIfNeeded()
+        
+        }
+        /*
+        UIView.animate(withDuration: 1) {
+            self.barDetailsBottom?.constant -= 300
+            self.barDetails.layoutIfNeeded()
+        }
+        */
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         let bar = view.annotation as! CustomBarAnnotation
         bar.view?.removeFromSuperview()
+        UIView.animate(withDuration: 0.5) {
+            self.barDetailsTop?.constant += 200
+            self.barDetails.layoutIfNeeded()
+        }
+        /*
+        UIView.animate(withDuration: 0.5) {
+            self.barDetailsBottom?.constant += 300
+            self.barDetails.layoutIfNeeded()
+        }
+        */
+        
         
     }
     
