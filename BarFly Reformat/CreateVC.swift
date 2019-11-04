@@ -11,7 +11,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class CreateVC: UIViewController {
+class CreateVC: UIViewController, UITextFieldDelegate {
     
     //VARS
     
@@ -30,12 +30,22 @@ class CreateVC: UIViewController {
     @IBOutlet weak var errorLbl: UILabel!
     @IBOutlet weak var usernameLbl: UILabel!
     
+   
+    var nC: NSLayoutConstraint?
+    var uC: NSLayoutConstraint?
+    var eC: NSLayoutConstraint?
+     var pwC: NSLayoutConstraint?
+
+    
     override func viewDidLoad() {
         create.layer.cornerRadius = 10
         email.layer.cornerRadius = 15
         password.layer.cornerRadius = 15
         name.layer.cornerRadius = 15
         username.layer.cornerRadius = 15
+        
+        create.layer.borderColor = UIColor.black.cgColor
+        create.layer.borderWidth = 3
 
         
         name.addTarget(self, action: #selector(nameChange), for: UIControl.Event.editingChanged)
@@ -46,6 +56,20 @@ class CreateVC: UIViewController {
         
         username.addTarget(self, action: #selector(usernameChange), for: UIControl.Event.editingChanged)
         
+       
+        
+        username.addTarget(self, action: #selector(uEdit), for: .editingDidBegin)
+        username.addTarget(self, action: #selector(uEditOver), for: .editingDidEnd)
+        
+        name.addTarget(self, action: #selector(nEdit), for: .editingDidBegin)
+        name.addTarget(self, action: #selector(nEditOver), for: .editingDidEnd)
+        
+        email.addTarget(self, action: #selector(eEdit), for: .editingDidBegin)
+        email.addTarget(self, action: #selector(eEditOver), for: .editingDidEnd)
+        
+        password.addTarget(self, action: #selector(pwEdit), for: .editingDidBegin)
+               password.addTarget(self, action: #selector(pwEditOver), for: .editingDidEnd)
+        
         create.isEnabled = false
         errorLbl.isHidden = true
         
@@ -54,9 +78,131 @@ class CreateVC: UIViewController {
         nameChange()
         usernameChange()
         
+        password.delegate = self
+        email.delegate  = self
+        username.delegate = self
+        name.delegate = self
+        
+        name.tag = 0
+        username.tag = 1
+        email.tag = 2
+        password.tag = 3
+        
+        pwC = password.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        pwC!.constant = 130
+        view.addConstraint(pwC!)
+//
+        nC = name.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        nC!.constant = -80
+        view.addConstraint(nC!)
+//
+        uC = username.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        uC!.constant = -10
+        view.addConstraint(uC!)
+//
+        eC = email.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        eC!.constant = 60
+        view.addConstraint(eC!)
         
         self.hideKeyboardWhenTappedAround()
     }
+    
+    @objc func pwEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.pwC?.constant = -50
+            self.hideLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.hideLblAndField(field: self.email, lbl: self.emailLbl)
+            self.hideLblAndField(field: self.name, lbl: self.nameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func hideLblAndField(field: UITextField, lbl: UILabel) {
+        if(field.text!.count > 0) {
+            lbl.alpha -= 1
+        }
+        field.alpha -= 1
+    }
+    
+    func showLblAndField(field: UITextField, lbl: UILabel) {
+        if(field.text!.count > 0) {
+            lbl.alpha += 1
+        }
+        field.alpha += 1
+    }
+    
+    @objc func pwEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.pwC?.constant = 130
+            self.showLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.showLblAndField(field: self.email, lbl: self.emailLbl)
+            self.showLblAndField(field: self.name, lbl: self.nameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func uEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.uC?.constant = -50
+            self.hideLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.hideLblAndField(field: self.email, lbl: self.emailLbl)
+            self.hideLblAndField(field: self.name, lbl: self.nameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func uEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.uC?.constant = -10
+            self.showLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.showLblAndField(field: self.email, lbl: self.emailLbl)
+            self.showLblAndField(field: self.name, lbl: self.nameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func nEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.nC?.constant = -50
+            self.hideLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.hideLblAndField(field: self.email, lbl: self.emailLbl)
+            self.hideLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func nEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.nC?.constant = -80
+            self.showLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.showLblAndField(field: self.email, lbl: self.emailLbl)
+            self.showLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func eEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.eC?.constant = -50
+            self.hideLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.hideLblAndField(field: self.name, lbl: self.nameLbl)
+            self.hideLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func eEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.eC?.constant = 60
+            self.showLblAndField(field: self.password, lbl: self.passwordLbl)
+            self.showLblAndField(field: self.name, lbl: self.nameLbl)
+            self.showLblAndField(field: self.username, lbl: self.usernameLbl)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
+    
     
     func enableDisableLogin() {
         if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6 && name.text!.count > 0  && username.text!.count > 0 && !username.text!.contains(" ")) {
@@ -65,6 +211,18 @@ class CreateVC: UIViewController {
                    create.isEnabled = false
                }
            
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       // Try to find next responder
+       if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+       } else {
+          // Not found, so remove keyboard.
+          textField.resignFirstResponder()
+       }
+       // Do not add a line break
+       return false
     }
     
     @objc func usernameChange() {

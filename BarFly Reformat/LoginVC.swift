@@ -11,7 +11,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, UITextFieldDelegate {
     
     /*
      * ----------------------------------
@@ -34,6 +34,9 @@ class LoginVC: UIViewController {
     */
     var validEmail = false
     var validPassword = false
+    
+    var eC: NSLayoutConstraint?
+    var pwC: NSLayoutConstraint?
     
     /*
      * ----------------------------------
@@ -63,18 +66,30 @@ class LoginVC: UIViewController {
         password.layer.cornerRadius = 15
         login.layer.cornerRadius = 10
         create.layer.cornerRadius = 10
+
         
         login.isEnabled = false
+        login.layer.borderWidth = 3
+        login.layer.borderColor = UIColor.black.cgColor
+        create.layer.borderWidth  = 3
+        create.layer.borderColor = UIColor.barflyblue.cgColor
 
         email.addTarget(self, action: #selector(emailChange), for: UIControl.Event.editingChanged)
         
         password.addTarget(self, action: #selector(passwordChange), for: UIControl.Event.editingChanged)
+        
+        pwC = password.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        pwC!.constant = 80
+        view.addConstraint(pwC!)
+        
+        eC = email.bottomAnchor.constraint(equalTo: view.centerYAnchor)
+        eC!.constant = 10
+        view.addConstraint(eC!)
 
         
         self.hideKeyboardWhenTappedAround()
         
-        emailChange()
-        passwordChange()
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,10 +97,25 @@ class LoginVC: UIViewController {
         if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
             self.email.text = email
             self.password.text = password
+            emailChange()
+            passwordChange()
             //login(email: email, password: password)
             
             enableDisableLogin()
         }
+        
+        password.delegate = self
+        email.delegate  = self
+
+        email.tag = 1
+        password.tag = 0
+        
+        email.addTarget(self, action: #selector(eEdit), for: .editingDidBegin)
+               email.addTarget(self, action: #selector(eEditOver), for: .editingDidEnd)
+               
+               password.addTarget(self, action: #selector(pwEdit), for: .editingDidBegin)
+                      password.addTarget(self, action: #selector(pwEditOver), for: .editingDidEnd)
+               
         
 //      performSegue(withIdentifier: "hasLogin", sender: self)
       }
@@ -95,6 +125,49 @@ class LoginVC: UIViewController {
      * Obj-c Methods
      * ----------------------------------
      */
+    @objc func pwEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.pwC?.constant = -50
+            self.email.alpha -= 1
+            if(self.email.text!.count > 0){
+                self.emailLbl.alpha -= 1
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func pwEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.pwC?.constant = 80
+            self.email.alpha += 1
+            if(self.email.text!.count > 0){
+                self.emailLbl.alpha += 1
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func eEdit() {
+        UIView.animate(withDuration: 0.3) {
+            self.eC?.constant = -50
+            self.password.alpha -= 1
+            if(self.password.text!.count > 0){
+                self.passwordLbl.alpha -= 1
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func eEditOver() {
+        UIView.animate(withDuration: 0.3) {
+            self.eC?.constant = 10
+            self.password.alpha += 1
+            if(self.password.text!.count > 0){
+                self.passwordLbl.alpha += 1
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
     
     @objc func emailChange() {
         
@@ -132,6 +205,18 @@ class LoginVC: UIViewController {
         errorLbl.isHidden = true
         enableDisableLogin()
     
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       // Try to find next responder
+       if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+       } else {
+          // Not found, so remove keyboard.
+          textField.resignFirstResponder()
+       }
+       // Do not add a line break
+       return false
     }
     
     func enableDisableLogin() {
