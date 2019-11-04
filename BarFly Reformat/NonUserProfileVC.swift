@@ -17,9 +17,8 @@ class NonUserProfileVC: UIViewController {
     
     
     static var nonUser: User?
-    @IBOutlet weak var usernameLbl: UILabel!
+
     
-    @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var dragIndicator: UILabel!
     @IBOutlet weak var fieldView: UIView!
     @IBOutlet weak var profileImage: UIImageView!
@@ -31,7 +30,11 @@ class NonUserProfileVC: UIViewController {
     
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
+    @IBOutlet weak var barChoice: UIImageView!
+    @IBOutlet weak var barChoiceLbl: UILabel!
     
+    var centerConstraint: NSLayoutConstraint!
+    var startingConstant: CGFloat  = -100
     
     
     override func viewDidLoad() {
@@ -39,11 +42,18 @@ class NonUserProfileVC: UIViewController {
         follow.layer.cornerRadius = 10
         following.layer.cornerRadius = 10
         followers.layer.cornerRadius = 10
+        fieldView.layer.cornerRadius = 30
+        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+        fieldView.layer.borderWidth = 4
         follow.layer.borderColor = UIColor.black.cgColor
         follow.layer.borderWidth = 1
         
         numFollowing.text = "\(NonUserProfileVC.nonUser!.friends.count)"
         numFollowers.text = "\(0)"
+        
+        self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
+        self.centerConstraint.constant = startingConstant
+        self.centerConstraint.isActive = true
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
     
@@ -51,10 +61,46 @@ class NonUserProfileVC: UIViewController {
             name.text = user.name
             username.text = user.username
             
+            if((AppDelegate.user?.friends.contains(user.uid))!) {
+                if(user.bar == "nil") {
+                    barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
+                } else {
+                    barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
+                   
+                    let firestore = Firestore.firestore()
+                    let userRef = firestore.collection("Bars")
+                    let docRef = userRef.document("\(user.bar!)")
+                    docRef.getDocument { (document, error) in
+                            
+                        if(error != nil) {
+                            print("error bro")
+                        } else {
+                            let imageURL = document?.get("imageURL") as! String
+                            
+                            var placeholder: UIImage?
+                            
+                            if #available(iOS 13.0, *) {
+                                placeholder = UIImage(systemName: "questionmark")
+                            } else {
+                                placeholder = UIImage(named: "first")
+                            }
+                            
+                            let storage = Storage.storage()
+                            let httpsReference = storage.reference(forURL: imageURL)
+                            
+                            self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                
+                        }
+                    }
+                }
+            } else {
+                barChoiceLbl.text = "Follow \(user.name!) to see where they're going!"
+            }
+            
             let placeholder = UIImage( named: "person.circle.fill")
             
             
-            print("profileURL is \(user.profileURL)")
+            print("profileURL is \(user.profileURL!)")
             
             if (user.profileURL != "") {
                 
@@ -77,66 +123,46 @@ class NonUserProfileVC: UIViewController {
         fieldView.addGestureRecognizer(gesture)
         fieldView.isUserInteractionEnabled = true
         
+        
+        following.addTarget(self, action: #selector(showFollowing), for: .touchUpInside)
+        
     }
     
-    var initialCenter = CGPoint()
     @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
         
-//        print(gestureRecognizer.translation(in: fieldView.superview).x)
-//        if(gestureRecognizer.state == .began && fieldViewTopConstraint?.constant == -120) {
-//            UIView.animate(withDuration: 0.5) {
-//                self.fieldViewTopConstraint?.constant -= 40
-//                self.view.layoutIfNeeded()
-//            }
-//        } else if (gestureRecognizer.state  == .ended && fieldViewTopConstraint?.constant == -160) {
-//            if(gestureRecognizer.translation(in: fieldView.superview).x <= -10) {
-//                UIView.animate(withDuration: 0.5) {
-//                    self.fieldViewTopConstraint?.constant -= 300
-//                    self.view.layoutIfNeeded()
-//                }
-//            }
-//        } else if (gestureRecognizer.state == .ended && fieldViewTopConstraint?.constant == -460) {
-//            if(gestureRecognizer.translation(in: fieldView.superview).x >= 10){
-//                UIView.animate(withDuration: 0.5) {
-//                    self.fieldViewTopConstraint?.constant += 340
-//                    self.view.layoutIfNeeded()
-//                }
-//            }
-//        }
-      
-        
-        let piece = gestureRecognizer.view!
-        // Get the changes in the X and Y directions relative to
-        // the superview's coordinate space.
-        let translation = gestureRecognizer.translation(in: piece.superview)
-        if gestureRecognizer.state == .began {
-           // Save the view's original position.
-           self.initialCenter = piece.center
-        }
-        if(gestureRecognizer.state == .ended) {
-            print("height is \(UIScreen.main.bounds.height)")
-            if(piece.center.y < UIScreen.main.bounds.height) {
-                print("going to main  - 500")
+        switch gestureRecognizer.state {
+        case .began:
+            self.startingConstant = self.centerConstraint.constant
+        case .changed:
+            let translation = gestureRecognizer.translation(in: self.view)
+            self.centerConstraint.constant = self.startingConstant + translation.y
+        case .ended:
+            if(self.centerConstraint.constant < -350) {
+                
                 UIView.animate(withDuration: 0.3) {
-                    piece.center = CGPoint(x: self.initialCenter.x, y: UIScreen.main.bounds.height - 250)
-                    piece.layoutIfNeeded()
+                    self.centerConstraint.constant = -600
+                    self.view.layoutIfNeeded()
                 }
             } else {
+                print("too low")
+                
                 UIView.animate(withDuration: 0.3) {
-                    print("going to main  - 200")
-                    piece.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height -  150)
-                    piece.layoutIfNeeded()
+                    self.startingConstant = -100
+                    self.centerConstraint.constant = self.startingConstant
+                    self.view.layoutIfNeeded()
                 }
             }
-        } else if gestureRecognizer.state != .cancelled {
-           // Add the X and Y translation to the view's original position.
-           let newCenter = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
-           piece.center = newCenter
-        }
-        else {
-           // On cancellation, return the piece to its original location.
-           piece.center = initialCenter
+        default:
+            break
         }
 
     }
+    
+    @objc func showFollowing() {
+        print("show me following")
+    }
+}
+
+extension UIColor {
+    static let barflyblue = UIColor(red: 0.71, green: 1.00, blue: 0.99, alpha: 1.0)
 }

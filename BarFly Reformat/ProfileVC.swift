@@ -33,12 +33,12 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var fieldView: UIView!
     
     var centerConstraint: NSLayoutConstraint!
-
-    var startingConstant: CGFloat  = -200
+    var startingConstant: CGFloat  = -250
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
         
         
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
@@ -50,6 +50,14 @@ class ProfileVC: UIViewController {
         edit.layer.cornerRadius = 5
         changeProfile.layer.cornerRadius =  5
         dragIndicator.layer.cornerRadius =  5
+        fieldView.layer.cornerRadius = 30
+        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+        fieldView.layer.borderWidth = 4
+        
+        name.layer.borderWidth = 0
+        username.layer.borderWidth = 0
+        email.layer.borderWidth = 0
+        password.layer.borderWidth = 0
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
@@ -92,44 +100,37 @@ class ProfileVC: UIViewController {
     }
     
     @IBAction func editButtonClicked(_ sender: Any) {
-      
-       if(!editting) {
-                    editting = true
-                    self.name.becomeFirstResponder()
-                    UIView.animate(withDuration: 1, animations: {
-                        self.edit.setTitle("Save", for: .normal)
-                        self.changeProfile.isHidden = false
-        //                self.fieldViewTopConstraint?.constant -= 340
-                        self.view.layoutIfNeeded()
-                        self.edit.isHidden = false
-                    })
+    
+        editting = false
+        self.name.resignFirstResponder()
+        UIView.animate(withDuration: 1, animations: {
+            self.edit.setTitle("Save", for: .normal)
+            self.changeProfile.isHidden = true
+//                     self.fieldViewTopConstraint?.constant += 340
+            self.view.layoutIfNeeded()
+            
+        })
+        
+        UIView.animate(withDuration: 0.3) {
+            self.startingConstant = -250
+            self.centerConstraint.constant = self.startingConstant
+            self.view.layoutIfNeeded()
+            self.edit.isHidden = true
+        }
                     
                     
-                } else {
-                    editting = false
-                    self.name.resignFirstResponder()
-                    UIView.animate(withDuration: 1, animations: {
-                        self.edit.setTitle("Edit", for: .normal)
-                        self.changeProfile.isHidden = true
-//                        self.fieldViewTopConstraint?.constant += 340
-                        self.view.layoutIfNeeded()
-
-                    })
-                    
-                    
-                    if(profileImage.image != nil) {
-                        self.saveFIRData()
-                    }
-                }
-                name.isEnabled = editting
-                email.isEnabled = editting
-                password.isEnabled = editting
-                username.isEnabled = editting
-                password.isSecureTextEntry = !editting
+        if(profileImage.image != nil) {
+            self.saveFIRData()
+        }
+            
+        self.name.isEnabled = false
+        self.email.isEnabled = false
+        self.password.isEnabled = false
+        self.username.isEnabled = false
+        self.password.isSecureTextEntry = true
                 
                 
                 //save changes made
-        
     }
     
     @IBAction func changeProfileClicked(_ sender: UIButton) {
@@ -169,41 +170,8 @@ class ProfileVC: UIViewController {
     func saveImage(userName:String, profileImageURL: URL , completion: @escaping ((_ url: URL?) -> ())){
         Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
     }
-    
-    var initialCenter = CGPoint()
+
     @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
-//        let piece = gestureRecognizer.view!
-//
-//        print("center  y is \(piece.center.y)")
-//        // Get the changes in the X and Y directions relative to
-//        // the superview's coordinate space.
-//        let translation = gestureRecognizer.translation(in: piece.superview)
-//        if gestureRecognizer.state == .began {
-//           // Save the view's original position.
-//           self.initialCenter = piece.center
-//        }
-//        if(gestureRecognizer.state == .ended) {
-//            if(piece.center.y <  UIScreen.main.bounds.height + 90) {
-//                print("go up")
-//                UIView.animate(withDuration: 0.3) {
-//                    piece.center.y = UIScreen.main.bounds.height - 200
-//                    self.edit.isHidden = false
-//                }
-//            } else {
-//                UIView.animate(withDuration: 0.3) {
-//                    piece.center.y = UIScreen.main.bounds.height + 200
-//                    self.edit.isHidden = true
-//                }
-//            }
-//        } else if gestureRecognizer.state != .cancelled {
-//           // Add the X and Y translation to the view's original position.
-//           let newCenter = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
-//           piece.center = newCenter
-//        }
-//        else {
-//           // On cancellation, return the piece to its original location.
-//           piece.center = initialCenter
-//        }
         
         switch gestureRecognizer.state {
         case .began:
@@ -214,24 +182,23 @@ class ProfileVC: UIViewController {
         case .ended:
             if(self.centerConstraint.constant < -350) {
                 
-                if(!editting) {
-                    editting = true
-                    self.name.becomeFirstResponder()
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.edit.setTitle("Save", for: .normal)
-                        self.changeProfile.isHidden = false
+                editting = true
+                self.name.becomeFirstResponder()
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.edit.setTitle("Save", for: .normal)
+                    self.changeProfile.isHidden = false
                     //                self.fieldViewTopConstraint?.constant -= 340
-                        self.view.layoutIfNeeded()
-                        self.edit.isHidden = false
-                    })
+                    self.view.layoutIfNeeded()
+                    self.edit.isHidden = false
+                })
                 
                 
-                    name.isEnabled = editting
-                    email.isEnabled = editting
-                    password.isEnabled = editting
-                    username.isEnabled = editting
-                    password.isSecureTextEntry = !editting
-                }
+                name.isEnabled = editting
+                email.isEnabled = editting
+                password.isEnabled = editting
+                username.isEnabled = editting
+                password.isSecureTextEntry = !editting
+                
                 
                 print("high enough")
                 
@@ -243,28 +210,20 @@ class ProfileVC: UIViewController {
             } else {
                 print("too low")
                 
-//                if(editting) {
-//                    editting = false
-//                    self.name.resignFirstResponder()
-//                    UIView.animate(withDuration: 0.3, animations: {
-//                        self.edit.setTitle("Edit", for: .normal)
-//                        self.changeProfile.isHidden = true
-//                        self.view.layoutIfNeeded()
-//
-//                    })
-//
-//
-//                    if(profileImage.image != nil) {
-//                        self.saveFIRData()
-//                    }term
-                
-//                }
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.startingConstant = -200
-                    self.centerConstraint.constant = self.startingConstant
-                    self.view.layoutIfNeeded()
-                    self.edit.isHidden = true
+                if(editting) {
+                    UIView.animate(withDuration: 0.3) {
+                        self.centerConstraint.constant = -600
+                        self.view.layoutIfNeeded()
+                        self.edit.isHidden = false
+                    }
+                } else {
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        self.startingConstant = -250
+                        self.centerConstraint.constant = self.startingConstant
+                        self.view.layoutIfNeeded()
+                        self.edit.isHidden = true
+                    }
                 }
             }
         default:
