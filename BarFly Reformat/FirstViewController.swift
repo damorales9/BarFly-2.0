@@ -49,7 +49,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             locationManager.startUpdatingLocation()
         }
         registerMapAnnotationViews()
-        addCustomOverlay()
         myMapView.delegate = self
 //       myMapView.mapType = .standard
         
@@ -73,6 +72,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         //print(allBars)
         print(FirstViewController.allAnnotations)
         showAllAnnotations(self)
+        addCustomOverlay()
         
         
         if let coor = myMapView.userLocation.location?.coordinate{
@@ -135,7 +135,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
         do {
             let gmTileOverlay = try GoogleMapsTileOverlay(jsonURL: jsonURL)
-            gmTileOverlay.canReplaceMapContent = true
+            gmTileOverlay.canReplaceMapContent = false
             myMapView.addOverlay(gmTileOverlay)
         } catch let error {
             print(error.localizedDescription)
@@ -227,6 +227,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.30)
         view.addSubview(calloutView)
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+        
+        self.performSegue(withIdentifier: "barDetails", sender: self)
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
@@ -249,6 +251,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             markerAnnotationView.glyphTintColor = UIColor.black
             markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
             
+
             // Provide an image view to use as the accessory view's detail view.
             //markerAnnotationView.detailCalloutAccessoryView = UIImageView(image: UIImage(named: annotation.imageName!))
             //let rightButton = UIButton(type: .detailDisclosure)

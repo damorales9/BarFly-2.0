@@ -10,8 +10,12 @@ import UIKit
 
 class BarDetailsVC: UIViewController {
 
+    @IBOutlet var barImage: UIImageView!
+    @IBOutlet var barTitle: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //barImage.layer.cornerRadius = 10
 
         // Do any additional setup after loading the view.
     }
