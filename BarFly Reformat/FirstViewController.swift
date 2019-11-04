@@ -12,6 +12,7 @@ import CoreLocation
 import GoogleMapsTileOverlay
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -25,7 +26,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var barDetailsImage: UIImageView!
     @IBOutlet var amntPeople: UILabel!
     @IBOutlet var dragButton: UILabel!
-    @IBOutlet var imGoingBtn: UIButton!
+    @IBOutlet var imGoingBtn: AmountPeopleButton!
     @IBOutlet var viewFriendsBtn: UIButton!
     
     var barDetailsTop: NSLayoutConstraint?
@@ -33,6 +34,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var centerConstraint: NSLayoutConstraint!
     
     var startingConstant: CGFloat  = -85
+    
+    var timer = Timer()
+    var barTimer = BarTimer()
     
     
     
@@ -266,6 +270,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         imGoingBtn.layer.cornerRadius = 10
         viewFriendsBtn.layer.cornerRadius = 5
         
+        imGoingBtn.passedData = barAnnotation
+        imGoingBtn.addTarget(self, action: #selector(amntPeoplebtnAction(sender: )), for: .touchUpInside)
+        
         
         UIView.animate(withDuration: 0.5) {
             self.centerConstraint.constant = -300
@@ -378,6 +385,277 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
 
         }
+    
+    func getUserBarChoice(passedData: CustomBarAnnotation){
+        let db = Firestore.firestore()
+        
+        let ui = db.collection("User Info").document("\(Auth.auth().currentUser!.uid)")
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let uiDocument: DocumentSnapshot
+            do {
+                try uiDocument = transaction.getDocument(ui)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+           
+            guard let userBarChoice = uiDocument.data()?["bar"] as? String else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(uiDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            DispatchQueue.main.async {
+                if (userBarChoice == "nil"){
+                    // SHOULD JUST CALL ONCE AT END transaction.updateData(["bar": "nil"], forDocument: ui)
+                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
+                }
+                else if (userBarChoice == passedData.title){
+                        self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.gray
+                }
+                else{
+                        let alert = UIAlertController(title: "You're already going somewhere!", message: "You're already going to \(userBarChoice)! Would you like to remove your old choice?", preferredStyle: .alert)
+                        
+                        // add an action (button)
+                        alert.addAction(UIAlertAction(title: "Remove", style: UIAlertAction.Style.default, handler: { action in
+                            // SHOULD ONLY DO ONCE transaction.updateData(["bar": "nil"], forDocument: ui)
+                            db.collection("User Info").document((Auth.auth().currentUser?.uid)!).updateData([
+                                "bar":"nil"]) { err in
+                                    if let err = err {
+                                        print(err.localizedDescription)
+                                    }
+                            }
+                            let doc = db.collection("Bars").document(userBarChoice)
+                            doc.getDocument(completion: { (document, error) in
+                                let amnt = document!.get("amountPeople")
+                                doc.updateData(["amountPeople":((amnt as! Int)-1)])
+                                { err in
+                                    if let err = err {
+                                        print(err.localizedDescription)
+                                    }
+                                }
+                                
+                            })
+                       
+                            self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                            self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
+                            
+                            self.dismiss(animated: true, completion: nil)
+                            
+                        }))
+                        
+                        alert.addAction(UIAlertAction(title: "View Bar", style: .cancel, handler: {action in
+                          //  self.dismiss(animated: true, completion: nil)
+                        }))
+                        
+                        // show the alert
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        
+                        self.imGoingBtn.setTitle("Not Going", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.gray
+                }
+            }
+            
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("User Bar Transaction failed: \(error)")
+            } else {
+                print("Successfully got user bar choice!")
+            }
+        }
+        
+    }
+    
+    
+    @objc func amntPeoplebtnAction(sender: AmountPeopleButton){
+        var newAmount = 0
+        var subtractOne = 0
+        let db = Firestore.firestore()
+        print("\(sender.passedData!.title ?? "nil")")
+        let sfReference = db.collection("Bars").document("\(sender.passedData!.title ?? "nil")")
+        let ui = db.collection("User Info").document("\(Auth.auth().currentUser!.uid)")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            let uiDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+                try uiDocument = transaction.getDocument(ui)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let oldAmount = sfDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            guard let barChoice = uiDocument.data()?["bar"] as? String else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve barchoice from snapshot \(uiDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            newAmount = oldAmount + 1
+            
+            if (barChoice == "nil"){
+                transaction.updateData(["bar": sender.passedData!.title!], forDocument: ui)
+                transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(newAmount)"
+                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                    self.imGoingBtn.backgroundColor = UIColor.gray
+                }
+            }
+            else if (barChoice == sender.passedData!.title){
+                subtractOne = oldAmount - 1
+                transaction.updateData(["bar": "nil"], forDocument: ui)
+                transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(subtractOne)"
+                    self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                    self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
+                }
+            }
+            else{
+                transaction.updateData(["bar": barChoice], forDocument: ui)
+                transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(oldAmount)"
+                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                    self.imGoingBtn.backgroundColor = UIColor.gray
+                }
+            }
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+            }
+        }
+    }
+    
+    
+    func scheduledTimerWithTimeInterval(passedData: CustomBarAnnotation){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 15 seconds
+        barTimer.passedData = passedData
+        barTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(self.updateCounting(sender: )), userInfo: nil, repeats: true) as! BarTimer
+    }
+    
+    @objc func updateCounting(sender: BarTimer){
+        var oldAmount = 0;
+        let db = Firestore.firestore()
+        //for i in 0..<bars.endIndex {
+        oldAmount = sender.passedData!.amntPeople!
+        let sfReference = db.collection("Bars").document("\(sender.passedData!.title ?? "nil")")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let newAmount = sfDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            if (oldAmount != newAmount){
+                sender.passedData!.amntPeople = newAmount
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(sender.passedData!.amntPeople ?? 2)"
+                }
+            }
+            transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Successfully updated amount people")
+                
+            }
+        }
+        //}
+    }
+    
+    @objc func refreshButtonAction(passedData: CustomBarAnnotation){
+        var oldAmount = 0;
+        let db = Firestore.firestore()
+        //for i in 0..<bars.endIndex {
+        oldAmount = passedData.amntPeople!
+        let sfReference = db.collection("Bars").document("\(passedData.title ?? "nil")")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let newAmount = sfDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            if (oldAmount != newAmount){
+                passedData.amntPeople = newAmount
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(passedData.amntPeople ?? 2)"
+                }
+            }
+            transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Successfully updated amount people!")
+                
+            }
+        }
+        //}
+    }
 
 
 }
