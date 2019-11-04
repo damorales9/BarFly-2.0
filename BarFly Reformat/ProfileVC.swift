@@ -34,12 +34,16 @@ class ProfileVC: UIViewController {
     
     var centerConstraint: NSLayoutConstraint!
 
-    var startingConstant: CGFloat  = 0.0
+    var startingConstant: CGFloat  = -200
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        
+        self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
+        self.centerConstraint.constant = startingConstant
+        self.centerConstraint.isActive = true
         
         self.hideKeyboardWhenTappedAround()
         
@@ -109,7 +113,7 @@ class ProfileVC: UIViewController {
                         self.changeProfile.isHidden = true
 //                        self.fieldViewTopConstraint?.constant += 340
                         self.view.layoutIfNeeded()
-                        self.edit.isHidden = true
+
                     })
                     
                     
@@ -207,6 +211,62 @@ class ProfileVC: UIViewController {
         case .changed:
             let translation = gestureRecognizer.translation(in: self.view)
             self.centerConstraint.constant = self.startingConstant + translation.y
+        case .ended:
+            if(self.centerConstraint.constant < -350) {
+                
+                if(!editting) {
+                    editting = true
+                    self.name.becomeFirstResponder()
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.edit.setTitle("Save", for: .normal)
+                        self.changeProfile.isHidden = false
+                    //                self.fieldViewTopConstraint?.constant -= 340
+                        self.view.layoutIfNeeded()
+                        self.edit.isHidden = false
+                    })
+                
+                
+                    name.isEnabled = editting
+                    email.isEnabled = editting
+                    password.isEnabled = editting
+                    username.isEnabled = editting
+                    password.isSecureTextEntry = !editting
+                }
+                
+                print("high enough")
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.centerConstraint.constant = -600
+                    self.view.layoutIfNeeded()
+                    self.edit.isHidden = false
+                }
+            } else {
+                print("too low")
+                
+//                if(editting) {
+//                    editting = false
+//                    self.name.resignFirstResponder()
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        self.edit.setTitle("Edit", for: .normal)
+//                        self.changeProfile.isHidden = true
+//                        self.view.layoutIfNeeded()
+//
+//                    })
+//
+//
+//                    if(profileImage.image != nil) {
+//                        self.saveFIRData()
+//                    }term
+                
+//                }
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.startingConstant = -200
+                    self.centerConstraint.constant = self.startingConstant
+                    self.view.layoutIfNeeded()
+                    self.edit.isHidden = true
+                }
+            }
         default:
             break
         }

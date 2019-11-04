@@ -242,7 +242,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="v5t-2T-4cv">
                                 <rect key="frame" x="2" y="0.5" width="410" height="895"/>
                             </imageView>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ZR-qb-1Ab">
+                            <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ZR-qb-1Ab">
                                 <rect key="frame" x="0.0" y="696" width="414" height="800"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="leading" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fZQ-3W-LpB">
@@ -380,7 +380,6 @@
                             <constraint firstAttribute="bottom" secondItem="v5t-2T-4cv" secondAttribute="bottom" id="3gQ-j9-6UY"/>
                             <constraint firstItem="3ZR-qb-1Ab" firstAttribute="centerX" secondItem="v5t-2T-4cv" secondAttribute="centerX" id="E4T-Kn-aL2"/>
                             <constraint firstItem="v5t-2T-4cv" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="2" id="HTJ-wy-y2u"/>
-                            <constraint firstItem="3ZR-qb-1Ab" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="bottom" constant="-200" id="OAc-sc-ddT"/>
                             <constraint firstItem="v5t-2T-4cv" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="ciA-aK-q7S"/>
                             <constraint firstAttribute="trailing" secondItem="3ZR-qb-1Ab" secondAttribute="trailing" id="oCW-WS-SC2"/>
                             <constraint firstItem="3ZR-qb-1Ab" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="qgb-HR-Ps6"/>
