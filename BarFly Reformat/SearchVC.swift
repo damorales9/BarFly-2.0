@@ -157,6 +157,13 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
             return cell
         }
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        NonUserProfileVC.nonUser = filteredTableData[indexPath.row]
+        
+        self.performSegue(withIdentifier: "showNonUser", sender: self)
+    }
 }
 
 extension UIImage {

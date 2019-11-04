@@ -15,10 +15,8 @@ import FirebaseUI
 
 class ProfileVC: UIViewController {
     
-    
-   
 
-    //VARS
+    //VAR
     var imagePicker: ImagePicker!
     var editting = false
     
@@ -30,17 +28,30 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var changeProfile: UIButton!
     @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var dragIndicator: UILabel!
     
     @IBOutlet weak var fieldView: UIView!
     
+    var fieldViewTopConstraint:  NSLayoutConstraint?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        
+        self.hideKeyboardWhenTappedAround()
+        
         edit.layer.cornerRadius = 5
         changeProfile.layer.cornerRadius =  5
+        dragIndicator.layer.cornerRadius =  5
         
         fieldView.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.75)
+        
+        fieldViewTopConstraint = NSLayoutConstraint(item: self.fieldView!, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -200)
+        self.view.addConstraint(fieldViewTopConstraint!)
+        
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
+        fieldView.addGestureRecognizer(gesture)
+        fieldView.isUserInteractionEnabled = true
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
@@ -77,18 +88,27 @@ class ProfileVC: UIViewController {
     @IBAction func editButtonClicked(_ sender: Any) {
         if(!editting) {
             editting = true
+            self.name.becomeFirstResponder()
             UIView.animate(withDuration: 1, animations: {
                 self.edit.setTitle("Done", for: .normal)
                 self.changeProfile.alpha += 1
-    
+//                self.fieldViewTopConstraint?.constant -= 340
+                self.view.layoutIfNeeded()
+                self.edit.isHidden = false
             })
+            
+            
         } else {
             editting = false
+            self.name.resignFirstResponder()
             UIView.animate(withDuration: 1, animations: {
                 self.edit.setTitle("Edit", for: .normal)
                 self.changeProfile.alpha -= 1
-                
+                self.fieldViewTopConstraint?.constant += 340
+                self.view.layoutIfNeeded()
+                self.edit.isHidden = true
             })
+            
             
             if(profileImage.image != nil) {
                 self.saveFIRData()
@@ -165,6 +185,36 @@ class ProfileVC: UIViewController {
     
     func saveImage(userName:String, profileImageURL: URL , completion: @escaping ((_ url: URL?) -> ())){
         Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
+    }
+    
+    @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
+        print(gestureRecognizer.translation(in: fieldView.superview).x)
+        if(gestureRecognizer.state == .began && fieldViewTopConstraint?.constant == -200) {
+            UIView.animate(withDuration: 0.5) {
+                self.fieldViewTopConstraint?.constant -= 40
+                self.view.layoutIfNeeded()
+            }
+        } else if (gestureRecognizer.state  == .ended && fieldViewTopConstraint?.constant == -240) {
+            if(gestureRecognizer.translation(in: fieldView.superview).x <= -10) {
+                UIView.animate(withDuration: 0.5) {
+                    self.fieldViewTopConstraint?.constant -= 300
+                    self.view.layoutIfNeeded()
+                }
+            }
+            
+            editButtonClicked(gestureRecognizer)
+        }
+//        } else if (gestureRecognizer.state == .ended && fieldViewTopConstraint?.constant == -540) {
+//            if(gestureRecognizer.translation(in: fieldView.superview).x >= 10){
+//                UIView.animate(withDuration: 0.5) {
+//                    self.fieldViewTopConstraint?.constant += 340
+//                    self.view.layoutIfNeeded()
+//                }
+//            }
+//
+//            editButtonClicked(gestureRecognizer)
+//        }
+
     }
     
 }
