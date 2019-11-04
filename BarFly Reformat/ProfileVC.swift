@@ -32,7 +32,10 @@ class ProfileVC: UIViewController {
     
     @IBOutlet weak var fieldView: UIView!
     
-    var fieldViewTopConstraint:  NSLayoutConstraint?
+    var centerConstraint: NSLayoutConstraint!
+
+    var startingConstant: CGFloat  = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -44,10 +47,9 @@ class ProfileVC: UIViewController {
         changeProfile.layer.cornerRadius =  5
         dragIndicator.layer.cornerRadius =  5
         
-        fieldView.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.75)
+        fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
-        fieldViewTopConstraint = NSLayoutConstraint(item: self.fieldView!, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -200)
-        self.view.addConstraint(fieldViewTopConstraint!)
+
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
         fieldView.addGestureRecognizer(gesture)
@@ -86,71 +88,48 @@ class ProfileVC: UIViewController {
     }
     
     @IBAction func editButtonClicked(_ sender: Any) {
-        if(!editting) {
-            editting = true
-            self.name.becomeFirstResponder()
-            UIView.animate(withDuration: 1, animations: {
-                self.edit.setTitle("Done", for: .normal)
-                self.changeProfile.alpha += 1
-//                self.fieldViewTopConstraint?.constant -= 340
-                self.view.layoutIfNeeded()
-                self.edit.isHidden = false
-            })
-            
-            
-        } else {
-            editting = false
-            self.name.resignFirstResponder()
-            UIView.animate(withDuration: 1, animations: {
-                self.edit.setTitle("Edit", for: .normal)
-                self.changeProfile.alpha -= 1
-                self.fieldViewTopConstraint?.constant += 340
-                self.view.layoutIfNeeded()
-                self.edit.isHidden = true
-            })
-            
-            
-            if(profileImage.image != nil) {
-                self.saveFIRData()
-            }
-        }
-        name.isEnabled = editting
-        email.isEnabled = editting
-        password.isEnabled = editting
-        username.isEnabled = editting
-        password.isSecureTextEntry = !editting
+      
+       if(!editting) {
+                    editting = true
+                    self.name.becomeFirstResponder()
+                    UIView.animate(withDuration: 1, animations: {
+                        self.edit.setTitle("Save", for: .normal)
+                        self.changeProfile.isHidden = false
+        //                self.fieldViewTopConstraint?.constant -= 340
+                        self.view.layoutIfNeeded()
+                        self.edit.isHidden = false
+                    })
+                    
+                    
+                } else {
+                    editting = false
+                    self.name.resignFirstResponder()
+                    UIView.animate(withDuration: 1, animations: {
+                        self.edit.setTitle("Edit", for: .normal)
+                        self.changeProfile.isHidden = true
+//                        self.fieldViewTopConstraint?.constant += 340
+                        self.view.layoutIfNeeded()
+                        self.edit.isHidden = true
+                    })
+                    
+                    
+                    if(profileImage.image != nil) {
+                        self.saveFIRData()
+                    }
+                }
+                name.isEnabled = editting
+                email.isEnabled = editting
+                password.isEnabled = editting
+                username.isEnabled = editting
+                password.isSecureTextEntry = !editting
+                
+                
+                //save changes made
         
-        
-        //save changes made
     }
     
     @IBAction func changeProfileClicked(_ sender: UIButton) {
         self.imagePicker.present(from: sender)
-    }
-    
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 3
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var clr: UIColor
-        if(row == 0){
-            clr = UIColor.black
-        }
-        else if (row == 1) {
-            clr = UIColor.white
-        } else {
-            clr = UIColor.blue
-        }
-        name.textColor = clr
-        email.textColor = clr
-        password.textColor = clr
-        
     }
     
     func saveFIRData(){
@@ -187,34 +166,51 @@ class ProfileVC: UIViewController {
         Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
     }
     
+    var initialCenter = CGPoint()
     @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
-        print(gestureRecognizer.translation(in: fieldView.superview).x)
-        if(gestureRecognizer.state == .began && fieldViewTopConstraint?.constant == -200) {
-            UIView.animate(withDuration: 0.5) {
-                self.fieldViewTopConstraint?.constant -= 40
-                self.view.layoutIfNeeded()
-            }
-        } else if (gestureRecognizer.state  == .ended && fieldViewTopConstraint?.constant == -240) {
-            if(gestureRecognizer.translation(in: fieldView.superview).x <= -10) {
-                UIView.animate(withDuration: 0.5) {
-                    self.fieldViewTopConstraint?.constant -= 300
-                    self.view.layoutIfNeeded()
-                }
-                
-                editButtonClicked(gestureRecognizer)
-            }
-            
-        }
-//        } else if (gestureRecognizer.state == .ended && fieldViewTopConstraint?.constant == -540) {
-//            if(gestureRecognizer.translation(in: fieldView.superview).x >= 10){
-//                UIView.animate(withDuration: 0.5) {
-//                    self.fieldViewTopConstraint?.constant += 340
-//                    self.view.layoutIfNeeded()
+//        let piece = gestureRecognizer.view!
+//
+//        print("center  y is \(piece.center.y)")
+//        // Get the changes in the X and Y directions relative to
+//        // the superview's coordinate space.
+//        let translation = gestureRecognizer.translation(in: piece.superview)
+//        if gestureRecognizer.state == .began {
+//           // Save the view's original position.
+//           self.initialCenter = piece.center
+//        }
+//        if(gestureRecognizer.state == .ended) {
+//            if(piece.center.y <  UIScreen.main.bounds.height + 90) {
+//                print("go up")
+//                UIView.animate(withDuration: 0.3) {
+//                    piece.center.y = UIScreen.main.bounds.height - 200
+//                    self.edit.isHidden = false
+//                }
+//            } else {
+//                UIView.animate(withDuration: 0.3) {
+//                    piece.center.y = UIScreen.main.bounds.height + 200
+//                    self.edit.isHidden = true
 //                }
 //            }
-//
-//            editButtonClicked(gestureRecognizer)
+//        } else if gestureRecognizer.state != .cancelled {
+//           // Add the X and Y translation to the view's original position.
+//           let newCenter = CGPoint(x: initialCenter.x, y: initialCenter.y + translation.y)
+//           piece.center = newCenter
 //        }
+//        else {
+//           // On cancellation, return the piece to its original location.
+//           piece.center = initialCenter
+//        }
+        
+        switch gestureRecognizer.state {
+        case .began:
+            self.startingConstant = self.centerConstraint.constant
+        case .changed:
+            let translation = gestureRecognizer.translation(in: self.view)
+            self.centerConstraint.constant = self.startingConstant + translation.y
+        default:
+            break
+        }
+
 
     }
     
