@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let snapshot = snapshot else { return }
             let allBars = snapshot.documents
             for barDocument in allBars {
-                let barId = barDocument.data()["id"] as? Int
+                let amntPeople = barDocument.data()["amountPeople"] as? Int
                 let name = barDocument.data()["name"] as? String
                 let latitude = barDocument.data()["latitude"] as? Double
                 let longitude = barDocument.data()["longitude"] as? Double
@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar.title = NSLocalizedString(name!, comment: name!)
                 bar.imageName = imageURL!
+                bar.amntPeople = amntPeople
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)

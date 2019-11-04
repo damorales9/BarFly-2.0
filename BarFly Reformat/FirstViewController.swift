@@ -24,9 +24,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var barDetailsTitle: UILabel!
     @IBOutlet var barDetailsImage: UIImageView!
     @IBOutlet var amntPeople: UILabel!
+    @IBOutlet var dragButton: UILabel!
+    @IBOutlet var imGoingBtn: UIButton!
+    @IBOutlet var viewFriendsBtn: UIButton!
     
     var barDetailsTop: NSLayoutConstraint?
     var barDetailsBottom: NSLayoutConstraint?
+    var centerConstraint: NSLayoutConstraint!
+    
+    var startingConstant: CGFloat  = -85
     
     
     
@@ -53,6 +59,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         barDetails.layer.borderWidth = 4
         let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
         barDetails.layer.borderColor = color.cgColor
+        barDetails.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         // Do any additional setup after loading the view.
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -73,21 +80,23 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let theCharles = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.531190, longitude: -1.235914))
         theCharles.title = NSLocalizedString("The Charles", comment: "The Charles")
         theCharles.imageName = "logo"
-        /*
-        let stalkingHorse = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 54.9792, longitude: 1.6147))
-        stalkingHorse.title = NSLocalizedString("Stalking Horse", comment: "Stalking Horse")
-        stalkingHorse.imageName = "logo"
-        */
+        
         
         FirstViewController.allAnnotations.append(theCharles)
-        //allBars = [theCharles, stalkingHorse]
         
-        //print(allBars)
+        
         print(FirstViewController.allAnnotations)
         
-        barDetailsTop = NSLayoutConstraint(item: barDetails as Any, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -85)
-        view.addConstraint(barDetailsTop!)
-        //barDetailsBottom = NSLayoutConstraint(item: barDetails as Any, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -400)
+        //barDetailsTop = NSLayoutConstraint(item: barDetails as Any, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -85)
+        //view.addConstraint(barDetailsTop!)
+        
+        self.centerConstraint = barDetails.topAnchor.constraint(equalTo: view.bottomAnchor)
+        self.centerConstraint.constant = startingConstant
+        self.centerConstraint.isActive = true
+        
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
+        barDetails.addGestureRecognizer(gesture)
+        barDetails.isUserInteractionEnabled = true
         
         showAllAnnotations(self)
         addCustomOverlay()
@@ -237,6 +246,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.view.layer.cornerRadius = 20
         let gesture = BarTapGesture(target: self, action: #selector(barTapped))
         gesture.bar = barAnnotation
+        calloutView.amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         
         barAnnotation.view = calloutView
         
@@ -250,11 +260,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         barDetailsTitle.layer.cornerRadius = 20
         barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
         barDetailsImage.layer.cornerRadius = 35
+        amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         amntPeople.layer.cornerRadius = 20
+        dragButton.layer.cornerRadius = 5
+        imGoingBtn.layer.cornerRadius = 10
+        viewFriendsBtn.layer.cornerRadius = 5
         
         
         UIView.animate(withDuration: 0.5) {
-            self.barDetailsTop?.constant -= 200
+            self.centerConstraint.constant = -300
             self.barDetails.layoutIfNeeded()
         
         }
@@ -270,7 +284,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let bar = view.annotation as! CustomBarAnnotation
         bar.view?.removeFromSuperview()
         UIView.animate(withDuration: 0.5) {
-            self.barDetailsTop?.constant += 200
+            self.centerConstraint.constant = -85
             self.barDetails.layoutIfNeeded()
         }
         /*
@@ -312,6 +326,58 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         return view
     }
+    
+    @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
+
+            switch gestureRecognizer.state {
+            case .began:
+                self.startingConstant = self.centerConstraint.constant
+            case .changed:
+                let translation = gestureRecognizer.translation(in: self.view)
+                self.centerConstraint.constant = self.startingConstant + translation.y
+            case .ended:
+                if(self.centerConstraint.constant < -500) {
+                    
+                    print("high enough")
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        self.centerConstraint.constant = -800
+                        self.view.layoutIfNeeded()
+                        //self.edit.isHidden = false
+                    }
+                } else {
+                    print("too low")
+                    
+    //                if(editting) {
+    //                    editting = false
+    //                    self.name.resignFirstResponder()
+    //                    UIView.animate(withDuration: 0.3, animations: {
+    //                        self.edit.setTitle("Edit", for: .normal)
+    //                        self.changeProfile.isHidden = true
+    //                        self.view.layoutIfNeeded()
+    //
+    //                    })
+    //
+    //
+    //                    if(profileImage.image != nil) {
+    //                        self.saveFIRData()
+    //                    }term
+                    
+    //                }
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        self.startingConstant = -300
+                        self.centerConstraint.constant = self.startingConstant
+                        self.view.layoutIfNeeded()
+                        //self.edit.isHidden = true
+                    }
+                }
+            default:
+                break
+            }
+
+
+        }
 
 
 }

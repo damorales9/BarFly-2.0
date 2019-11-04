@@ -33,6 +33,10 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     
     var imageName: String?
     
+    var amntPeople: Int?
+    
+    var descript: String?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()
