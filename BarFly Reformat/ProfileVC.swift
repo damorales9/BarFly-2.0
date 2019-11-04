@@ -200,9 +200,10 @@ class ProfileVC: UIViewController {
                     self.fieldViewTopConstraint?.constant -= 300
                     self.view.layoutIfNeeded()
                 }
+                
+                editButtonClicked(gestureRecognizer)
             }
             
-            editButtonClicked(gestureRecognizer)
         }
 //        } else if (gestureRecognizer.state == .ended && fieldViewTopConstraint?.constant == -540) {
 //            if(gestureRecognizer.translation(in: fieldView.superview).x >= 10){
