@@ -34,7 +34,7 @@ class NonUserProfileVC: UIViewController {
     @IBOutlet weak var barChoiceLbl: UILabel!
     
     var centerConstraint: NSLayoutConstraint!
-    var startingConstant: CGFloat  = -100
+    var startingConstant: CGFloat  = -250
     
     
     override func viewDidLoad() {
@@ -62,6 +62,9 @@ class NonUserProfileVC: UIViewController {
             username.text = user.username
             
             if((AppDelegate.user?.friends.contains(user.uid))!) {
+                
+                follow.setTitle("Unfollow", for: .normal);
+                
                 if(user.bar == "nil") {
                     barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
                 } else {
@@ -93,8 +96,11 @@ class NonUserProfileVC: UIViewController {
                         }
                     }
                 }
-            } else {
-                barChoiceLbl.text = "Follow \(user.name!) to see where they're going!"
+            } else if (!(AppDelegate.user?.friends.contains(user.uid))! && user.friends.contains(AppDelegate.user?.uid)) {
+                
+                follow.setTitle("Follow Back", for: .normal);
+                
+                barChoiceLbl.text = "Follow \(user.name!) back to see where they're going!"
             }
             
             let placeholder = UIImage( named: "person.circle.fill")
@@ -147,7 +153,7 @@ class NonUserProfileVC: UIViewController {
                 print("too low")
                 
                 UIView.animate(withDuration: 0.3) {
-                    self.startingConstant = -100
+                    self.startingConstant = -250
                     self.centerConstraint.constant = self.startingConstant
                     self.view.layoutIfNeeded()
                 }
@@ -161,6 +167,20 @@ class NonUserProfileVC: UIViewController {
     @objc func showFollowing() {
         print("show me following")
     }
+    
+    
+    @IBAction func followButtonClicked(_ sender: Any) {
+        
+        if let user = User.updateUser(uid: NonUserProfileVC.nonUser!.uid!) {
+            
+            if((AppDelegate.user?.friends.contains(user.uid))!) {
+                AppDelegate.user
+            }
+        
+        }
+        
+    }
+    
 }
 
 extension UIColor {

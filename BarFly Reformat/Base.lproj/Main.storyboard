@@ -969,6 +969,9 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="followButtonClicked:" destination="ttH-Ym-YLc" eventType="touchUpInside" id="f0B-hd-BmQ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xS1-xi-IfS">
                                         <rect key="frame" x="50" y="110" width="100" height="50"/>
@@ -1141,6 +1144,6 @@
         <image name="xmark.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PCB-dy-sTD"/>
+        <segue reference="a5O-Nf-esw"/>
     </inferredMetricsTieBreakers>
 </document>

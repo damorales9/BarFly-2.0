@@ -265,26 +265,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 
                 let uid = Auth.auth().currentUser!.uid
                 print("UID is \(uid)")
-                let firestore = Firestore.firestore()
-                let userRef = firestore.collection(LoginVC.USER_DATABASE)
-                let docRef = userRef.document("\(uid)")
-                docRef.getDocument { (document, error) in
-                    
-                    if(error != nil) {
-                        self.errorLbl.isHidden = false
-                        self.errorLbl.text = (error?.localizedDescription ?? "Unidentified Error")
-                    } else {
-            
-                        let name = ((document!.get("name")) as! String)
-                        let username = ((document!.get("username")) as! String)
-                        let bar = ((document!.get("bar")) as! String)
-                        let admin = ((document!.get("admin")) as! Bool)
-                        let friends = ((document!.get("friends")) as! [String])
-                        let requests = ((document!.get("requests")) as! [String])
-                        let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
-                        AppDelegate.user = User(uid: uid, name: name, username: username, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
-                        }
-                }
+                
+                AppDelegate.user = User.updateUser(uid: uid)
+                
                 self.performSegue(withIdentifier: "hasLogin", sender: self)
                 
             }
