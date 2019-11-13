@@ -20,7 +20,7 @@ struct User {
     var requests: [String?]
     var profileURL: String?
     
-    static func updateUser(uid: String) -> User? {
+    static func getUser(uid: String, setFunction: @escaping (_ user: inout User?) -> Void) {
         
         var user: User?
         
@@ -39,15 +39,42 @@ struct User {
                 let requests = ((document!.get("requests")) as! [String])
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let email = ((document!.get("email")) as? String  ?? "")
+                
                 user = User(uid: uid, name: name, username: username, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
-                    
+                
+                setFunction(&user)
+                
             }
                 
         }
+    }
         
-        return user
+    
+    static func updateUser(user: User?) {
+        
+        if let user = user {
+        
+            let docData: [String: Any] = [
+                "uid" : user.uid!,
+                "name": user.name ?? "nil",
+                "bar" : user.bar ?? "nil",
+                "username" : user.username!,
+                "admin" : user.admin ?? false,
+                "profileURL": user.profileURL ?? "",
+                "email": user.email!,
+                "friends": user.friends,
+                "requests":user.requests
+            ]
+
+            Firestore.firestore().collection(LoginVC.USER_DATABASE).document(user.uid!).setData(docData) {err in
+                //TODO handle error
+            }
+            
+        }
         
     }
+    
+    
     
 }
 

@@ -34,7 +34,7 @@ class NonUserProfileVC: UIViewController {
     @IBOutlet weak var barChoiceLbl: UILabel!
     
     var centerConstraint: NSLayoutConstraint!
-    var startingConstant: CGFloat  = -250
+    var startingConstant: CGFloat  = -200
     
     
     override func viewDidLoad() {
@@ -47,9 +47,7 @@ class NonUserProfileVC: UIViewController {
         fieldView.layer.borderWidth = 4
         follow.layer.borderColor = UIColor.black.cgColor
         follow.layer.borderWidth = 1
-        
-        numFollowing.text = "\(NonUserProfileVC.nonUser!.friends.count)"
-        numFollowers.text = "\(0)"
+    
         
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
         self.centerConstraint.constant = startingConstant
@@ -60,48 +58,10 @@ class NonUserProfileVC: UIViewController {
         if let user = NonUserProfileVC.nonUser {
             name.text = user.name
             username.text = user.username
+            numFollowing.text = "\(user.friends.count)"
+            getFollowers()
             
-            if((AppDelegate.user?.friends.contains(user.uid))!) {
-                
-                follow.setTitle("Unfollow", for: .normal);
-                
-                if(user.bar == "nil") {
-                    barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
-                } else {
-                    barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
-                   
-                    let firestore = Firestore.firestore()
-                    let userRef = firestore.collection("Bars")
-                    let docRef = userRef.document("\(user.bar!)")
-                    docRef.getDocument { (document, error) in
-                            
-                        if(error != nil) {
-                            print("error bro")
-                        } else {
-                            let imageURL = document?.get("imageURL") as! String
-                            
-                            var placeholder: UIImage?
-                            
-                            if #available(iOS 13.0, *) {
-                                placeholder = UIImage(systemName: "questionmark")
-                            } else {
-                                placeholder = UIImage(named: "first")
-                            }
-                            
-                            let storage = Storage.storage()
-                            let httpsReference = storage.reference(forURL: imageURL)
-                            
-                            self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-                                
-                        }
-                    }
-                }
-            } else if (!(AppDelegate.user?.friends.contains(user.uid))! && user.friends.contains(AppDelegate.user?.uid)) {
-                
-                follow.setTitle("Follow Back", for: .normal);
-                
-                barChoiceLbl.text = "Follow \(user.name!) back to see where they're going!"
-            }
+            updateFollowAndBarChoice()
             
             let placeholder = UIImage( named: "person.circle.fill")
             
@@ -134,6 +94,98 @@ class NonUserProfileVC: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration:0.5, delay: 0.5, usingSpringWithDamping: 1,
+        initialSpringVelocity: 0.2,
+        options: .allowAnimatedContent,
+        animations: {
+            self.centerConstraint.constant = self.startingConstant - 20
+            self.view.layoutIfNeeded()
+        }, completion: { (value: Bool) in
+            UIView.animate(withDuration: 0.2) {
+                self.centerConstraint.constant = self.startingConstant
+                self.view.layoutIfNeeded()
+            }
+        })
+        
+    }
+    
+    func getFollowers(){
+        Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: NonUserProfileVC.nonUser?.uid).getDocuments { (snapshot,err)in (snapshot, err)
+            self.numFollowers.text = "\(snapshot!.documents.count)"
+        }
+    }
+    
+    
+    func updateFollowAndBarChoice() {
+        
+        User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: inout User?) in
+            
+            NonUserProfileVC.nonUser = user!
+    
+            if let user = NonUserProfileVC.nonUser {
+            
+                if((AppDelegate.user?.friends.contains(user.uid))!) {
+                    
+                    self.follow.setTitle("Unfollow", for: .normal);
+                    self.follow.backgroundColor = .red
+                    
+                    if(user.bar == "nil") {
+                        self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
+                    } else {
+                        self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
+                       
+                        let firestore = Firestore.firestore()
+                        let userRef = firestore.collection("Bars")
+                        let docRef = userRef.document("\(user.bar!)")
+                        docRef.getDocument { (document, error) in
+                                
+                            if(error != nil) {
+                                print("error bro")
+                            } else {
+                                let imageURL = document?.get("imageURL") as! String
+                                
+                                var placeholder: UIImage?
+                                
+                                if #available(iOS 13.0, *) {
+                                    placeholder = UIImage(systemName: "questionmark")
+                                } else {
+                                    placeholder = UIImage(named: "first")
+                                }
+                                
+                                let storage = Storage.storage()
+                                let httpsReference = storage.reference(forURL: imageURL)
+                                
+                                self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                    
+                            }
+                        }
+                    }
+                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && user.friends.contains(AppDelegate.user?.uid)) {
+                    
+                    self.follow.setTitle("Follow Back", for: .normal);
+                    self.follow.backgroundColor = .barflyblue
+                    
+                    self.barChoiceLbl.text = "Follow \(user.name!) back to see where they're going!"
+                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !user.friends.contains(AppDelegate.user?.uid) && !user.requests.contains(AppDelegate.user?.uid)) {
+                    
+                    self.follow.setTitle("Follow", for: .normal);
+                    self.follow.backgroundColor = .barflyblue
+                                   
+                    self.barChoiceLbl.text = "Follow \(user.name!) to see where they're going!"
+                    
+                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !user.friends.contains(AppDelegate.user?.uid) && user.requests.contains(AppDelegate.user?.uid)) {
+                    
+                    self.follow.setTitle("Cancel Request", for: .normal);
+                    self.follow.backgroundColor = .gray
+                                                  
+                    self.barChoiceLbl.text = "Once \(user.name!) accepts you can see where they're going!"
+                    
+                }
+            }
+        }
+    }
+    
     @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
         
         switch gestureRecognizer.state {
@@ -153,7 +205,7 @@ class NonUserProfileVC: UIViewController {
                 print("too low")
                 
                 UIView.animate(withDuration: 0.3) {
-                    self.startingConstant = -250
+                    self.startingConstant = -200
                     self.centerConstraint.constant = self.startingConstant
                     self.view.layoutIfNeeded()
                 }
@@ -171,13 +223,44 @@ class NonUserProfileVC: UIViewController {
     
     @IBAction func followButtonClicked(_ sender: Any) {
         
-        if let user = User.updateUser(uid: NonUserProfileVC.nonUser!.uid!) {
+        User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: inout User?) -> Void in
+            NonUserProfileVC.nonUser = user!
             
-            if((AppDelegate.user?.friends.contains(user.uid))!) {
-                AppDelegate.user
+            if let user = NonUserProfileVC.nonUser {
+                
+                if ((AppDelegate.user?.friends.contains(user.uid))!) {
+                    
+                    let refreshAlert = UIAlertController(title: "Refresh", message: "\(user.username!) contributes to charity. Are you sure you want to unfollow them?", preferredStyle: UIAlertController.Style.alert)
+
+                    refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                        AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
+                        self.updateFollowAndBarChoice()
+                        User.updateUser(user: AppDelegate.user)
+                        User.updateUser(user: NonUserProfileVC.nonUser)
+                    }))
+
+                    refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                        print("Handle Cancel Logic here")
+                    }))
+
+                    self.present(refreshAlert, animated: true, completion: nil)
+                    
+                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
+                    
+                    NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
+                    
+                } else if (!(AppDelegate.user?.friends.contains(user.uid))! &&  (user.requests.contains(AppDelegate.user?.uid))) {
+                    
+                    NonUserProfileVC.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
+                   
+                }
+            
+                self.updateFollowAndBarChoice()
+                User.updateUser(user: AppDelegate.user)
+                User.updateUser(user: NonUserProfileVC.nonUser)
             }
-        
-        }
+            
+        })
         
     }
     

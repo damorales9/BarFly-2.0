@@ -266,17 +266,16 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 let uid = Auth.auth().currentUser!.uid
                 print("UID is \(uid)")
                 
-                AppDelegate.user = User.updateUser(uid: uid)
-                
-                self.performSegue(withIdentifier: "hasLogin", sender: self)
-                
+                User.getUser(uid: uid, setFunction: {(user: inout User?) -> Void in
+                    AppDelegate.user = user!
+                    self.performSegue(withIdentifier: "hasLogin", sender: self)
+                })
             }
             
         })
         
 
     }
-    
 }
 
 

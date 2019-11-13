@@ -33,6 +33,8 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
             return controller
         })()
         
+        resultSearchController.searchBar.becomeFirstResponder();
+        
         // Reload the table
         
         tableView.rowHeight = 60
@@ -160,9 +162,12 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        NonUserProfileVC.nonUser = filteredTableData[indexPath.row]
+        User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: inout User?) -> Void in
+            NonUserProfileVC.nonUser = user!
+            self.performSegue(withIdentifier: "showNonUser", sender: self)
+        })
         
-        self.performSegue(withIdentifier: "showNonUser", sender: self)
+//        self.performSegue(withIdentifier: "showNonUser", sender: self)
     }
 }
 

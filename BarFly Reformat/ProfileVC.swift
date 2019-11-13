@@ -49,10 +49,10 @@ class ProfileVC: UIViewController {
         
         edit.layer.cornerRadius = 5
         changeProfile.layer.cornerRadius =  5
-        dragIndicator.layer.cornerRadius =  5
-        fieldView.layer.cornerRadius = 30
-        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
-        fieldView.layer.borderWidth = 4
+//        dragIndicator.layer.cornerRadius =  5
+//        fieldView.layer.cornerRadius = 30
+//        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+//        fieldView.layer.borderWidth = 4
         
         name.layer.borderWidth = 0
         username.layer.borderWidth = 0
@@ -96,6 +96,25 @@ class ProfileVC: UIViewController {
             }
 
         }
+        
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration:0.5, delay: 0.5, usingSpringWithDamping: 1,
+        initialSpringVelocity: 0.2,
+        options: .allowAnimatedContent,
+        animations: {
+            self.centerConstraint.constant = self.startingConstant - 20
+            self.view.layoutIfNeeded()
+        }, completion: { (value: Bool) in
+            UIView.animate(withDuration: 0.2) {
+                self.centerConstraint.constant = self.startingConstant
+                self.view.layoutIfNeeded()
+            }
+        })
         
     }
     
