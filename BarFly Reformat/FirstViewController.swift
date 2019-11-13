@@ -13,6 +13,7 @@ import GoogleMapsTileOverlay
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
+import SafariServices
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -28,6 +29,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var dragButton: UILabel!
     @IBOutlet var imGoingBtn: AmountPeopleButton!
     @IBOutlet var viewFriendsBtn: UIButton!
+    @IBOutlet var exitDetails: UIButton!
+    @IBOutlet var linkBtn: URLButton!
+    
     
     var barDetailsTop: NSLayoutConstraint?
     var barDetailsBottom: NSLayoutConstraint?
@@ -98,12 +102,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         self.centerConstraint.constant = startingConstant
         self.centerConstraint.isActive = true
         
+        exitDetails.addTarget(self, action: #selector(exitBarDetails), for: .touchUpInside)
+        
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
         barDetails.addGestureRecognizer(gesture)
         barDetails.isUserInteractionEnabled = true
         
         showAllAnnotations(self)
         addCustomOverlay()
+        
+        //scheduledTimerWithTimeInterval()
         
         
         if let coor = myMapView.userLocation.location?.coordinate{
@@ -233,6 +241,48 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let barAnnotation = view.annotation as! CustomBarAnnotation
         let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCallout
+        
+        let db = Firestore.firestore()
+        print(barAnnotation.title)
+        let ui = db.collection("Bars").document("\(barAnnotation.title!)")
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let uiDocument: DocumentSnapshot
+            do {
+                try uiDocument = transaction.getDocument(ui)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+           
+            guard let newAmountPeople = uiDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(uiDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            DispatchQueue.main.async {
+                barAnnotation.amntPeople = newAmountPeople
+                calloutView.amntPeople.text = "\(barAnnotation.amntPeople!)"
+                
+            }
+            transaction.updateData(["amountPeople": newAmountPeople], forDocument: ui)
+            
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Failed to update amount people: \(error)")
+            } else {
+                print("Successfully updated amount people")
+            }
+        }
+        
+        
         let storage = Storage.storage()
         let httpsReference = storage.reference(forURL: barAnnotation.imageName!)
         let placeholder = UIImage( named: "profile_picture_placeholder.png")
@@ -261,18 +311,49 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
         
         barDetailsTitle.text = barAnnotation.title!
-        barDetailsTitle.layer.cornerRadius = 20
+        barDetailsTitle.layer.cornerRadius = 15
         barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
         barDetailsImage.layer.cornerRadius = 35
         amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
-        amntPeople.layer.cornerRadius = 20
+        amntPeople.layer.cornerRadius = 15
         dragButton.layer.cornerRadius = 5
         imGoingBtn.layer.cornerRadius = 10
+        imGoingBtn.layer.borderWidth = 4
+        imGoingBtn.layer.borderColor = UIColor.black.cgColor
         viewFriendsBtn.layer.cornerRadius = 5
+        viewFriendsBtn.layer.borderWidth = 4
+        viewFriendsBtn.layer.borderColor = color.cgColor
         
         imGoingBtn.passedData = barAnnotation
+        imGoingBtn.passedAnnotation = view
+        imGoingBtn.passedCallout = calloutView
         imGoingBtn.addTarget(self, action: #selector(amntPeoplebtnAction(sender: )), for: .touchUpInside)
         
+        if (barAnnotation.url == "nil"){
+            linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
+                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
+            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
+
+            // .Normal
+            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
+                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
+            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
+        }
+        else{
+            linkBtn.link = barAnnotation.url
+        
+            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
+                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
+            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
+
+            // .Normal
+            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
+                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
+            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
+        }
+        
+        linkBtn.addTarget(self, action: #selector(openLink(sender:)), for: .touchUpInside)
         
         UIView.animate(withDuration: 0.5) {
             self.centerConstraint.constant = -300
@@ -288,20 +369,69 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        let bar = view.annotation as! CustomBarAnnotation
-        bar.view?.removeFromSuperview()
-        UIView.animate(withDuration: 0.5) {
-            self.centerConstraint.constant = -85
-            self.barDetails.layoutIfNeeded()
+        if view.annotation is MKUserLocation
+        {
+            // Don't proceed with custom callout
+            return
         }
-        /*
-        UIView.animate(withDuration: 0.5) {
-            self.barDetailsBottom?.constant += 300
-            self.barDetails.layoutIfNeeded()
+        else{
+            let barAnnotation = view.annotation as! CustomBarAnnotation
+            //let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
+            //let calloutView = views?[0] as! CustomCallout
+            
+            let db = Firestore.firestore()
+            let ui = db.collection("Bars").document("\(barAnnotation.title!)")
+            db.runTransaction({ (transaction, errorPointer) -> Any? in
+                let uiDocument: DocumentSnapshot
+                do {
+                    try uiDocument = transaction.getDocument(ui)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+               
+                guard let newAmountPeople = uiDocument.data()?["amountPeople"] as? Int else {
+                    let error = NSError(
+                        domain: "AppErrorDomain",
+                        code: -1,
+                        userInfo: [
+                            NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(uiDocument)"
+                        ]
+                    )
+                    errorPointer?.pointee = error
+                    return nil
+                }
+                
+                DispatchQueue.main.async {
+                    barAnnotation.amntPeople = newAmountPeople
+                    
+                }
+                transaction.updateData(["amountPeople": newAmountPeople], forDocument: ui)
+                
+                return nil
+            }) { (object, error) in
+                if let error = error {
+                    print("Failed to update amount people: \(error)")
+                } else {
+                    print("Successfully updated amount people deselect")
+                }
+            }
+            
+            
+            let bar = view.annotation as! CustomBarAnnotation
+            bar.view?.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                self.centerConstraint.constant = -85
+                self.barDetails.layoutIfNeeded()
+            }
+            /*
+            UIView.animate(withDuration: 0.5) {
+                self.barDetailsBottom?.constant += 300
+                self.barDetails.layoutIfNeeded()
+            }
+            */
+        
         }
-        */
-        
-        
     }
     
     @objc func barTapped(sender: BarTapGesture) {
@@ -343,11 +473,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 let translation = gestureRecognizer.translation(in: self.view)
                 self.centerConstraint.constant = self.startingConstant + translation.y
             case .ended:
-                if(self.centerConstraint.constant < -500) {
+                if(self.centerConstraint.constant < -400) {
                     
                     print("high enough")
                     
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: 0.5) {
                         self.centerConstraint.constant = -800
                         self.view.layoutIfNeeded()
                         //self.edit.isHidden = false
@@ -478,6 +608,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     
     @objc func amntPeoplebtnAction(sender: AmountPeopleButton){
+        let barAnnotation = sender.passedAnnotation!.annotation as! CustomBarAnnotation
+        
         var newAmount = 0
         var subtractOne = 0
         let db = Firestore.firestore()
@@ -525,6 +657,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
                 DispatchQueue.main.async {
                     self.amntPeople.text = "\(newAmount)"
+                    barAnnotation.amntPeople = newAmount
+                    sender.passedCallout!.amntPeople.text = "\(newAmount)"
                     self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor.gray
                 }
@@ -535,8 +669,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
                 DispatchQueue.main.async {
                     self.amntPeople.text = "\(subtractOne)"
+                    sender.passedCallout!.amntPeople.text = "\(subtractOne)"
                     self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
+                    self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
                 }
             }
             else{
@@ -544,6 +679,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
                 DispatchQueue.main.async {
                     self.amntPeople.text = "\(oldAmount)"
+                    sender.passedCallout!.amntPeople.text = "\(oldAmount)"
                     self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor.gray
                 }
@@ -559,56 +695,92 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     
-    func scheduledTimerWithTimeInterval(passedData: CustomBarAnnotation){
+    func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 15 seconds
-        barTimer.passedData = passedData
-        barTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(self.updateCounting(sender: )), userInfo: nil, repeats: true) as! BarTimer
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
     }
     
-    @objc func updateCounting(sender: BarTimer){
-        var oldAmount = 0;
-        let db = Firestore.firestore()
-        //for i in 0..<bars.endIndex {
-        oldAmount = sender.passedData!.amntPeople!
-        let sfReference = db.collection("Bars").document("\(sender.passedData!.title ?? "nil")")
+    @objc func updateCounting(){
+//        var oldAmount = 0;
+//        let db = Firestore.firestore()
+//        //for i in 0..<bars.endIndex {
+//        oldAmount = sender.passedData!.amntPeople!
+//        let sfReference = db.collection("Bars").document("\(sender.passedData!.title ?? "nil")")
+//
+//        db.runTransaction({ (transaction, errorPointer) -> Any? in
+//            let sfDocument: DocumentSnapshot
+//            do {
+//                try sfDocument = transaction.getDocument(sfReference)
+//            } catch let fetchError as NSError {
+//                errorPointer?.pointee = fetchError
+//                return nil
+//            }
+//
+//            guard let newAmount = sfDocument.data()?["amountPeople"] as? Int else {
+//                let error = NSError(
+//                    domain: "AppErrorDomain",
+//                    code: -1,
+//                    userInfo: [
+//                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+//                    ]
+//                )
+//                errorPointer?.pointee = error
+//                return nil
+//            }
+//            if (oldAmount != newAmount){
+//                sender.passedData!.amntPeople = newAmount
+//                DispatchQueue.main.async {
+//                    self.amntPeople.text = "\(sender.passedData!.amntPeople ?? 2)"
+//                }
+//            }
+//            transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+//            return nil
+//        }) { (object, error) in
+//            if let error = error {
+//                print("Transaction failed: \(error)")
+//            } else {
+//                print("Successfully updated amount people")
+//
+//            }
+//        }
+//        //}
+        //FirstViewController.allAnnotations.removeAll()
+        myMapView.removeAnnotations(FirstViewController.allAnnotations)
+        let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
+               basicQuery.getDocuments { (snapshot, error) in
+                   if let error = error {
+                       print("Oh no! Got an error! \(error.localizedDescription)")
+                       return
+                   }
+                   guard let snapshot = snapshot else { return }
+                   let allBars = snapshot.documents
+                   for barDocument in allBars {
+                       let amntPeople = barDocument.data()["amountPeople"] as? Int
+                       let name = barDocument.data()["name"] as? String
+                       let latitude = barDocument.data()["latitude"] as? Double
+                       let longitude = barDocument.data()["longitude"] as? Double
+                       let imageURL = barDocument.data()["imageURL"] as? String
+                       
+                       let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
+                       bar.title = NSLocalizedString(name!, comment: name!)
+                       bar.imageName = imageURL!
+                       bar.amntPeople = amntPeople
+                       print(name)
+                       print(amntPeople as Any)
+                       //print(bar.imageName as Any)
+                       //print(bar)
+                       FirstViewController.allBars.append(bar)
+                       //print(allBars)
+                       print(bar)
+                       FirstViewController.allAnnotations.append(bar)
+                       self.myMapView.addAnnotation(bar)
+                   }
+               }
+        //print(FirstViewController.allAnnotations)
+        myMapView.addAnnotations(FirstViewController.allAnnotations)
+        //showAllAnnotations(self)
+        print("updated")
         
-        db.runTransaction({ (transaction, errorPointer) -> Any? in
-            let sfDocument: DocumentSnapshot
-            do {
-                try sfDocument = transaction.getDocument(sfReference)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            
-            guard let newAmount = sfDocument.data()?["amountPeople"] as? Int else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            if (oldAmount != newAmount){
-                sender.passedData!.amntPeople = newAmount
-                DispatchQueue.main.async {
-                    self.amntPeople.text = "\(sender.passedData!.amntPeople ?? 2)"
-                }
-            }
-            transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
-            return nil
-        }) { (object, error) in
-            if let error = error {
-                print("Transaction failed: \(error)")
-            } else {
-                print("Successfully updated amount people")
-                
-            }
-        }
-        //}
     }
     
     @objc func refreshButtonAction(passedData: CustomBarAnnotation){
@@ -655,6 +827,27 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             }
         }
         //}
+    }
+    
+    @objc func exitBarDetails(){
+        UIView.animate(withDuration: 0.5) {
+            self.centerConstraint.constant = -85
+            self.barDetails.layoutIfNeeded()
+        }
+    }
+    
+    @objc func openLink(sender: URLButton){
+        showLink(for: sender.link!)
+        
+    }
+    
+    func showLink(for url: String){
+        guard let url = URL(string: url) else {
+            return
+        }
+        
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
 
 

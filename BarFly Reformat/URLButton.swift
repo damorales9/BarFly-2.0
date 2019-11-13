@@ -1,20 +1,17 @@
 //
-//  AmountPeopleButton.swift
+//  URLButton.swift
 //  BarFly Reformat
 //
-//  Created by Derek Morales on 11/4/19.
+//  Created by Derek Morales on 11/12/19.
 //  Copyright © 2019 LoFi Games. All rights reserved.
 //
 
 import UIKit
-import MapKit
 
-class AmountPeopleButton: UIButton {
+class URLButton: UIButton {
+
     
-    var passedData: CustomBarAnnotation?
-    var passedAnnotation: MKAnnotationView?
-    var passedCallout: CustomCallout?
-
+    var link: String?
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

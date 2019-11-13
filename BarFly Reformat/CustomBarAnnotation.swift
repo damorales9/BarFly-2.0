@@ -37,6 +37,8 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     
     var descript: String?
     
+    var url: String?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()

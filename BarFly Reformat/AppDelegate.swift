@@ -38,11 +38,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let latitude = barDocument.data()["latitude"] as? Double
                 let longitude = barDocument.data()["longitude"] as? Double
                 let imageURL = barDocument.data()["imageURL"] as? String
+                let url = barDocument.data()["url"] as? String
                 
                 let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar.title = NSLocalizedString(name!, comment: name!)
                 bar.imageName = imageURL!
                 bar.amntPeople = amntPeople
+                bar.url = url
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)
