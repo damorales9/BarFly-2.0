@@ -17,12 +17,16 @@ class NonUserProfileVC: UIViewController {
     
     
     static var nonUser: User?
+    
+    var confirm = false
 
     
     @IBOutlet weak var dragIndicator: UILabel!
     @IBOutlet weak var fieldView: UIView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var follow: UIButton!
+    @IBOutlet weak var block: UIButton!
+    @IBOutlet weak var cancelBlock: UIButton!
     @IBOutlet weak var following: UIButton!
     @IBOutlet weak var numFollowing: UILabel!
     @IBOutlet weak var followers: UIButton!
@@ -37,17 +41,35 @@ class NonUserProfileVC: UIViewController {
     var startingConstant: CGFloat  = -200
     
     
+    var trailingFollowConstraint: NSLayoutConstraint!
+    
+    var cancelWidthConstraint: NSLayoutConstraint!
+    
+    
     override func viewDidLoad() {
-        dragIndicator.layer.cornerRadius = 5
+//        dragIndicator.layer.cornerRadius = 5
         follow.layer.cornerRadius = 10
         following.layer.cornerRadius = 10
         followers.layer.cornerRadius = 10
-        fieldView.layer.cornerRadius = 30
-        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
-        fieldView.layer.borderWidth = 4
+//        fieldView.layer.cornerRadius = 30
+//        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+//        fieldView.layer.borderWidth = 4
         follow.layer.borderColor = UIColor.black.cgColor
         follow.layer.borderWidth = 1
-    
+        block.layer.borderColor = UIColor.barflyblue.cgColor
+        block.layer.borderWidth = 1
+        block.layer.cornerRadius = 10
+        cancelBlock.layer.cornerRadius = 10
+        cancelBlock.layer.borderWidth = 1
+        cancelBlock.layer.borderColor = UIColor.black.cgColor
+        
+        trailingFollowConstraint = NSLayoutConstraint(item: block!, attribute: .trailing, relatedBy: .equal, toItem: follow, attribute: .trailing, multiplier: 1, constant: 0)
+        
+        cancelWidthConstraint = NSLayoutConstraint(item: cancelBlock, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        
+        cancelBlock.addConstraint(cancelWidthConstraint)
+        
+        view.addConstraint(trailingFollowConstraint)
         
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
         self.centerConstraint.constant = startingConstant
@@ -56,12 +78,8 @@ class NonUserProfileVC: UIViewController {
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
     
         if let user = NonUserProfileVC.nonUser {
-            name.text = user.name
-            username.text = user.username
-            numFollowing.text = "\(user.friends.count)"
-            getFollowers()
             
-            updateFollowAndBarChoice()
+            updateFieldView()
             
             let placeholder = UIImage( named: "person.circle.fill")
             
@@ -117,13 +135,25 @@ class NonUserProfileVC: UIViewController {
     }
     
     
-    func updateFollowAndBarChoice() {
+    func updateFieldView() {
         
         User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: inout User?) in
             
             NonUserProfileVC.nonUser = user!
     
             if let user = NonUserProfileVC.nonUser {
+                
+                self.name.text = user.name
+                self.username.text = user.username
+                self.numFollowing.text = "\(user.friends.count)"
+                self.getFollowers()
+                
+                if(user.friends.contains(AppDelegate.user?.uid)) {
+                    self.block.isHidden = false
+                }  else {
+                    self.block.isHidden = true
+                }
+                
             
                 if((AppDelegate.user?.friends.contains(user.uid))!) {
                     
@@ -220,6 +250,51 @@ class NonUserProfileVC: UIViewController {
         print("show me following")
     }
     
+    @IBAction func cancelButtonClicked(_ sender: Any) {
+        confirm = false
+        
+        UIView.animate(withDuration: 0.5) {
+            self.trailingFollowConstraint.constant = 0
+            self.cancelBlock.isHidden = true
+            self.cancelWidthConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        
+    }
+    
+    @IBAction func blockButtonClicked(_ sender: Any) {
+        
+        if(confirm) {
+            
+            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: inout User?) -> Void in
+
+                user!.friends.remove(at: user!.friends.firstIndex(of: AppDelegate.user?.uid)!)
+                User.updateUser(user: user)
+                
+                
+                self.updateFieldView()
+                
+                UIView.animate(withDuration: 0.5) {
+                    self.trailingFollowConstraint.constant = 0
+                    self.cancelBlock.isHidden = true
+                    self.cancelWidthConstraint.constant = 0
+                    self.view.layoutIfNeeded()
+                }
+                self.confirm = false
+
+            })
+            
+        } else {
+            
+            UIView.animate(withDuration: 0.5) {
+                self.trailingFollowConstraint.constant = -60
+                self.cancelBlock.isHidden = false
+                self.cancelWidthConstraint.constant = 50
+                self.view.layoutIfNeeded()
+            }
+            confirm = true
+        }
+    }
     
     @IBAction func followButtonClicked(_ sender: Any) {
         
@@ -230,20 +305,14 @@ class NonUserProfileVC: UIViewController {
                 
                 if ((AppDelegate.user?.friends.contains(user.uid))!) {
                     
-                    let refreshAlert = UIAlertController(title: "Refresh", message: "\(user.username!) contributes to charity. Are you sure you want to unfollow them?", preferredStyle: UIAlertController.Style.alert)
-
-                    refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                    self.okCancel(msg: "\(user.username!) contributes to charity. Are you sure you want to unfollow them?", after: { () -> Void in
+                        
                         AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
-                        self.updateFollowAndBarChoice()
+                        self.updateFieldView()
                         User.updateUser(user: AppDelegate.user)
                         User.updateUser(user: NonUserProfileVC.nonUser)
-                    }))
-
-                    refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-                        print("Handle Cancel Logic here")
-                    }))
-
-                    self.present(refreshAlert, animated: true, completion: nil)
+                            
+                    })
                     
                 } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
                     
@@ -255,13 +324,27 @@ class NonUserProfileVC: UIViewController {
                    
                 }
             
-                self.updateFollowAndBarChoice()
+                self.updateFieldView()
                 User.updateUser(user: AppDelegate.user)
                 User.updateUser(user: NonUserProfileVC.nonUser)
             }
             
         })
         
+    }
+    
+    func okCancel(msg: String, after: @escaping () -> Void) {
+        let refreshAlert = UIAlertController(title: "Refresh", message: msg, preferredStyle: UIAlertController.Style.alert)
+
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            after()
+        }))
+
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            print("Handle Cancel Logic here")
+        }))
+
+        self.present(refreshAlert, animated: true, completion: nil)
     }
     
 }

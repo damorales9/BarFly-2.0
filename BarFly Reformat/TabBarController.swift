@@ -17,7 +17,6 @@ class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         getBars()
-        
     }
     
     func getBars(){

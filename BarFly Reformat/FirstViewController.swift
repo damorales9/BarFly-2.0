@@ -653,7 +653,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             newAmount = oldAmount + 1
             
             if (barChoice == "nil"){
-                transaction.updateData(["bar": sender.passedData!.title!], forDocument: ui)
+                transaction.updateData(["bar": sender.passedData!.title!, "timestamp": NSDate().timeIntervalSince1970], forDocument: ui)
                 transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
                 DispatchQueue.main.async {
                     self.amntPeople.text = "\(newAmount)"
