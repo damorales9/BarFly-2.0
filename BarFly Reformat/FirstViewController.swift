@@ -6,6 +6,7 @@
 //  Copyright © 2019 LoFi Games. All rights reserved.
 //
 
+import Foundation
 import MapKit
 import UIKit
 import CoreLocation
@@ -673,6 +674,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     sender.passedCallout!.amntPeople.text = "\(newAmount)"
                     self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor.gray
+                    self.imGoingView.backgroundColor = UIColor.gray
                 }
             }
             else if (barChoice == sender.passedData!.title){
@@ -684,6 +686,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     sender.passedCallout!.amntPeople.text = "\(subtractOne)"
                     self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                    self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
                 }
             }
             else{
@@ -694,6 +697,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     sender.passedCallout!.amntPeople.text = "\(oldAmount)"
                     self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor.gray
+                    self.imGoingView.backgroundColor = UIColor.gray
                 }
             }
             return nil
