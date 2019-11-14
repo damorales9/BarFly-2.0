@@ -31,6 +31,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var viewFriendsBtn: UIButton!
     @IBOutlet var exitDetails: UIButton!
     @IBOutlet var linkBtn: URLButton!
+    @IBOutlet var guestView: UIView!
+    @IBOutlet var imGoingView: UIView!
+    @IBOutlet var viewFriendsView: UIView!
+    
+    
     
     
     var barDetailsTop: NSLayoutConstraint?
@@ -313,21 +318,28 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         barDetailsTitle.text = barAnnotation.title!
         barDetailsTitle.layer.cornerRadius = 15
         barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-        barDetailsImage.layer.cornerRadius = 35
+        barDetailsImage.layer.cornerRadius = 10
         amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         amntPeople.layer.cornerRadius = 15
         dragButton.layer.cornerRadius = 5
         imGoingBtn.layer.cornerRadius = 10
         imGoingBtn.layer.borderWidth = 4
         imGoingBtn.layer.borderColor = UIColor.black.cgColor
-        viewFriendsBtn.layer.cornerRadius = 5
+        viewFriendsBtn.layer.cornerRadius = 10
         viewFriendsBtn.layer.borderWidth = 4
-        viewFriendsBtn.layer.borderColor = color.cgColor
+        viewFriendsBtn.layer.borderColor = UIColor.black.cgColor
         
         imGoingBtn.passedData = barAnnotation
         imGoingBtn.passedAnnotation = view
         imGoingBtn.passedCallout = calloutView
         imGoingBtn.addTarget(self, action: #selector(amntPeoplebtnAction(sender: )), for: .touchUpInside)
+        
+        imGoingView.layer.cornerRadius = 10
+        viewFriendsView.layer.cornerRadius = 10
+        
+        guestView.layer.borderWidth = 3
+        guestView.layer.borderColor = color.cgColor
+        guestView.layer.cornerRadius = 8
         
         if (barAnnotation.url == "nil"){
             linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
