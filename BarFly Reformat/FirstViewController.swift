@@ -35,6 +35,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var guestView: UIView!
     @IBOutlet var imGoingView: UIView!
     @IBOutlet var viewFriendsView: UIView!
+    @IBOutlet var locationBtn: UIBarButtonItem!
+    @IBOutlet var refreshBtn: UIBarButtonItem!
+    @IBOutlet var barImageBckg: UIView!
     
     
     
@@ -69,8 +72,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        barDetails.layer.cornerRadius = 30
-        barDetails.layer.borderWidth = 4
+        //barDetails.layer.cornerRadius = 20
+        //barDetails.layer.borderWidth = 4
         let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
         barDetails.layer.borderColor = color.cgColor
         barDetails.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
@@ -90,14 +93,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         myMapView.isScrollEnabled = true
         myMapView.setUserTrackingMode(.none, animated: true)
         
-        
-        let theCharles = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.531190, longitude: -1.235914))
-        theCharles.title = NSLocalizedString("The Charles", comment: "The Charles")
-        theCharles.imageName = "logo"
-        
-        
-        FirstViewController.allAnnotations.append(theCharles)
-        
+        refreshBtn.action = #selector(refreshButtonAction)
+        locationBtn.action = #selector(centerLocation)
         
         print(FirstViewController.allAnnotations)
         
@@ -320,9 +317,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         barDetailsTitle.layer.cornerRadius = 15
         barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
         barDetailsImage.layer.cornerRadius = 10
+        barDetailsImage.layer.borderWidth = 6
+        barDetailsImage.layer.borderColor = UIColor.black.cgColor
         amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         amntPeople.layer.cornerRadius = 15
-        dragButton.layer.cornerRadius = 5
+        //dragButton.layer.cornerRadius = 5
         imGoingBtn.layer.cornerRadius = 10
         imGoingBtn.layer.borderWidth = 4
         imGoingBtn.layer.borderColor = UIColor.black.cgColor
@@ -341,6 +340,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         guestView.layer.borderWidth = 3
         guestView.layer.borderColor = color.cgColor
         guestView.layer.cornerRadius = 8
+        
+        barImageBckg.layer.cornerRadius = 10
         
         if (barAnnotation.url == "nil"){
             linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -781,8 +782,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                        bar.title = NSLocalizedString(name!, comment: name!)
                        bar.imageName = imageURL!
                        bar.amntPeople = amntPeople
-                       print(name)
-                       print(amntPeople as Any)
                        //print(bar.imageName as Any)
                        //print(bar)
                        FirstViewController.allBars.append(bar)
@@ -799,50 +798,41 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
     }
     
-    @objc func refreshButtonAction(passedData: CustomBarAnnotation){
-        var oldAmount = 0;
-        let db = Firestore.firestore()
-        //for i in 0..<bars.endIndex {
-        oldAmount = passedData.amntPeople!
-        let sfReference = db.collection("Bars").document("\(passedData.title ?? "nil")")
-        
-        db.runTransaction({ (transaction, errorPointer) -> Any? in
-            let sfDocument: DocumentSnapshot
-            do {
-                try sfDocument = transaction.getDocument(sfReference)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            
-            guard let newAmount = sfDocument.data()?["amountPeople"] as? Int else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            if (oldAmount != newAmount){
-                passedData.amntPeople = newAmount
-                DispatchQueue.main.async {
-                    self.amntPeople.text = "\(passedData.amntPeople ?? 2)"
-                }
-            }
-            transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
-            return nil
-        }) { (object, error) in
+    @objc func refreshButtonAction(){
+        myMapView.removeAnnotations(FirstViewController.allAnnotations)
+        let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
+        basicQuery.getDocuments { (snapshot, error) in
             if let error = error {
-                print("Transaction failed: \(error)")
-            } else {
-                print("Successfully updated amount people!")
+                print("Oh no! Got an error! \(error.localizedDescription)")
+                return
+            }
+            guard let snapshot = snapshot else { return }
+            let allBars = snapshot.documents
+            for barDocument in allBars {
+                let amntPeople = barDocument.data()["amountPeople"] as? Int
+                let name = barDocument.data()["name"] as? String
+                let latitude = barDocument.data()["latitude"] as? Double
+                let longitude = barDocument.data()["longitude"] as? Double
+                let imageURL = barDocument.data()["imageURL"] as? String
+                let url = barDocument.data()["url"] as? String
                 
+                let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
+                bar.title = NSLocalizedString(name!, comment: name!)
+                bar.imageName = imageURL!
+                bar.amntPeople = amntPeople
+                bar.url = url
+                //print(bar.imageName as Any)
+                //print(bar)
+                FirstViewController.allBars.append(bar)
+                //print(allBars)
+                FirstViewController.allAnnotations.append(bar)
+                self.myMapView.addAnnotation(bar)
             }
         }
-        //}
+        //print(FirstViewController.allAnnotations)
+        //myMapView.addAnnotations(FirstViewController.allAnnotations)
+        //showAllAnnotations(self)
+        print("updated")
     }
     
     @objc func exitBarDetails(){
@@ -864,6 +854,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)
+    }
+    
+    @objc func centerLocation(){
+        if let coor = myMapView.userLocation.location?.coordinate{
+            myMapView.setCenter(coor, animated: true)
+        }
+        if let userLocation = locationManager.location?.coordinate {
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 3500, longitudinalMeters: 3500)
+            myMapView.setRegion(viewRegion, animated: false)
+        }
     }
 
 
