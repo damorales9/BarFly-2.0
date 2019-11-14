@@ -129,9 +129,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.3) {
             self.pwC?.constant = -50
             self.email.alpha -= 1
-            if(self.email.text!.count > 0){
-                self.emailLbl.alpha -= 1
-            }
+            self.emailLbl.alpha -= 1
             self.view.layoutIfNeeded()
         }
     }
@@ -140,9 +138,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.3) {
             self.pwC?.constant = 80
             self.email.alpha += 1
-            if(self.email.text!.count > 0){
-                self.emailLbl.alpha += 1
-            }
+            self.emailLbl.alpha += 1
             self.view.layoutIfNeeded()
         }
     }
@@ -172,17 +168,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     @objc func emailChange() {
         
         //animate email lbl
-        if(self.email.text!.count > 0 && emailLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.emailLbl.alpha += 1
-            }
-        }
-        else if(self.email.text!.count == 0 && emailLbl.alpha == 1) {
-            
-            UIView.animate(withDuration: 1) {
-                self.emailLbl.alpha -= 1
-            }
-        }
         
         errorLbl.isHidden = true
         enableDisableLogin()
@@ -191,16 +176,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     @objc func passwordChange() {
         //animate pw lbl
-        if(self.password.text!.count > 0 && passwordLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.passwordLbl.alpha += 1
-            }
-        }
-        else if(self.password.text!.count == 0 && passwordLbl.alpha == 1) {
-            UIView.animate(withDuration: 1) {
-                self.passwordLbl.alpha -= 1
-            }
-        }
         
         errorLbl.isHidden = true
         enableDisableLogin()
@@ -220,13 +195,13 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func enableDisableLogin() {
-        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6) {
-                   print("enabled button")
-                   login.isEnabled = true
-               } else {
-                   print("disabled button")
-                   login.isEnabled = false
-               }
+        if((email.text?.isValidEmail())! && password.text!.count >= 6) {
+            print("enabled button")
+            login.isEnabled = true
+        } else {
+            print("disabled button")
+            login.isEnabled = false
+        }
            
     }
     
@@ -268,6 +243,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 
                 User.getUser(uid: uid, setFunction: {(user: inout User?) -> Void in
                     AppDelegate.user = user!
+                    AppDelegate.loggedIn = true
+                    
                     self.performSegue(withIdentifier: "hasLogin", sender: self)
                 })
             }
@@ -288,5 +265,14 @@ extension UIViewController {
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension String {
+    func isValidEmail() -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: self)
     }
 }

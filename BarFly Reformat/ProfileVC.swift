@@ -14,8 +14,7 @@ import FirebaseFirestore
 import FirebaseUI
 
 class ProfileVC: UIViewController {
-    
-
+        
     //VAR
     var imagePicker: ImagePicker!
     var editting = false
@@ -29,6 +28,7 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var changeProfile: UIButton!
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var dragIndicator: UILabel!
+    @IBOutlet weak var requestsButton: UIBarButtonItem!
     
     @IBOutlet weak var fieldView: UIView!
     
@@ -39,20 +39,18 @@ class ProfileVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        
-        
+    
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
         self.centerConstraint.constant = startingConstant
         self.centerConstraint.isActive = true
-        
         self.hideKeyboardWhenTappedAround()
         
         edit.layer.cornerRadius = 5
         changeProfile.layer.cornerRadius =  5
-//        dragIndicator.layer.cornerRadius =  5
-//        fieldView.layer.cornerRadius = 30
-//        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
-//        fieldView.layer.borderWidth = 4
+        dragIndicator.layer.cornerRadius =  5
+        fieldView.layer.cornerRadius = 30
+        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+        fieldView.layer.borderWidth = 4
         
         name.layer.borderWidth = 0
         username.layer.borderWidth = 0
@@ -60,6 +58,8 @@ class ProfileVC: UIViewController {
         password.layer.borderWidth = 0
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
+        
+        
         
 
         
@@ -69,36 +69,47 @@ class ProfileVC: UIViewController {
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-        if let user = AppDelegate.user {
-            name.text = user.name
-            email.text = user.email
-            username.text = user.username
-            password.text = UserDefaults.standard.string(forKey: "password")
+        paintComponents()
+        updateBadge()
+    }
+    
+    func paintComponents() {
+        
+        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
             
-            let placeholder = UIImage( named: "person.circle.fill")
-            
-            
-            print("profileURL is \(user.profileURL)")
-            
-            if (user.profileURL != "") {
+            AppDelegate.user = user!
+        
+            if let user = AppDelegate.user {
+                self.name.text = user.name
+                self.email.text = user.email
+                self.username.text = user.username
+                self.password.text = UserDefaults.standard.string(forKey: "password")
                 
-                SDImageCache.shared.clearMemory()
-                SDImageCache.shared.clearDisk()
+                let placeholder = UIImage( named: "person.circle.fill")
                 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: user.profileURL!)
                 
-                self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-            
+                print("profileURL is \(user.profileURL)")
+                
+                if (user.profileURL != "") {
                     
-            } else {
-                self.profileImage.image = placeholder
+                    SDImageCache.shared.clearMemory()
+                    SDImageCache.shared.clearDisk()
+                    
+                    let storage = Storage.storage()
+                    let httpsReference = storage.reference(forURL: user.profileURL!)
+                    
+                    self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                
+                        
+                } else {
+                    self.profileImage.image = placeholder
+                }
+                
+                if(user.requests.count == 0) {
+                    
+                }
             }
-
         }
-        
-        
-        
         
     }
     
@@ -116,6 +127,16 @@ class ProfileVC: UIViewController {
             }
         })
         
+        paintComponents()
+        updateBadge()
+    }
+    
+    func updateBadge() {
+        if(AppDelegate.user?.requests.count != 0){
+            tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
+        } else {
+            tabBarItem.badgeValue = nil
+        }
     }
     
     @IBAction func editButtonClicked(_ sender: Any) {
@@ -137,7 +158,48 @@ class ProfileVC: UIViewController {
             self.edit.isHidden = true
         }
                     
+          
+        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
+            AppDelegate.user = user!
+            
+            
+            if let username = self.username.text, let password = self.password.text , let email = self.email.text{
+                Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("username", isEqualTo: self.username.text!)
+                .getDocuments() { (querySnapshot, err) in
+                    if(querySnapshot?.documents.count == 0) {
+                        AppDelegate.user?.username = username
+                    } else {
+                        self.username.text = AppDelegate.user?.username
+                    }
                     
+                    AppDelegate.user?.name = self.name.text
+                    AppDelegate.user?.email = email
+                    
+                    
+                    if(password.count >= 6 && email.isValidEmail()) {
+                        Auth.auth().currentUser?.updatePassword(to: password) { (error) in
+                            if(error == nil) {
+                                UserDefaults.standard.set(password, forKey: "password")
+                            } else {
+                                self.password.text = UserDefaults.standard.string(forKey: "password")
+                            }
+                        }
+                        Auth.auth().currentUser?.updateEmail(to: email, completion: { (error) in
+                            if(error == nil) {
+                                UserDefaults.standard.set(email, forKey: "email")
+                            } else {
+                                self.email.text = UserDefaults.standard.string(forKey: "email")
+                            }
+                        })
+                    }
+                    
+                    User.updateUser(user: AppDelegate.user!)
+                }
+            }
+            
+            
+            
+        }
         if(profileImage.image != nil) {
             self.saveFIRData()
         }

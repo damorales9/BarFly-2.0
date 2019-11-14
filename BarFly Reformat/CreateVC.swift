@@ -118,16 +118,12 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     }
     
     func hideLblAndField(field: UITextField, lbl: UILabel) {
-        if(field.text!.count > 0) {
-            lbl.alpha -= 1
-        }
         field.alpha -= 1
+        lbl.alpha -= 1
     }
     
     func showLblAndField(field: UITextField, lbl: UILabel) {
-        if(field.text!.count > 0) {
-            lbl.alpha += 1
-        }
+        lbl.alpha += 1
         field.alpha += 1
     }
     
@@ -205,7 +201,7 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     
     
     func enableDisableLogin() {
-        if(email.text!.contains("@") && email.text!.contains(".") && password.text!.count >= 6 && name.text!.count > 0  && username.text!.count > 0 && !username.text!.contains(" ")) {
+        if((email.text?.isValidEmail())! && password.text!.count >= 6 && name.text!.count > 0  && username.text!.count > 0 && !username.text!.contains(" ")) {
                    create.isEnabled = true
                } else {
                    create.isEnabled = false
@@ -227,17 +223,6 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     
     @objc func usernameChange() {
         //animate email lbl
-        if(self.username.text!.count > 0 && usernameLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.usernameLbl.alpha += 1
-            }
-        }
-        else if(self.username.text!.count == 0 && usernameLbl.alpha == 1) {
-            
-            UIView.animate(withDuration: 1) {
-                self.usernameLbl.alpha -= 1
-            }
-        }
         
         errorLbl.isHidden = true
         enableDisableLogin()
@@ -246,17 +231,6 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     @objc func emailChange() {
         
         //animate email lbl
-        if(self.email.text!.count > 0 && emailLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.emailLbl.alpha += 1
-            }
-        }
-        else if(self.email.text!.count == 0 && emailLbl.alpha == 1) {
-            
-            UIView.animate(withDuration: 1) {
-                self.emailLbl.alpha -= 1
-            }
-        }
         
         errorLbl.isHidden = true
         enableDisableLogin()
@@ -266,17 +240,6 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     @objc func passwordChange() {
         
         //animate email lbl
-        if(self.password.text!.count > 0 && passwordLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.passwordLbl.alpha += 1
-            }
-        }
-        else if(self.password.text!.count == 0 && passwordLbl.alpha == 1) {
-            
-            UIView.animate(withDuration: 1) {
-                self.passwordLbl.alpha -= 1
-            }
-        }
         
         errorLbl.isHidden = true
         enableDisableLogin()
@@ -286,17 +249,6 @@ class CreateVC: UIViewController, UITextFieldDelegate {
     @objc func nameChange() {
         
         //animate email lbl
-        if(self.name.text!.count > 0 && nameLbl.alpha == 0) {
-            UIView.animate(withDuration: 1) {
-                self.nameLbl.alpha += 1
-            }
-        }
-        else if(self.name.text!.count == 0 && nameLbl.alpha == 1) {
-            
-            UIView.animate(withDuration: 1) {
-                self.nameLbl.alpha -= 1
-            }
-        }
         
     }
     
@@ -324,19 +276,22 @@ class CreateVC: UIViewController, UITextFieldDelegate {
                                  self.errorLbl.isHidden = false
                                 } else {
                                     
-                                 UserDefaults.standard.set(self.email.text, forKey: "email")
-                                 UserDefaults.standard.set(self.password.text, forKey:  "password")
+                                UserDefaults.standard.set(self.email.text, forKey: "email")
+                                UserDefaults.standard.set(self.password.text, forKey:  "password")
                                  
-                                     let bar = LoginVC.NO_BAR
-                                     let admin = LoginVC.NO_ADMIN
-                                     let friends = [String]()
-                                     let requests = [String]()
+                                let bar = LoginVC.NO_BAR
+                                let admin = LoginVC.NO_ADMIN
+                                let friends = [String]()
+                                let requests = [String]()
+                                let timestamp = NSNumber(integerLiteral: 0)
                                      
-                                    AppDelegate.user = User(uid: Auth.auth().currentUser!.uid,name: name, username: username, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: "")
-                                    }
-                                    
-                                
-                                    self.updateUIDatabase()
+                                    AppDelegate.user = User(uid: Auth.auth().currentUser!.uid,name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, profileURL: "")
+                                }
+                                AppDelegate.loggedIn = true
+                                User.updateUser(user: AppDelegate.user)
+                                self.performSegue(withIdentifier: "wasCreated", sender: self)
+
+//                                self.updateUIDatabase()
                                 
                             })
                             

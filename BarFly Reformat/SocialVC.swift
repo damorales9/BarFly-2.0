@@ -9,13 +9,12 @@
 import Foundation
 import UIKit
 
-class SocialVC: UIViewController {
+class SocialVC: UIViewController, UITableViewDelegate{
     
     
     @IBOutlet weak var scrollArea: UIScrollView!
     
     override func viewDidLoad() {
         
-
     }
 }

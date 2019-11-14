@@ -32,6 +32,7 @@
 		6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */; };
 		6FC9A058237C8D5C00CDD8C4 /* RequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */; };
 		6FC9A05A237C9C7700CDD8C4 /* RequestCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */; };
+		6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */; };
 		6FE48D96236B397900487E27 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48D95236B397900487E27 /* User.swift */; };
 		6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48D97236B3A8700487E27 /* LoginVC.swift */; };
 		6FE48DC3236B55DF00487E27 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE48DB7236B55DF00487E27 /* Roboto-BlackItalic.ttf */; };
@@ -80,6 +81,7 @@
 		6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileVC.swift; sourceTree = "<group>"; };
 		6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsVC.swift; sourceTree = "<group>"; };
 		6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCellView.swift; sourceTree = "<group>"; };
+		6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		6FE48D95236B397900487E27 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6FE48D97236B3A8700487E27 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		6FE48DB7236B55DF00487E27 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */,
 				6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */,
 				6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */,
+				6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
 				0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */,
 				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
+				6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */,
 				0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */,
 				0EDA8A31236CD525002B0FD4 /* BarDetailsVC.swift in Sources */,
 				0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */,

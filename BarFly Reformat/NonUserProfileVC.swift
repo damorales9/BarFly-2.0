@@ -31,6 +31,9 @@ class NonUserProfileVC: UIViewController {
     @IBOutlet weak var numFollowing: UILabel!
     @IBOutlet weak var followers: UIButton!
     @IBOutlet weak var numFollowers: UILabel!
+    @IBOutlet weak var cancelView: UIView!
+    @IBOutlet weak var blockView: UIView!
+    @IBOutlet weak var followView: UIView!
     
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
@@ -47,27 +50,31 @@ class NonUserProfileVC: UIViewController {
     
     
     override func viewDidLoad() {
-//        dragIndicator.layer.cornerRadius = 5
+        dragIndicator.layer.cornerRadius = 5
         follow.layer.cornerRadius = 10
         following.layer.cornerRadius = 10
         followers.layer.cornerRadius = 10
-//        fieldView.layer.cornerRadius = 30
-//        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
-//        fieldView.layer.borderWidth = 4
+        fieldView.layer.cornerRadius = 30
+        fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
+        fieldView.layer.borderWidth = 4
         follow.layer.borderColor = UIColor.black.cgColor
-        follow.layer.borderWidth = 1
+        follow.layer.borderWidth = 2
         block.layer.borderColor = UIColor.barflyblue.cgColor
-        block.layer.borderWidth = 1
+        block.layer.borderWidth = 2
         block.layer.cornerRadius = 10
         cancelBlock.layer.cornerRadius = 10
-        cancelBlock.layer.borderWidth = 1
+        cancelBlock.layer.borderWidth = 2
         cancelBlock.layer.borderColor = UIColor.black.cgColor
+        cancelView.layer.cornerRadius = 10
+        blockView.layer.cornerRadius = 10
+        followView.layer.cornerRadius = 10
+
         
-        trailingFollowConstraint = NSLayoutConstraint(item: block!, attribute: .trailing, relatedBy: .equal, toItem: follow, attribute: .trailing, multiplier: 1, constant: 0)
+        trailingFollowConstraint = NSLayoutConstraint(item: blockView!, attribute: .trailing, relatedBy: .equal, toItem: follow, attribute: .trailing, multiplier: 1, constant: 0)
         
-        cancelWidthConstraint = NSLayoutConstraint(item: cancelBlock, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        cancelWidthConstraint = NSLayoutConstraint(item: cancelView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         
-        cancelBlock.addConstraint(cancelWidthConstraint)
+        cancelView.addConstraint(cancelWidthConstraint)
         
         view.addConstraint(trailingFollowConstraint)
         
@@ -137,80 +144,97 @@ class NonUserProfileVC: UIViewController {
     
     func updateFieldView() {
         
-        User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: inout User?) in
-            
-            NonUserProfileVC.nonUser = user!
-    
-            if let user = NonUserProfileVC.nonUser {
+        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
+            AppDelegate.user = user!
+        
+            User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: inout User?) in
                 
-                self.name.text = user.name
-                self.username.text = user.username
-                self.numFollowing.text = "\(user.friends.count)"
-                self.getFollowers()
-                
-                if(user.friends.contains(AppDelegate.user?.uid)) {
-                    self.block.isHidden = false
-                }  else {
-                    self.block.isHidden = true
-                }
-                
-            
-                if((AppDelegate.user?.friends.contains(user.uid))!) {
+                NonUserProfileVC.nonUser = user!
+        
+                if let user = NonUserProfileVC.nonUser {
                     
-                    self.follow.setTitle("Unfollow", for: .normal);
-                    self.follow.backgroundColor = .red
+                    self.name.text = user.name
+                    self.username.text = user.username
+                    self.numFollowing.text = "\(user.friends.count)"
+                    self.getFollowers()
                     
-                    if(user.bar == "nil") {
-                        self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
+                    if(user.friends.contains(AppDelegate.user?.uid)) {
+                        self.blockView.isHidden = false
+                    }  else {
+                        self.blockView.isHidden = true
+                    }
+                    
+                    var placeholder: UIImage?
+                    if #available(iOS 13.0, *) {
+                        placeholder = UIImage(systemName: "questionmark")
                     } else {
-                        self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
-                       
-                        let firestore = Firestore.firestore()
-                        let userRef = firestore.collection("Bars")
-                        let docRef = userRef.document("\(user.bar!)")
-                        docRef.getDocument { (document, error) in
-                                
-                            if(error != nil) {
-                                print("error bro")
-                            } else {
-                                let imageURL = document?.get("imageURL") as! String
-                                
-                                var placeholder: UIImage?
-                                
-                                if #available(iOS 13.0, *) {
-                                    placeholder = UIImage(systemName: "questionmark")
-                                } else {
-                                    placeholder = UIImage(named: "first")
-                                }
-                                
-                                let storage = Storage.storage()
-                                let httpsReference = storage.reference(forURL: imageURL)
-                                
-                                self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                        // Fallback on earlier versions
+                        placeholder = UIImage(named: "profile")
+                    }
+                    self.barChoice.image = placeholder
+                    
+                
+                    if((AppDelegate.user?.friends.contains(user.uid))!) {
+                        
+                        self.follow.setTitle("Unfollow", for: .normal);
+                        self.follow.backgroundColor = .red
+                        self.followView.backgroundColor = .red
+                        
+                        if(user.bar == "nil") {
+                            self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
+                        } else {
+                            self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
+                           
+                            let firestore = Firestore.firestore()
+                            let userRef = firestore.collection("Bars")
+                            let docRef = userRef.document("\(user.bar!)")
+                            docRef.getDocument { (document, error) in
                                     
+                                if(error != nil) {
+                                    print("error bro")
+                                } else {
+                                    let imageURL = document?.get("imageURL") as! String
+                                    
+                                    var placeholder: UIImage?
+                                    
+                                    if #available(iOS 13.0, *) {
+                                        placeholder = UIImage(systemName: "questionmark")
+                                    } else {
+                                        placeholder = UIImage(named: "first")
+                                    }
+                                    
+                                    let storage = Storage.storage()
+                                    let httpsReference = storage.reference(forURL: imageURL)
+                                    
+                                    self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                        
+                                }
                             }
                         }
+                    } else if (user.friends.contains(AppDelegate.user?.uid) && !user.requests.contains(AppDelegate.user?.uid)) {
+                        
+                        self.follow.setTitle("Follow Back", for: .normal);
+                        self.follow.backgroundColor = .barflyblue
+                        self.followView.backgroundColor = .barflyblue
+                        
+                        self.barChoiceLbl.text = "Follow \(user.name!) back to see where they're going!"
+                    } else if (!user.friends.contains(AppDelegate.user?.uid) && !user.requests.contains(AppDelegate.user?.uid)) {
+                        
+                        self.follow.setTitle("Follow", for: .normal);
+                        self.follow.backgroundColor = .barflyblue
+                        self.followView.backgroundColor = .barflyblue
+                                       
+                        self.barChoiceLbl.text = "Follow \(user.name!) to see where they're going!"
+                        
+                    } else if (user.requests.contains(AppDelegate.user?.uid)) {
+                        
+                        self.follow.setTitle("Cancel Request", for: .normal);
+                        self.follow.backgroundColor = .gray
+                        self.followView.backgroundColor = .gray
+                                                      
+                        self.barChoiceLbl.text = "Once \(user.name!) accepts you can see where they're going!"
+                        
                     }
-                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && user.friends.contains(AppDelegate.user?.uid)) {
-                    
-                    self.follow.setTitle("Follow Back", for: .normal);
-                    self.follow.backgroundColor = .barflyblue
-                    
-                    self.barChoiceLbl.text = "Follow \(user.name!) back to see where they're going!"
-                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !user.friends.contains(AppDelegate.user?.uid) && !user.requests.contains(AppDelegate.user?.uid)) {
-                    
-                    self.follow.setTitle("Follow", for: .normal);
-                    self.follow.backgroundColor = .barflyblue
-                                   
-                    self.barChoiceLbl.text = "Follow \(user.name!) to see where they're going!"
-                    
-                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !user.friends.contains(AppDelegate.user?.uid) && user.requests.contains(AppDelegate.user?.uid)) {
-                    
-                    self.follow.setTitle("Cancel Request", for: .normal);
-                    self.follow.backgroundColor = .gray
-                                                  
-                    self.barChoiceLbl.text = "Once \(user.name!) accepts you can see where they're going!"
-                    
                 }
             }
         }
@@ -255,7 +279,7 @@ class NonUserProfileVC: UIViewController {
         
         UIView.animate(withDuration: 0.5) {
             self.trailingFollowConstraint.constant = 0
-            self.cancelBlock.isHidden = true
+            self.cancelView.isHidden = true
             self.cancelWidthConstraint.constant = 0
             self.view.layoutIfNeeded()
         }
@@ -276,9 +300,10 @@ class NonUserProfileVC: UIViewController {
                 
                 UIView.animate(withDuration: 0.5) {
                     self.trailingFollowConstraint.constant = 0
-                    self.cancelBlock.isHidden = true
+                    self.cancelView.isHidden = true
                     self.cancelWidthConstraint.constant = 0
                     self.view.layoutIfNeeded()
+                    
                 }
                 self.confirm = false
 
@@ -288,9 +313,10 @@ class NonUserProfileVC: UIViewController {
             
             UIView.animate(withDuration: 0.5) {
                 self.trailingFollowConstraint.constant = -60
-                self.cancelBlock.isHidden = false
+                self.cancelView.isHidden = false
                 self.cancelWidthConstraint.constant = 50
                 self.view.layoutIfNeeded()
+                
             }
             confirm = true
         }

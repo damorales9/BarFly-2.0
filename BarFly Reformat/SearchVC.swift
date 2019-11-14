@@ -164,10 +164,12 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
         
         User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: inout User?) -> Void in
             NonUserProfileVC.nonUser = user!
-            self.performSegue(withIdentifier: "showNonUser", sender: self)
+                
+            self.dismiss(animated: true) {
+                self.performSegue(withIdentifier: "showNonUser", sender: self)
+            }
         })
         
-//        self.performSegue(withIdentifier: "showNonUser", sender: self)
     }
 }
 

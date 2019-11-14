@@ -11,13 +11,43 @@ import UIKit
 import MapKit
 import FirebaseStorage
 import FirebaseFirestore
+import FirebaseAuth
 
 class TabBarController: UITabBarController {
     
+    var timer = Timer()
     
     override func viewDidLoad() {
         getBars()
+        
+//        scheduledTimerWithTimeInterval()
+        
+        //if there are requests we paint the number on the vc label
+        findAndUpdate()
     }
+    
+    func findAndUpdate() {
+        for i in viewControllers! {
+            if(i is ProfileVC) {
+                (i as! ProfileVC).updateBadge()
+            }
+        }
+    }
+    
+//    func scheduledTimerWithTimeInterval(){
+//        // Scheduling timer to Call the function "updateUser" with the interval of 15 seconds
+//        timer = Timer.scheduledTimer(timeInterval: 60*2, target: self, selector: #selector(self.updateUser), userInfo: nil, repeats: true)
+//    }
+//
+//    @objc func updateUser() {
+//
+//        if(AppDelegate.loggedIn) {
+//            User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
+//                AppDelegate.user = user!
+//                self.findAndUpdate()
+//            }
+//        }
+//    }
     
     func getBars(){
         let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)

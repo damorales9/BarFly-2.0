@@ -13,13 +13,10 @@ import FirebaseStorage
 class RequestsVC: UITableViewController {
     
     override func viewDidLoad() {
-    
         tableView.rowHeight = 60
-        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,7 +93,6 @@ class RequestsVC: UITableViewController {
             self.tableView.reloadData()
             
         }
-        
     }
     
     @objc func declineClicked(sender: UIButton) {

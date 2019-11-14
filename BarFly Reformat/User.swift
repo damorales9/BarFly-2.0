@@ -14,6 +14,7 @@ struct User {
     var name:String?
     var username: String?
     var bar:String?
+    var timestamp: NSNumber?
     var admin:Bool?
     var email: String?
     var friends: [String?]
@@ -34,13 +35,14 @@ struct User {
                 let name = ((document!.get("name")) as! String)
                 let username = ((document!.get("username")) as! String)
                 let bar = ((document!.get("bar")) as! String)
+                let timestamp = ((document!.get("timestamp")) ?? 0) as! NSNumber
                 let admin = ((document!.get("admin")) as! Bool)
                 let friends = ((document!.get("friends")) as! [String])
                 let requests = ((document!.get("requests")) as! [String])
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let email = ((document!.get("email")) as? String  ?? "")
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
                 
                 setFunction(&user)
                 
@@ -63,6 +65,7 @@ struct User {
                 "profileURL": user.profileURL ?? "",
                 "email": user.email!,
                 "friends": user.friends,
+                "timestamp": user.timestamp ??  0,
                 "requests":user.requests
             ]
 
