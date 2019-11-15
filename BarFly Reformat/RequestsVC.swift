@@ -36,7 +36,7 @@ class RequestsVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RequestCellView
         
-        User.getUser(uid: (AppDelegate.user?.requests[indexPath.row])!) { (user: inout User?) in
+        User.getUser(uid: (AppDelegate.user?.requests[indexPath.row])!) { (user: User?) in
             cell.username!.text = "\(user!.username!)"
             cell.name!.text = "\(user!.name!)"
             
@@ -82,12 +82,14 @@ class RequestsVC: UITableViewController {
     
     @objc func acceptClicked(sender: UIButton) {
         
-        User.getUser(uid: (AppDelegate.user?.requests[sender.tag])!) { ( user: inout User?) in
+        User.getUser(uid: (AppDelegate.user?.requests[sender.tag])!) { ( user: User?) in
             
-            user!.friends.append(AppDelegate.user?.uid)
+            var u = user!
+            
+            u.friends.append(AppDelegate.user?.uid)
             AppDelegate.user?.requests.remove(at: sender.tag)
             
-            User.updateUser(user: user)
+            User.updateUser(user: u)
             User.updateUser(user: AppDelegate.user)
             
             self.tableView.reloadData()
@@ -97,7 +99,7 @@ class RequestsVC: UITableViewController {
     
     @objc func declineClicked(sender: UIButton) {
      
-        User.getUser(uid: (AppDelegate.user?.requests[sender.tag])!) { ( user: inout User?) in
+        User.getUser(uid: AppDelegate.user!.uid!) { ( user: User?) in
             
             AppDelegate.user?.requests.remove(at: sender.tag)
             User.updateUser(user: AppDelegate.user)

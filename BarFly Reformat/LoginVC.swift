@@ -241,7 +241,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 let uid = Auth.auth().currentUser!.uid
                 print("UID is \(uid)")
                 
-                User.getUser(uid: uid, setFunction: {(user: inout User?) -> Void in
+                User.getUser(uid: uid, setFunction: {(user: User?) -> Void in
                     AppDelegate.user = user!
                     AppDelegate.loggedIn = true
                     

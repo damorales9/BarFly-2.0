@@ -21,14 +21,24 @@ class ProfileVC: UIViewController {
     
     //UI
     @IBOutlet var profileImage: UIImageView!
-    @IBOutlet weak var edit: UIButton!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var email: UITextField!
-    @IBOutlet weak var password: UITextField!
-    @IBOutlet weak var changeProfile: UIButton!
-    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var username: UILabel!
     @IBOutlet weak var dragIndicator: UILabel!
     @IBOutlet weak var requestsButton: UIBarButtonItem!
+    @IBOutlet weak var changeBarChoiceView: UIView!
+    @IBOutlet weak var changeBarChoice: UIButton!
+    @IBOutlet weak var barChoiceLabel: UILabel!
+    @IBOutlet weak var barChoice: UIImageView!
+    
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var editButtonView: UIView!
+    
+    
+    @IBOutlet weak var numFollowers: UILabel!
+    @IBOutlet weak var numFollowing: UILabel!
+    @IBOutlet weak var followingButton: UIButton!
+    @IBOutlet weak var followersButton: UIButton!
+    
     
     @IBOutlet weak var fieldView: UIView!
     
@@ -45,8 +55,6 @@ class ProfileVC: UIViewController {
         self.centerConstraint.isActive = true
         self.hideKeyboardWhenTappedAround()
         
-        edit.layer.cornerRadius = 5
-        changeProfile.layer.cornerRadius =  5
         dragIndicator.layer.cornerRadius =  5
         fieldView.layer.cornerRadius = 30
         fieldView.layer.borderColor =  UIColor.barflyblue.cgColor
@@ -54,14 +62,28 @@ class ProfileVC: UIViewController {
         
         name.layer.borderWidth = 0
         username.layer.borderWidth = 0
-        email.layer.borderWidth = 0
-        password.layer.borderWidth = 0
+        
+        name.layer.cornerRadius =  5
+        username.layer.cornerRadius =  5
+        
+        changeBarChoice.layer.borderWidth = 2
+        changeBarChoiceView.layer.cornerRadius = 5
+        changeBarChoice.layer.cornerRadius = 5
+        changeBarChoice.layer.borderColor = UIColor.black.cgColor
+        
+        editButtonView.layer.cornerRadius = 5
+        editButton.layer.cornerRadius = 5
+        editButton.layer.borderWidth = 2
+        editButton.layer.borderColor = UIColor.barflyblue.cgColor
+        
+        name.layer.borderWidth = 0
+        username.layer.borderWidth = 0
+        
+        name.layer.borderColor = UIColor.barflyblue.cgColor
+        username.layer.borderColor = UIColor.barflyblue.cgColor
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
-        
-        
-
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
         fieldView.addGestureRecognizer(gesture)
@@ -71,22 +93,31 @@ class ProfileVC: UIViewController {
         
         paintComponents()
         updateBadge()
+        getFollowers()
     }
     
     func paintComponents() {
         
-        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
+        User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
             
             AppDelegate.user = user!
         
             if let user = AppDelegate.user {
                 self.name.text = user.name
-                self.email.text = user.email
                 self.username.text = user.username
-                self.password.text = UserDefaults.standard.string(forKey: "password")
+                self.numFollowing.text = "\(AppDelegate.user!.friends.count)"
                 
-                let placeholder = UIImage( named: "person.circle.fill")
                 
+                var placeholder: UIImage?
+                if #available(iOS 13.0, *) {
+                    placeholder = UIImage(systemName: "questionmark")
+                } else {
+                    // Fallback on earlier versions
+                    placeholder = UIImage(named: "profile")
+                }
+                self.barChoice.image = placeholder
+                
+                placeholder = UIImage( named: "person.circle.fill")
                 
                 print("profileURL is \(user.profileURL)")
                 
@@ -106,8 +137,46 @@ class ProfileVC: UIViewController {
                 }
                 
                 if(user.requests.count == 0) {
-                    
+                    self.requestsButton.tintColor = .clear
+                } else {
+                    self.requestsButton.tintColor = .barflyblue
                 }
+                
+                if(user.bar == "nil") {
+                    
+                    self.changeBarChoice.setTitle("Make a Choice", for: .normal)
+                    self.barChoiceLabel.text = "You have not selected a bar"
+                } else {
+                    self.changeBarChoice.setTitle("Change Your Choice", for: .normal)
+                    self.barChoiceLabel.text = "You are going to \(user.bar!)"
+        
+                    let firestore = Firestore.firestore()
+                    let userRef = firestore.collection("Bars")
+                    let docRef = userRef.document("\(user.bar!)")
+                    docRef.getDocument { (document, error) in
+                            
+                        if(error != nil) {
+                            print("error bro")
+                        } else {
+                            let imageURL = document?.get("imageURL") as! String
+                            
+                            var placeholder: UIImage?
+                            
+                            if #available(iOS 13.0, *) {
+                                placeholder = UIImage(systemName: "questionmark")
+                            } else {
+                                placeholder = UIImage(named: "first")
+                            }
+                            
+                            let storage = Storage.storage()
+                            let httpsReference = storage.reference(forURL: imageURL)
+                            
+                            self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                
+                        }
+                    }
+                }
+                
             }
         }
         
@@ -131,6 +200,12 @@ class ProfileVC: UIViewController {
         updateBadge()
     }
     
+    func getFollowers(){
+        Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: AppDelegate.user?.uid).getDocuments { (snapshot,err)in (snapshot, err)
+            self.numFollowers.text = "\(snapshot!.documents.count)"
+        }
+    }
+    
     func updateBadge() {
         if(AppDelegate.user?.requests.count != 0){
             tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
@@ -139,83 +214,8 @@ class ProfileVC: UIViewController {
         }
     }
     
-    @IBAction func editButtonClicked(_ sender: Any) {
-    
-        editting = false
-        self.name.resignFirstResponder()
-        UIView.animate(withDuration: 1, animations: {
-            self.edit.setTitle("Save", for: .normal)
-            self.changeProfile.isHidden = true
-//                     self.fieldViewTopConstraint?.constant += 340
-            self.view.layoutIfNeeded()
-            
-        })
-        
-        UIView.animate(withDuration: 0.3) {
-            self.startingConstant = -250
-            self.centerConstraint.constant = self.startingConstant
-            self.view.layoutIfNeeded()
-            self.edit.isHidden = true
-        }
-                    
-          
-        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
-            AppDelegate.user = user!
-            
-            
-            if let username = self.username.text, let password = self.password.text , let email = self.email.text{
-                Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("username", isEqualTo: self.username.text!)
-                .getDocuments() { (querySnapshot, err) in
-                    if(querySnapshot?.documents.count == 0) {
-                        AppDelegate.user?.username = username
-                    } else {
-                        self.username.text = AppDelegate.user?.username
-                    }
-                    
-                    AppDelegate.user?.name = self.name.text
-                    AppDelegate.user?.email = email
-                    
-                    
-                    if(password.count >= 6 && email.isValidEmail()) {
-                        Auth.auth().currentUser?.updatePassword(to: password) { (error) in
-                            if(error == nil) {
-                                UserDefaults.standard.set(password, forKey: "password")
-                            } else {
-                                self.password.text = UserDefaults.standard.string(forKey: "password")
-                            }
-                        }
-                        Auth.auth().currentUser?.updateEmail(to: email, completion: { (error) in
-                            if(error == nil) {
-                                UserDefaults.standard.set(email, forKey: "email")
-                            } else {
-                                self.email.text = UserDefaults.standard.string(forKey: "email")
-                            }
-                        })
-                    }
-                    
-                    User.updateUser(user: AppDelegate.user!)
-                }
-            }
-            
-            
-            
-        }
-        if(profileImage.image != nil) {
-            self.saveFIRData()
-        }
-            
-        self.name.isEnabled = false
-        self.email.isEnabled = false
-        self.password.isEnabled = false
-        self.username.isEnabled = false
-        self.password.isSecureTextEntry = true
-                
-                
-                //save changes made
-    }
-    
-    @IBAction func changeProfileClicked(_ sender: UIButton) {
-        self.imagePicker.present(from: sender)
+    @IBAction func cameraButtonClicked(_ sender: Any) {
+        self.imagePicker.present(from: sender as! UIView)
     }
     
     func saveFIRData(){
@@ -263,48 +263,17 @@ class ProfileVC: UIViewController {
         case .ended:
             if(self.centerConstraint.constant < -350) {
                 
-                editting = true
-                self.name.becomeFirstResponder()
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.edit.setTitle("Save", for: .normal)
-                    self.changeProfile.isHidden = false
-                    //                self.fieldViewTopConstraint?.constant -= 340
-                    self.view.layoutIfNeeded()
-                    self.edit.isHidden = false
-                })
-                
-                
-                name.isEnabled = editting
-                email.isEnabled = editting
-                password.isEnabled = editting
-                username.isEnabled = editting
-                password.isSecureTextEntry = !editting
-                
-                
-                print("high enough")
-                
                 UIView.animate(withDuration: 0.3) {
-                    self.centerConstraint.constant = -600
+                    self.centerConstraint.constant = -650
                     self.view.layoutIfNeeded()
-                    self.edit.isHidden = false
+                    
                 }
             } else {
-                print("too low")
-                
-                if(editting) {
-                    UIView.animate(withDuration: 0.3) {
-                        self.centerConstraint.constant = -600
-                        self.view.layoutIfNeeded()
-                        self.edit.isHidden = false
-                    }
-                } else {
                     
-                    UIView.animate(withDuration: 0.3) {
-                        self.startingConstant = -250
-                        self.centerConstraint.constant = self.startingConstant
-                        self.view.layoutIfNeeded()
-                        self.edit.isHidden = true
-                    }
+                UIView.animate(withDuration: 0.3) {
+                    self.startingConstant = -250
+                    self.centerConstraint.constant = self.startingConstant
+                    self.view.layoutIfNeeded()
                 }
             }
         default:
@@ -322,8 +291,8 @@ extension ProfileVC: ImagePickerDelegate {
         
         if let image = image {
             self.profileImage.image = image
+            self.saveFIRData()
         }
-        
     }
 }
 

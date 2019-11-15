@@ -21,7 +21,7 @@ struct User {
     var requests: [String?]
     var profileURL: String?
     
-    static func getUser(uid: String, setFunction: @escaping (_ user: inout User?) -> Void) {
+    static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
         
         var user: User?
         
@@ -44,7 +44,7 @@ struct User {
                 
                 user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
                 
-                setFunction(&user)
+                setFunction(user)
                 
             }
                 

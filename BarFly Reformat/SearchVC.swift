@@ -162,7 +162,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: inout User?) -> Void in
+        User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: User?) -> Void in
             NonUserProfileVC.nonUser = user!
                 
             self.dismiss(animated: true) {

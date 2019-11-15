@@ -144,10 +144,10 @@ class NonUserProfileVC: UIViewController {
     
     func updateFieldView() {
         
-        User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
+        User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
             AppDelegate.user = user!
         
-            User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: inout User?) in
+            User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: User?) in
                 
                 NonUserProfileVC.nonUser = user!
         
@@ -290,10 +290,12 @@ class NonUserProfileVC: UIViewController {
         
         if(confirm) {
             
-            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: inout User?) -> Void in
+            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
 
-                user!.friends.remove(at: user!.friends.firstIndex(of: AppDelegate.user?.uid)!)
-                User.updateUser(user: user)
+                NonUserProfileVC.nonUser = user!
+                
+                NonUserProfileVC.nonUser?.friends.remove(at: user!.friends.firstIndex(of: AppDelegate.user?.uid)!)
+                User.updateUser(user: NonUserProfileVC.nonUser)
                 
                 
                 self.updateFieldView()
@@ -324,7 +326,7 @@ class NonUserProfileVC: UIViewController {
     
     @IBAction func followButtonClicked(_ sender: Any) {
         
-        User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: inout User?) -> Void in
+        User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
             NonUserProfileVC.nonUser = user!
             
             if let user = NonUserProfileVC.nonUser {
