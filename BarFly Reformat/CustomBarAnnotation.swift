@@ -8,6 +8,8 @@
 
 import Foundation
 import MapKit
+import Firebase
+import FirebaseStorage
 
 class CustomBarAnnotation: NSObject, MKAnnotation {
     //@objc dynamic var coordinate = CLLocationCoordinate2D()
@@ -42,5 +44,36 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()
+    }
+    
+    static func getBar(name: String, setFunction: @escaping (_ bar: inout CustomBarAnnotation?) -> Void) {
+        
+        var bar: CustomBarAnnotation?
+        
+        let firestore = Firestore.firestore()
+        let userRef = firestore.collection("Bars")
+        let docRef = userRef.document("\(name)")
+        docRef.getDocument { (document, error) in
+                
+            if(error == nil) {
+    
+                let amntPeople = document!.data()!["amountPeople"] as? Int
+                let name = document!.data()!["name"] as? String
+                let latitude = document!.data()!["latitude"] as? Double
+                let longitude = document!.data()!["longitude"] as? Double
+                let imageURL = document!.data()!["imageURL"] as? String
+                let url = document!.data()!["url"] as? String
+                
+                bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
+                bar!.title = NSLocalizedString(name!, comment: name!)
+                bar!.imageName = imageURL!
+                bar!.amntPeople = amntPeople
+                bar!.url = url
+                
+                setFunction(&bar)
+                
+            }
+                
+        }
     }
 }

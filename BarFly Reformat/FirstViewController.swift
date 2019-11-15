@@ -18,6 +18,10 @@ import SafariServices
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBAction func segue(_ sender: Any) {
+        BarDetailsVC.delegate = self
+        performSegue(withIdentifier: "showBarList", sender: self)
+    }
     @IBOutlet var barDetails: UIView!
     @IBOutlet var myNavBar: UINavigationBar!
     @IBOutlet var myMapView: MKMapView!
@@ -40,13 +44,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var barImageBckg: UIView!
     
     
-    
+    static var currentAnnotation: MKAnnotation!
+    static var annotations = [MKAnnotation]()
     
     var barDetailsTop: NSLayoutConstraint?
     var barDetailsBottom: NSLayoutConstraint?
-    var centerConstraint: NSLayoutConstraint!
+    static var centerConstraint: NSLayoutConstraint!
     
-    var startingConstant: CGFloat  = -85
+    static var startingConstant: CGFloat  = -85
     
     var timer = Timer()
     var barTimer = BarTimer()
@@ -72,11 +77,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //barDetails.layer.cornerRadius = 20
-        //barDetails.layer.borderWidth = 4
+        self.barDetails.layer.cornerRadius = 20
+        self.barDetails.layer.borderWidth = 4
         let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-        barDetails.layer.borderColor = color.cgColor
-        barDetails.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
+        self.barDetails.layer.borderColor = color.cgColor
+        self.barDetails.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         // Do any additional setup after loading the view.
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -101,15 +106,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         //barDetailsTop = NSLayoutConstraint(item: barDetails as Any, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -85)
         //view.addConstraint(barDetailsTop!)
         
-        self.centerConstraint = barDetails.topAnchor.constraint(equalTo: view.bottomAnchor)
-        self.centerConstraint.constant = startingConstant
-        self.centerConstraint.isActive = true
+        FirstViewController.centerConstraint = self.barDetails.topAnchor.constraint(equalTo: view.bottomAnchor)
+        FirstViewController.centerConstraint.constant = FirstViewController.startingConstant
+        FirstViewController.centerConstraint.isActive = true
         
         exitDetails.addTarget(self, action: #selector(exitBarDetails), for: .touchUpInside)
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
-        barDetails.addGestureRecognizer(gesture)
-        barDetails.isUserInteractionEnabled = true
+        self.barDetails.addGestureRecognizer(gesture)
+        self.barDetails.isUserInteractionEnabled = true
         
         showAllAnnotations(self)
         addCustomOverlay()
@@ -130,6 +135,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         DispatchQueue.main.async {
             self.locationManager.startUpdatingLocation()
         }
+        
+        FirstViewController.annotations = myMapView.annotations
     
     }
     
@@ -164,6 +171,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         
         //centerMap(locValue)
+     
     }
     */
     @IBAction private func showAllAnnotations(_ sender: Any) {
@@ -321,7 +329,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         barDetailsImage.layer.borderColor = UIColor.black.cgColor
         amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         amntPeople.layer.cornerRadius = 15
-        //dragButton.layer.cornerRadius = 5
+        dragButton.layer.cornerRadius = 5
         imGoingBtn.layer.cornerRadius = 10
         imGoingBtn.layer.borderWidth = 4
         imGoingBtn.layer.borderColor = UIColor.black.cgColor
@@ -370,7 +378,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         linkBtn.addTarget(self, action: #selector(openLink(sender:)), for: .touchUpInside)
         
         UIView.animate(withDuration: 0.5) {
-            self.centerConstraint.constant = -300
+            FirstViewController.centerConstraint.constant = -300
             self.barDetails.layoutIfNeeded()
         
         }
@@ -435,7 +443,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             let bar = view.annotation as! CustomBarAnnotation
             bar.view?.removeFromSuperview()
             UIView.animate(withDuration: 0.5) {
-                self.centerConstraint.constant = -85
+                FirstViewController.self.centerConstraint.constant = -85
                 self.barDetails.layoutIfNeeded()
             }
             /*
@@ -482,17 +490,17 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
             switch gestureRecognizer.state {
             case .began:
-                self.startingConstant = self.centerConstraint.constant
+                FirstViewController.startingConstant = FirstViewController.centerConstraint.constant
             case .changed:
                 let translation = gestureRecognizer.translation(in: self.view)
-                self.centerConstraint.constant = self.startingConstant + translation.y
+                FirstViewController.centerConstraint.constant = FirstViewController.startingConstant + translation.y
             case .ended:
-                if(self.centerConstraint.constant < -400) {
+                if(FirstViewController.centerConstraint.constant < -400) {
                     
                     print("high enough")
                     
                     UIView.animate(withDuration: 0.5) {
-                        self.centerConstraint.constant = -800
+                        FirstViewController.centerConstraint.constant = -800
                         self.view.layoutIfNeeded()
                         //self.edit.isHidden = false
                     }
@@ -517,8 +525,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     //                }
                     
                     UIView.animate(withDuration: 0.3) {
-                        self.startingConstant = -300
-                        self.centerConstraint.constant = self.startingConstant
+                        FirstViewController.startingConstant = -300
+                        FirstViewController.centerConstraint.constant = FirstViewController.startingConstant
                         self.view.layoutIfNeeded()
                         //self.edit.isHidden = true
                     }
@@ -799,7 +807,24 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     @objc func refreshButtonAction(){
+        pullBars { (success) in
+            if (success){
+                //FirstViewController.annotations = myMapView.annotations
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            //FirstViewController.annotations = self.myMapView.annotations
+            print(FirstViewController.annotations)
+            print("updated")
+        }
+        //print(FirstViewController.annotations)
+        //print("updated")
+    }
+    
+    func pullBars(completion: (_ success: Bool) -> Void){
         myMapView.removeAnnotations(FirstViewController.allAnnotations)
+        FirstViewController.annotations.removeAll()
         let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
         basicQuery.getDocuments { (snapshot, error) in
             if let error = error {
@@ -826,18 +851,17 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 FirstViewController.allBars.append(bar)
                 //print(allBars)
                 FirstViewController.allAnnotations.append(bar)
+                FirstViewController.annotations.append(bar)
+                print(FirstViewController.annotations)
                 self.myMapView.addAnnotation(bar)
             }
         }
-        //print(FirstViewController.allAnnotations)
-        //myMapView.addAnnotations(FirstViewController.allAnnotations)
-        //showAllAnnotations(self)
-        print("updated")
+        completion(true)
     }
     
     @objc func exitBarDetails(){
         UIView.animate(withDuration: 0.5) {
-            self.centerConstraint.constant = -85
+            FirstViewController.centerConstraint.constant = -85
             self.barDetails.layoutIfNeeded()
         }
     }
@@ -864,6 +888,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 3500, longitudinalMeters: 3500)
             myMapView.setRegion(viewRegion, animated: false)
         }
+    }
+    
+    static func getAnnotation(title: String) -> MKAnnotation{
+        for annotation in FirstViewController.annotations {
+            if (annotation.title == title){
+                FirstViewController.currentAnnotation = annotation
+                return annotation
+            }
+        }
+        return FirstViewController.currentAnnotation
     }
 
 

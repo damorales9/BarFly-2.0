@@ -1,14 +1,16 @@
 //
-//  BarListVC.swift
+//  BarDetails.swift
 //  BarFly Reformat
 //
-//  Created by Derek Morales on 11/1/19.
+//  Created by Derek Morales on 11/15/19.
 //  Copyright © 2019 LoFi Games. All rights reserved.
 //
 
 import UIKit
 
-class BarListVC: UIViewController {
+class BarDetails: UIViewController {
+    
+    static var bar: CustomBarAnnotation?
 
     override func viewDidLoad() {
         super.viewDidLoad()

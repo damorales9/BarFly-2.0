@@ -72,9 +72,7 @@
                                             <barButtonItem title="List" image="list.bullet" catalog="system" id="SRc-va-lxF">
                                                 <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <connections>
-                                                    <segue destination="UGw-Jw-KbG" kind="popoverPresentation" popoverAnchorBarButtonItem="SRc-va-lxF" id="Ww3-cV-gIe">
-                                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                                    </segue>
+                                                    <action selector="segue:" destination="9pv-A4-QxB" id="qA7-Zt-sNd"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem image="arrow.clockwise" catalog="system" id="PtP-dF-FkL">
@@ -93,7 +91,7 @@
                                 <rect key="frame" x="0.0" y="86" width="414" height="800"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10m-F7-BYi">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="8"/>
+                                        <rect key="frame" x="186" y="17" width="50" height="8"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -205,7 +203,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Guests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELE-dQ-ErM">
-                                                <rect key="frame" x="8" y="41" width="54" height="20"/>
+                                                <rect key="frame" x="8" y="41" width="54" height="12"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="17"/>
                                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -364,29 +362,77 @@
                         <outlet property="refreshBtn" destination="PtP-dF-FkL" id="dJr-ih-7ZI"/>
                         <outlet property="viewFriendsBtn" destination="afg-wR-jtr" id="us8-Qq-n1P"/>
                         <outlet property="viewFriendsView" destination="Cls-1a-FrQ" id="Kss-SD-olF"/>
-                        <segue destination="x3o-nF-eXS" kind="popoverPresentation" identifier="barDetails" popoverAnchorView="Yjs-px-UtM" id="cnP-IL-RYn">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
+                        <segue destination="thA-cw-Wfk" kind="show" identifier="showBarList" id="YSz-GR-5NS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1266.6666666666667" y="-956.25"/>
         </scene>
-        <!--Bar ListVC-->
-        <scene sceneID="8Ag-I4-IDy">
+        <!--Bar DetailsVC-->
+        <scene sceneID="oQq-U5-Db5">
             <objects>
-                <viewController id="UGw-Jw-KbG" customClass="BarListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="kNX-Ek-r6U">
+                <tableViewController id="thA-cw-Wfk" customClass="BarDetailsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="N4g-Yh-qxX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="ERs-MI-CqO"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="919-7s-lTf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BarCell" textLabel="mHt-Ll-M51" imageView="w50-pR-N0g" rowHeight="48" style="IBUITableViewCellStyleDefault" id="2wN-kg-2ir">
+                                <rect key="frame" x="0.0" y="28" width="414" height="48"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2wN-kg-2ir" id="M6W-XQ-CVq">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mHt-Ll-M51">
+                                            <rect key="frame" x="59" y="0.0" width="335" height="48"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="profile" id="w50-pR-N0g">
+                                            <rect key="frame" x="20" y="12" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="thA-cw-Wfk" id="ntg-s9-ScA"/>
+                            <outlet property="delegate" destination="thA-cw-Wfk" id="39q-1V-aP0"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="pxo-Gf-FT7"/>
+                    <connections>
+                        <segue destination="PZU-k8-Tx9" kind="show" identifier="showBar" id="b1h-3W-cfc"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="71o-gt-ncE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2700" y="-743"/>
+            <point key="canvasLocation" x="2319" y="-956"/>
+        </scene>
+        <!--Bar Details-->
+        <scene sceneID="jb5-OK-eld">
+            <objects>
+                <viewController id="PZU-k8-Tx9" customClass="BarDetails" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YDh-7Q-2cZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="zWK-yV-uZb"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ukh-cw-eB8"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Qy-4m-Lu5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3436" y="-956"/>
         </scene>
         <!--SearchVC-->
         <scene sceneID="I4G-1K-0Wa">
@@ -409,14 +455,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fM6-96-Lv7">
-                                            <rect key="frame" x="59" y="9.5" width="28.5" height="17.5"/>
+                                            <rect key="frame" x="59" y="8.5" width="29.5" height="18"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WJQ-a4-8hm">
-                                            <rect key="frame" x="59" y="27.5" width="34.5" height="12"/>
+                                            <rect key="frame" x="59" y="27" width="33.5" height="12"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="10"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -447,22 +493,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ve2-gV-q4Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2428" y="116"/>
-        </scene>
-        <!--Bar DetailsVC-->
-        <scene sceneID="T0h-eb-C5s">
-            <objects>
-                <viewController storyboardIdentifier="BarDetailsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="x3o-nF-eXS" customClass="BarDetailsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="JsX-JR-asX">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="H4A-Ch-dSo"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3G2-38-IKW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2671" y="-1419"/>
         </scene>
         <!--ProfileVC-->
         <scene sceneID="wg7-f3-ORb">
@@ -952,7 +982,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get off Fortnite for once, Glen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YX7-Uk-BDC">
-                                <rect key="frame" x="7" y="100" width="400.5" height="35"/>
+                                <rect key="frame" x="16.5" y="100" width="381" height="35"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="30"/>
                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
