@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
+        
+        
         let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
         basicQuery.getDocuments { (snapshot, error) in
             if let error = error {

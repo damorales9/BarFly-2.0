@@ -147,9 +147,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.3) {
             self.eC?.constant = -50
             self.password.alpha -= 1
-            if(self.password.text!.count > 0){
-                self.passwordLbl.alpha -= 1
-            }
+            self.passwordLbl.alpha -= 1
             self.view.layoutIfNeeded()
         }
     }
@@ -158,9 +156,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.3) {
             self.eC?.constant = 10
             self.password.alpha += 1
-            if(self.password.text!.count > 0){
-                self.passwordLbl.alpha += 1
-            }
+            self.passwordLbl.alpha += 1
             self.view.layoutIfNeeded()
         }
     }
@@ -213,7 +209,17 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginButtonClicked(_ sender: Any) {
         if let email =  email.text, let password = password.text {
-            login(email: email, password: password)
+            LoginVC.login(email: email, password: password, completion: {
+                    print("LOGGED IN")
+            
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+                    self.navigationController?.pushViewController(tabVC, animated:true)
+            
+                }) { (error) in
+                    print("NEEDS LOGIN")
+                    self.errorLbl.text = error?.localizedDescription
+                }
         }
     }
     
@@ -223,29 +229,31 @@ class LoginVC: UIViewController, UITextFieldDelegate {
      * ----------------------------------
      */
     
-    func login(email: String, password: String) {
+    static func login(email: String, password: String, completion: @escaping () -> Void, errorFunc: @escaping (Error?) -> Void) {
         
-        
+        print("I AT LEAST MAKE IT THIS FAR")
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil {
-                self.errorLbl.isHidden = false
-                self.errorLbl.text = (error?.localizedDescription ?? "Unidentified Error")
-                return
+                errorFunc(error)
             } else {
-            
-            
-                UserDefaults.standard.set(self.email.text, forKey: "email")
-                UserDefaults.standard.set(self.password.text, forKey:  "password")
                 
+                print("MADE IT HERE")
+        
                 let uid = Auth.auth().currentUser!.uid
                 print("UID is \(uid)")
                 
                 User.getUser(uid: uid, setFunction: {(user: User?) -> Void in
+                    
+                    print("SETTING THIS SHIT YO")
+                    
+                    UserDefaults.standard.set(email, forKey: "email")
+                    UserDefaults.standard.set(password, forKey: "password")
+                    
                     AppDelegate.user = user!
                     AppDelegate.loggedIn = true
                     
-                    self.performSegue(withIdentifier: "hasLogin", sender: self)
+                    completion()
                 })
             }
             

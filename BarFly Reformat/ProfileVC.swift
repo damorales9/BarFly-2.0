@@ -33,6 +33,8 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var editButtonView: UIView!
     
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
+    @IBOutlet weak var changeProfileButton: UIBarButtonItem!
     
     @IBOutlet weak var numFollowers: UILabel!
     @IBOutlet weak var numFollowing: UILabel!
@@ -48,7 +50,6 @@ class ProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
         self.centerConstraint.constant = startingConstant
@@ -84,16 +85,33 @@ class ProfileVC: UIViewController {
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
-        
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
-        fieldView.addGestureRecognizer(gesture)
-        fieldView.isUserInteractionEnabled = true
-        
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
+    }
+    
+    
+    
+    func unpaintComponents() {
         
-        paintComponents()
-        updateBadge()
-        getFollowers()
+//        requestsButton.tintColor = .clear
+//        changeBarChoice.tintColor = .clear
+//        settingsButton.tintColor = .clear
+        self.navigationController?.isNavigationBarHidden = true
+        
+        name.text = ""
+        username.text = ""
+        numFollowers.text = ""
+        numFollowing.text = ""
+        
+        var placeholder: UIImage?
+        if #available(iOS 13.0, *) {
+            placeholder = UIImage(systemName: "questionmark")
+        } else {
+            // Fallback on earlier versions
+            placeholder = UIImage(named: "profile")
+        }
+        self.barChoice.image = placeholder
+        
+        barChoiceLabel.text = ""
     }
     
     func paintComponents() {
@@ -101,23 +119,15 @@ class ProfileVC: UIViewController {
         User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
             
             AppDelegate.user = user!
-        
+            
             if let user = AppDelegate.user {
+                
+                self.navigationController?.isNavigationBarHidden = false
                 self.name.text = user.name
                 self.username.text = user.username
                 self.numFollowing.text = "\(AppDelegate.user!.friends.count)"
                 
-                
-                var placeholder: UIImage?
-                if #available(iOS 13.0, *) {
-                    placeholder = UIImage(systemName: "questionmark")
-                } else {
-                    // Fallback on earlier versions
-                    placeholder = UIImage(named: "profile")
-                }
-                self.barChoice.image = placeholder
-                
-                placeholder = UIImage( named: "person.circle.fill")
+                var placeholder = UIImage( named: "person.circle.fill")
                 
                 print("profileURL is \(user.profileURL)")
                 
@@ -129,7 +139,12 @@ class ProfileVC: UIViewController {
                     let storage = Storage.storage()
                     let httpsReference = storage.reference(forURL: user.profileURL!)
                     
-                    self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                    let tempIV = UIImageView()
+                    tempIV.sd_setImage(with: httpsReference, placeholderImage: placeholder, completion: { (image, error, cache, storageRef) -> Void in
+                    
+                        self.profileImage.image = tempIV.image
+                    })
+                   
                 
                         
                 } else {
@@ -143,6 +158,15 @@ class ProfileVC: UIViewController {
                 }
                 
                 if(user.bar == "nil") {
+                    
+                    var placeholder: UIImage?
+                    if #available(iOS 13.0, *) {
+                        placeholder = UIImage(systemName: "questionmark")
+                    } else {
+                        // Fallback on earlier versions
+                        placeholder = UIImage(named: "profile")
+                    }
+                    self.barChoice.image = placeholder
                     
                     self.changeBarChoice.setTitle("Make a Choice", for: .normal)
                     self.barChoiceLabel.text = "You have not selected a bar"
@@ -160,8 +184,6 @@ class ProfileVC: UIViewController {
                         } else {
                             let imageURL = document?.get("imageURL") as! String
                             
-                            var placeholder: UIImage?
-                            
                             if #available(iOS 13.0, *) {
                                 placeholder = UIImage(systemName: "questionmark")
                             } else {
@@ -176,28 +198,41 @@ class ProfileVC: UIViewController {
                         }
                     }
                 }
-                
             }
+                
         }
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration:0.5, delay: 0.5, usingSpringWithDamping: 1,
+        UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
         initialSpringVelocity: 0.2,
         options: .allowAnimatedContent,
         animations: {
             self.centerConstraint.constant = self.startingConstant - 20
             self.view.layoutIfNeeded()
         }, completion: { (value: Bool) in
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.3) {
                 self.centerConstraint.constant = self.startingConstant
                 self.view.layoutIfNeeded()
             }
         })
         
-        paintComponents()
-        updateBadge()
+        paintIfLoggedIn()
+    }
+    
+    func paintIfLoggedIn() {
+    
+        if(AppDelegate.loggedIn) {
+            self.paintComponents()
+            self.updateBadge()
+            self.getFollowers()
+                
+            let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
+            fieldView.addGestureRecognizer(gesture)
+            fieldView.isUserInteractionEnabled = true
+        }
+        
     }
     
     func getFollowers(){
@@ -215,7 +250,7 @@ class ProfileVC: UIViewController {
     }
     
     @IBAction func cameraButtonClicked(_ sender: Any) {
-        self.imagePicker.present(from: sender as! UIView)
+        self.imagePicker.present(from: view)
     }
     
     func saveFIRData(){

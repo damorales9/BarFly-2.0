@@ -20,10 +20,15 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         getBars()
         
+        findAndUpdate()
+        
 //        scheduledTimerWithTimeInterval()
         
         //if there are requests we paint the number on the vc label
-        findAndUpdate()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
     }
     
     func findAndUpdate() {
@@ -75,6 +80,5 @@ class TabBarController: UITabBarController {
                 FirstViewController.allAnnotations.append(bar)
             }
         }
-        
     }
 }

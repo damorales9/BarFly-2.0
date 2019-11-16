@@ -22,6 +22,8 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+        
         resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
@@ -42,7 +44,12 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
         tableView.rowHeight = 60
         
         tableView.reloadData()
-
+        
+    
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        BarDetailsVC.delegate?.navigationController?.isNavigationBarHidden = false
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -162,12 +169,8 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
         CustomBarAnnotation.getBar(name: filteredTableData[indexPath.row].title!, setFunction: {(bar: inout CustomBarAnnotation?) -> Void in
             BarDetails.bar = bar!
                 
-            self.resultSearchController.dismiss(animated: true) {
-                self.dismiss(animated: true)
-            }
-            self.dismiss(animated: true) {
-                //self.performSegue(withIdentifier: "showBarList", sender: self)
-            }
+            self.resultSearchController.dismiss(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
             BarDetailsVC.delegate!.myMapView.setCenter(bar!.coordinate, animated: true)
             
             var currentBar: MKAnnotation!

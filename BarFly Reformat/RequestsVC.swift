@@ -14,6 +14,9 @@ class RequestsVC: UITableViewController {
     
     override func viewDidLoad() {
         tableView.rowHeight = 60
+        
+        self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

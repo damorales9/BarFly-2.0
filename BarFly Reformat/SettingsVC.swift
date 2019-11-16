@@ -29,7 +29,12 @@ class SettingsVC: UITableViewController {
             UserDefaults.standard.removeObject(forKey: "password")
             AppDelegate.loggedIn = false
             AppDelegate.user = nil
-            self.performSegue(withIdentifier: "logOut", sender: self)
+            
+        self.tabBarController?.navigationController?.popToRootViewController(animated: true)
+            
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
+            self.tabBarController?.navigationController?.pushViewController(loginVC, animated:true)
         }
     }
     

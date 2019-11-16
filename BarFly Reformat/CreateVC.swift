@@ -289,9 +289,12 @@ class CreateVC: UIViewController, UITextFieldDelegate {
                                 }
                                 AppDelegate.loggedIn = true
                                 User.updateUser(user: AppDelegate.user)
-                                self.performSegue(withIdentifier: "wasCreated", sender: self)
-
-//                                self.updateUIDatabase()
+                                
+                                self.navigationController?.popViewController(animated: true)
+                                 self.navigationController?.popViewController(animated: true)
+                                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                                let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+                                self.navigationController?.pushViewController(tabVC, animated:true)
                                 
                             })
                             

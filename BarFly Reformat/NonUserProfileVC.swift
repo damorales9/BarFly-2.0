@@ -120,14 +120,14 @@ class NonUserProfileVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration:0.5, delay: 0.5, usingSpringWithDamping: 1,
+        UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
         initialSpringVelocity: 0.2,
         options: .allowAnimatedContent,
         animations: {
             self.centerConstraint.constant = self.startingConstant - 20
             self.view.layoutIfNeeded()
         }, completion: { (value: Bool) in
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.3) {
                 self.centerConstraint.constant = self.startingConstant
                 self.view.layoutIfNeeded()
             }

@@ -29,19 +29,19 @@ class EditProfileVC: UIViewController {
         saveButton.layer.borderColor = UIColor.black.cgColor
         saveButton.layer.borderWidth = 2
         
-        name.layer.cornerRadius = 2
+        name.layer.cornerRadius = 5
         name.layer.borderWidth = 1
         name.layer.borderColor = UIColor.barflyblue.cgColor
         
-        username.layer.cornerRadius = 2
+        username.layer.cornerRadius = 5
         username.layer.borderWidth = 1
         username.layer.borderColor = UIColor.barflyblue.cgColor
         
-        email.layer.cornerRadius = 2
+        email.layer.cornerRadius = 5
         email.layer.borderWidth = 1
         email.layer.borderColor = UIColor.barflyblue.cgColor
         
-        password.layer.cornerRadius = 2
+        password.layer.cornerRadius = 5
         password.layer.borderWidth = 1
         password.layer.borderColor = UIColor.barflyblue.cgColor
         
@@ -60,6 +60,7 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func saveButtonClicked(_ sender: Any) {
+        saveProfile()
     }
     
     func saveProfile() {
@@ -71,7 +72,7 @@ class EditProfileVC: UIViewController {
             if let username = self.username.text, let password = self.password.text , let email = self.email.text{
                 Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("username", isEqualTo: self.username.text!)
                 .getDocuments() { (querySnapshot, err) in
-                    if(querySnapshot?.documents.count == 0) {
+                    if(querySnapshot?.documents.count == 0 || (querySnapshot?.documents.count == 1 && querySnapshot?.documents[0].documentID == AppDelegate.user!.uid!)) {
                         
                         if(password.count >= 6) {
                             
@@ -97,7 +98,7 @@ class EditProfileVC: UIViewController {
                                 })
                                 
                                 User.updateUser(user: AppDelegate.user!)
-                                self.dismiss(animated: true)
+                                self.navigationController?.popToRootViewController(animated: true)
                             } else {
                                 self.errorLabel.text = "This email is not valid"
                             }

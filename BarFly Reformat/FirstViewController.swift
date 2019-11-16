@@ -20,7 +20,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
     @IBAction func segue(_ sender: Any) {
         BarDetailsVC.delegate = self
-        performSegue(withIdentifier: "showBarList", sender: self)
+        self.performSegue(withIdentifier: "showBarList", sender: self.navigationController)
     }
     @IBOutlet var barDetails: UIView!
     @IBOutlet var myNavBar: UINavigationBar!
@@ -73,6 +73,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 myMapView.addAnnotations(newAnnotations)
             }
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+         
+    }
+    
+    @IBAction func locationButtonClicked(_ sender: Any) {
+        centerLocation()
     }
     
     override func viewDidLoad() {
@@ -137,6 +145,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
         
         FirstViewController.annotations = myMapView.annotations
+        
+       
     
     }
     
