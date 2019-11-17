@@ -709,15 +709,66 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 }
             }
             else{
-                transaction.updateData(["bar": barChoice], forDocument: ui)
-                transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
-                DispatchQueue.main.async {
-                    self.amntPeople.text = "\(oldAmount)"
-                    sender.passedCallout!.amntPeople.text = "\(oldAmount)"
-                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor.gray
-                    self.imGoingView.backgroundColor = UIColor.gray
-                }
+                let alert = UIAlertController(title: "You're already going somewhere!", message: "You're already going to \(barChoice)! Would you like to update your choice to this bar?", preferredStyle: .alert)
+                 // add an action (button)
+                 alert.addAction(UIAlertAction(title: "Update", style: UIAlertAction.Style.default, handler: { action in
+                     // SHOULD ONLY DO ONCE transaction.updateData(["bar": "nil"], forDocument: ui)
+                     db.collection("User Info").document((Auth.auth().currentUser?.uid)!).updateData([
+                         "bar":"\(sender.passedData!.title!)"]) { err in
+                             if let err = err {
+                                 print(err.localizedDescription)
+                             }
+                     }
+                    let newBar = db.collection("Bars").document("\(sender.passedData!.title!)")
+                    newBar.getDocument { (document, error) in
+                        let amnt = document!.get("amountPeople")
+                        newBar.updateData(["amountPeople":((amnt as! Int)+1)])
+                        { err in
+                            if let err = err {
+                                print(err.localizedDescription)
+                            }
+                        }
+                    }
+                     let doc = db.collection("Bars").document(barChoice)
+                     doc.getDocument(completion: { (document, error) in
+                         let amnt = document!.get("amountPeople")
+                         doc.updateData(["amountPeople":((amnt as! Int)-1)])
+                         { err in
+                             if let err = err {
+                                 print(err.localizedDescription)
+                             }
+                         }
+                         
+                     })
+                    DispatchQueue.main.async {
+                        self.amntPeople.text = "\(newAmount)"
+                        sender.passedCallout!.amntPeople.text = "\(newAmount)"
+                        self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.gray
+                        self.imGoingView.backgroundColor = UIColor.gray
+                    }
+                     //self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                     //self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
+                     
+                     //self.dismiss(animated: true, completion: nil)
+                     
+                 }))
+                 
+                 alert.addAction(UIAlertAction(title: "View Bar", style: .cancel, handler: {action in
+                   //  self.dismiss(animated: true, completion: nil)
+                 }))
+                 
+                 // show the alert
+                 self.present(alert, animated: true, completion: nil)
+                //transaction.updateData(["bar": barChoice], forDocument: ui)
+                //transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
+                
+                self.amntPeople.text = "\(oldAmount)"
+                sender.passedCallout!.amntPeople.text = "\(oldAmount)"
+                self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                self.imGoingBtn.backgroundColor = UIColor.gray
+                self.imGoingView.backgroundColor = UIColor.gray
+                
             }
             return nil
         }) { (object, error) in
