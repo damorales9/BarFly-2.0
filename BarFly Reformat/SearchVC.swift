@@ -27,12 +27,11 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
         
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
         
-        getTimestampData()
-        
         resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.placeholder = "Find a User"
             controller.searchBar.sizeToFit()
             controller.searchBar.barStyle = .black
             controller.searchBar.searchTextField.textColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
@@ -74,10 +73,15 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
                 User.getUser(uid: i!) { (user) in
                     if(user?.bar != "nil") {
                         self.timestampData.append(user)
+                        self.timestampData.sort(by: { (user1, user2) -> Bool in
+                            return (user1?.timestamp!.doubleValue)! > (user2?.timestamp!.doubleValue)!
+                        })
                         self.feedView.reloadData()
                     }
                 }
             }
+            
+            
         }
     }
     
@@ -133,6 +137,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
         }
         
         self.tableView.reloadData()
+        self.feedView.reloadData()
         
     }
     
@@ -152,11 +157,13 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
                 return 0
             }
             
-        } else {
+        } else if(!resultSearchController.isActive) {
             
             print("getting this bad boy and he is \(timestampData.count)")
             return timestampData.count
             
+        } else {
+            return 0
         }
     }
     
@@ -250,6 +257,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
             
             return cell
         }
+          
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

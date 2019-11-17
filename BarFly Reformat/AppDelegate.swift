@@ -26,37 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
-        
-        
-        let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
-        basicQuery.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Oh no! Got an error! \(error.localizedDescription)")
-                return
-            }
-            guard let snapshot = snapshot else { return }
-            let allBars = snapshot.documents
-            for barDocument in allBars {
-                let amntPeople = barDocument.data()["amountPeople"] as? Int
-                let name = barDocument.data()["name"] as? String
-                let latitude = barDocument.data()["latitude"] as? Double
-                let longitude = barDocument.data()["longitude"] as? Double
-                let imageURL = barDocument.data()["imageURL"] as? String
-                let url = barDocument.data()["url"] as? String
-                
-                let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
-                bar.title = NSLocalizedString(name!, comment: name!)
-                bar.imageName = imageURL!
-                bar.amntPeople = amntPeople
-                bar.url = url
-                //print(bar.imageName as Any)
-                //print(bar)
-                FirstViewController.allBars.append(bar)
-                //print(allBars)
-                FirstViewController.allAnnotations.append(bar)
-            }
-        }
-        
         return true
     }
 

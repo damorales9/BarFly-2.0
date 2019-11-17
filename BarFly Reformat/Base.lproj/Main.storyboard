@@ -611,6 +611,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </imageView>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jj4-0l-jm3">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zit-7M-zOv">
                                 <rect key="frame" x="0.0" y="247" width="414" height="1000"/>
                                 <subviews>
@@ -634,7 +638,7 @@
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNE-gc-RJk">
                                         <rect key="frame" x="50" y="110" width="100" height="50"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="OqZ-4I-EhR"/>
                                             <constraint firstAttribute="width" constant="100" id="Tj0-it-3mh"/>
@@ -658,7 +662,7 @@
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg6-nw-CvV">
                                         <rect key="frame" x="264" y="110" width="100" height="50"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="VCZ-a3-8wD"/>
                                             <constraint firstAttribute="height" constant="50" id="r4F-wC-nXa"/>
@@ -803,7 +807,11 @@
                             <constraint firstAttribute="bottom" secondItem="v5t-2T-4cv" secondAttribute="bottom" id="3gQ-j9-6UY"/>
                             <constraint firstItem="v5t-2T-4cv" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="2" id="HTJ-wy-y2u"/>
                             <constraint firstItem="zit-7M-zOv" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="SAJ-s6-SvJ"/>
+                            <constraint firstItem="jj4-0l-jm3" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="UCo-wk-m3C"/>
                             <constraint firstItem="v5t-2T-4cv" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="ciA-aK-q7S"/>
+                            <constraint firstItem="jj4-0l-jm3" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="eRP-MJ-tyB"/>
+                            <constraint firstItem="jj4-0l-jm3" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="fzH-RA-fM9"/>
+                            <constraint firstItem="jj4-0l-jm3" firstAttribute="centerY" secondItem="QS5-Rx-YEW" secondAttribute="centerY" id="hYz-Lp-7XY"/>
                             <constraint firstItem="zit-7M-zOv" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="lG0-F5-UcZ"/>
                             <constraint firstItem="v5t-2T-4cv" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="v87-9m-kn9"/>
                         </constraints>
@@ -841,6 +849,7 @@
                         <outlet property="fieldView" destination="zit-7M-zOv" id="gMB-hy-ukD"/>
                         <outlet property="followersButton" destination="zg6-nw-CvV" id="TRf-34-OZt"/>
                         <outlet property="followingButton" destination="pNE-gc-RJk" id="G6S-cL-4og"/>
+                        <outlet property="maskView" destination="jj4-0l-jm3" id="0g4-pn-5HM"/>
                         <outlet property="name" destination="UbI-WZ-hS9" id="43b-x9-Uyj"/>
                         <outlet property="numFollowers" destination="h4I-yn-6bJ" id="eux-2c-kxf"/>
                         <outlet property="numFollowing" destination="Lhj-vp-tUU" id="k6j-lS-hNs"/>
@@ -854,7 +863,7 @@
             </objects>
             <point key="canvasLocation" x="1030" y="1665"/>
         </scene>
-        <!--SettingsVC-->
+        <!--Settings-->
         <scene sceneID="JkS-eE-emB">
             <objects>
                 <tableViewController id="0Fy-Ob-spd" customClass="SettingsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
@@ -865,7 +874,7 @@
                         <color key="sectionIndexColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
-                            <tableViewSection headerTitle="Settings" id="Evl-hx-C6h">
+                            <tableViewSection id="Evl-hx-C6h">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="xvY-zv-1uy" rowHeight="70" style="IBUITableViewCellStyleDefault" id="E4z-A5-Rya">
                                         <rect key="frame" x="0.0" y="28" width="414" height="70"/>
@@ -930,7 +939,7 @@
                             <outlet property="delegate" destination="0Fy-Ob-spd" id="m0I-Gl-uRN"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ltz-0k-UHQ"/>
+                    <navigationItem key="navigationItem" title="Settings" id="ltz-0k-UHQ"/>
                     <connections>
                         <outlet property="logOutCell" destination="hKw-O5-oOU" id="NcG-xY-S2Q"/>
                         <outlet property="privacy" destination="gOB-wT-5Uw" id="cD6-ki-Za1"/>
@@ -1373,7 +1382,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-SS-5Nn">
                                 <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -1383,19 +1392,33 @@
                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gl2-Je-YMo">
+                                <rect key="frame" x="50" y="170" width="314" height="10"/>
+                                <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="ql6-6M-dpy"/>
+                                </constraints>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="MxB-80-nrF" firstAttribute="top" secondItem="Gbk-jk-LkX" secondAttribute="top" constant="100" id="3LE-VO-9NU"/>
+                            <constraint firstItem="Gl2-Je-YMo" firstAttribute="leading" secondItem="MxB-80-nrF" secondAttribute="leading" id="6Zx-Ir-ESp"/>
+                            <constraint firstItem="Gl2-Je-YMo" firstAttribute="trailing" secondItem="MxB-80-nrF" secondAttribute="trailing" id="Eo4-ma-3TQ"/>
                             <constraint firstItem="MxB-80-nrF" firstAttribute="leading" secondItem="Gbk-jk-LkX" secondAttribute="leading" constant="50" id="Fa0-uW-9K8"/>
                             <constraint firstItem="tcb-SS-5Nn" firstAttribute="bottom" secondItem="Gbk-jk-LkX" secondAttribute="bottom" constant="20" id="HYv-Kd-aXO"/>
                             <constraint firstItem="MxB-80-nrF" firstAttribute="centerX" secondItem="Gbk-jk-LkX" secondAttribute="centerX" id="Odv-64-ech"/>
+                            <constraint firstItem="Gl2-Je-YMo" firstAttribute="top" secondItem="MxB-80-nrF" secondAttribute="bottom" constant="20" id="XQ2-38-uNV"/>
                             <constraint firstItem="tcb-SS-5Nn" firstAttribute="top" secondItem="Gbk-jk-LkX" secondAttribute="top" constant="-20" id="fRK-d4-M24"/>
                             <constraint firstItem="tcb-SS-5Nn" firstAttribute="centerX" secondItem="Gbk-jk-LkX" secondAttribute="centerX" id="gPI-Fu-R57"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="w9b-F3-2Qq"/>
                     </view>
                     <navigationItem key="navigationItem" id="ybd-Ui-IhG"/>
+                    <connections>
+                        <outlet property="label" destination="MxB-80-nrF" id="GKD-1P-7d4"/>
+                        <outlet property="progressView" destination="Gl2-Je-YMo" id="SvX-dZ-UtF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WtJ-C5-oEd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1741,7 +1764,7 @@
             </objects>
             <point key="canvasLocation" x="4951" y="0.0"/>
         </scene>
-        <!--Edit ProfileVC-->
+        <!--Edit-->
         <scene sceneID="l1B-NA-xKe">
             <objects>
                 <viewController id="4oo-KZ-aZc" customClass="EditProfileVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
@@ -1895,7 +1918,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lV6-Pa-3PE"/>
                     </view>
-                    <navigationItem key="navigationItem" id="3qO-FP-c1k"/>
+                    <navigationItem key="navigationItem" title="Edit" id="3qO-FP-c1k"/>
                     <connections>
                         <outlet property="email" destination="MPc-dl-8jJ" id="cDo-sS-ej3"/>
                         <outlet property="errorLabel" destination="eh1-Ll-uCz" id="MQi-Qw-XT7"/>

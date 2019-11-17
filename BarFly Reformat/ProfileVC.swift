@@ -30,6 +30,7 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var barChoiceLabel: UILabel!
     @IBOutlet weak var barChoice: UIImageView!
     
+    @IBOutlet weak var maskView: UIView!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var editButtonView: UIView!
     
@@ -293,13 +294,17 @@ class ProfileVC: UIViewController {
         case .began:
             self.startingConstant = self.centerConstraint.constant
         case .changed:
+            print("alpha to \(abs(self.centerConstraint.constant+200) / 800)")
+            self.maskView.alpha = abs(self.centerConstraint.constant+200) / 800
+//            self.maskView.layoutIfNeeded()
             let translation = gestureRecognizer.translation(in: self.view)
             self.centerConstraint.constant = self.startingConstant + translation.y
         case .ended:
-            if(self.centerConstraint.constant < -350) {
+            if(self.centerConstraint.constant < -450) {
                 
                 UIView.animate(withDuration: 0.3) {
                     self.centerConstraint.constant = -650
+                    self.maskView.alpha = 0.5
                     self.view.layoutIfNeeded()
                     
                 }
@@ -307,6 +312,7 @@ class ProfileVC: UIViewController {
                     
                 UIView.animate(withDuration: 0.3) {
                     self.startingConstant = -250
+                    self.maskView.alpha = 0
                     self.centerConstraint.constant = self.startingConstant
                     self.view.layoutIfNeeded()
                 }
