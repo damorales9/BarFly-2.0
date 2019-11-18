@@ -709,6 +709,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 }
             }
             else{
+                self.amntPeople.text = "\(oldAmount)"
+                sender.passedCallout!.amntPeople.text = "\(oldAmount)"
+                self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                self.imGoingBtn.backgroundColor = UIColor.gray
+                self.imGoingView.backgroundColor = UIColor.gray
                 let alert = UIAlertController(title: "You're already going somewhere!", message: "You're already going to \(barChoice)! Would you like to update your choice to this bar?", preferredStyle: .alert)
                  // add an action (button)
                  alert.addAction(UIAlertAction(title: "Update", style: UIAlertAction.Style.default, handler: { action in
@@ -762,12 +767,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                  self.present(alert, animated: true, completion: nil)
                 //transaction.updateData(["bar": barChoice], forDocument: ui)
                 //transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
-                
-                self.amntPeople.text = "\(oldAmount)"
-                sender.passedCallout!.amntPeople.text = "\(oldAmount)"
-                self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                self.imGoingBtn.backgroundColor = UIColor.gray
-                self.imGoingView.backgroundColor = UIColor.gray
                 
             }
             return nil
