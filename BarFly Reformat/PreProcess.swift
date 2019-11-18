@@ -18,7 +18,7 @@ class PreProcess: UIViewController {
     
     override func viewDidLoad() {
         progressView.progress = 0
-        progressView.layer.cornerRadius  = 8
+        progressView.layer.cornerRadius  = 6
         
         self.label.text = "Getting Bars..."
         let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)

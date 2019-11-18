@@ -11,7 +11,10 @@ import FirebaseFirestore
 import FirebaseStorage
 import UIKit
 
-class SearchVC: UITableViewController, UISearchResultsUpdating {
+class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+ 
+    
 
     
     
@@ -20,6 +23,8 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
     var filteredTableData = [User]()
     var resultSearchController = UISearchController()
     @IBOutlet weak var feedView: UITableView!
+    @IBOutlet weak var favoritesView: UICollectionView!
+    
     
     var timestampData = [User?]()
     
@@ -110,10 +115,11 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
                     let friends = ((document!.get("friends")) as! [String])
                     let profileURL = ((document!.get("profileURL")) as! String)
                     let requests = [String]()
+                    let favorites = [String]()
                     
                     if (username.contains(self.resultSearchController.searchBar.text!.lowercased())) {
                         print("adding \(username)")
-                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, requests: requests, profileURL: profileURL)
+                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL)
                         
                         var dup = false
                         for i in self.filteredTableData {
@@ -160,9 +166,11 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
         } else if(!resultSearchController.isActive) {
             
             print("getting this bad boy and he is \(timestampData.count)")
+            socialView.isHidden = false
             return timestampData.count
             
         } else {
+            socialView.isHidden = true
             return 0
         }
     }
@@ -261,14 +269,91 @@ class SearchVC: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(tableView == self.tableView) {
+            User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: User?) -> Void in
+                NonUserProfileVC.nonUser = user!
+                    
+                self.dismiss(animated: true) {
+                    self.performSegue(withIdentifier: "showNonUser", sender: self)
+                }
+            })
+        } else {
+            User.getUser(uid: (timestampData[indexPath.row]?.uid!)!, setFunction: {(user: User?) -> Void in
+                NonUserProfileVC.nonUser = user!
+                    
+                self.dismiss(animated: true) {
+                    self.performSegue(withIdentifier: "showNonUser", sender: self)
+                }
+            })
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (AppDelegate.user?.favorites.count ?? 0) + 1
+     }
+     
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: User?) -> Void in
-            NonUserProfileVC.nonUser = user!
+        if(indexPath.row < (AppDelegate.user?.favorites.count)!) {
+            
+            let cell = favoritesView.dequeueReusableCell(withReuseIdentifier: "favoriteCell", for: indexPath) as! FavoriteBarCell
+            
+            CustomBarAnnotation.getBar(name: AppDelegate.user!.favorites[indexPath.row]!) { (bar) in
                 
-            self.dismiss(animated: true) {
-                self.performSegue(withIdentifier: "showNonUser", sender: self)
+                var placeholder: UIImage?
+                if #available(iOS 13.0, *) {
+                    placeholder = UIImage(systemName: "circle")
+                } else {
+                    // Fallback on earlier versions
+                    placeholder = UIImage(named: "pin")
+                }
+
+                let storage = Storage.storage()
+                let httpsReference = storage.reference(forURL: bar!.imageName!)
+
+                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                
+                cell.nameLbl.text = bar?.title
+                cell.guestsLbl.text = "\(bar!.amntPeople ?? 0)"
+                
+                cell.nameLbl.layer.cornerRadius = 5
+                cell.guestsLbl.layer.cornerRadius = 5
+                
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = UIColor.barflyblue.cgColor
+                cell.layer.cornerRadius = 75
+                
             }
-        })
+            
+            return cell
+            
+        } else {
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addCell", for: indexPath)
+            
+            cell.layer.borderWidth = 2
+            cell.layer.borderColor = UIColor.barflyblue.cgColor
+            cell.layer.cornerRadius = 75
+            
+            return cell
+            
+        }
+        
+     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if(indexPath.row < (AppDelegate.user?.favorites.count)!) {
+            let mapVC = (tabBarController?.viewControllers![0]) as! UINavigationController
+            tabBarController?.selectedIndex = 0
+            mapVC.popToRootViewController(animated: true)
+            //DISPLAY DETAIL THINGY
+        } else {
+            let mapVC = (tabBarController?.viewControllers![0]) as! UINavigationController
+            tabBarController?.selectedIndex = 0
+            mapVC.popToRootViewController(animated: true)
+        }
+        
         
     }
 }

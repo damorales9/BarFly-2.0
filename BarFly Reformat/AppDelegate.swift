@@ -20,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var loggedIn = false
     
     static var user: User?
+    
+    var restrictRotation:UIInterfaceOrientationMask = .portrait
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -27,6 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask
+    {
+        return self.restrictRotation
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

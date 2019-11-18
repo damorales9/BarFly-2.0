@@ -19,6 +19,7 @@ struct User {
     var email: String?
     var friends: [String?]
     var requests: [String?]
+    var favorites: [String?]
     var profileURL: String?
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
@@ -37,12 +38,13 @@ struct User {
                 let bar = ((document!.get("bar")) as! String)
                 let timestamp = ((document!.get("timestamp")) ?? 0) as! NSNumber
                 let admin = ((document!.get("admin")) as! Bool)
-                let friends = ((document!.get("friends")) as! [String])
-                let requests = ((document!.get("requests")) as! [String])
+                let friends = ((document!.get("friends")) as? [String] ?? [String]())
+                let requests = ((document!.get("requests")) as? [String] ?? [String]())
+                let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let email = ((document!.get("email")) as? String  ?? "")
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, profileURL: profileURL)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL)
                 
                 setFunction(user)
                 
@@ -65,6 +67,7 @@ struct User {
                 "profileURL": user.profileURL ?? "",
                 "email": user.email!,
                 "friends": user.friends,
+                "favorites": user.favorites,
                 "timestamp": user.timestamp ??  0,
                 "requests":user.requests
             ]
