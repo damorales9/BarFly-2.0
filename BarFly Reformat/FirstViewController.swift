@@ -53,6 +53,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     static var startingConstant: CGFloat  = -85
     
+    var user: User?
+    
     var timer = Timer()
     var barTimer = BarTimer()
     
@@ -252,6 +254,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        getUserBarChoice(barName: (view.annotation?.title!)!)
         
         if view.annotation is MKUserLocation
         {
@@ -389,6 +392,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         UIView.animate(withDuration: 0.5) {
             FirstViewController.centerConstraint.constant = -300
+            self.view.layoutIfNeeded()
             self.barDetails.layoutIfNeeded()
         
         }
@@ -454,6 +458,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             bar.view?.removeFromSuperview()
             UIView.animate(withDuration: 0.5) {
                 FirstViewController.self.centerConstraint.constant = -85
+                self.view.layoutIfNeeded()
                 self.barDetails.layoutIfNeeded()
             }
             /*
@@ -548,94 +553,27 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
         }
     
-    func getUserBarChoice(passedData: CustomBarAnnotation){
-        let db = Firestore.firestore()
-        
-        let ui = db.collection("User Info").document("\(Auth.auth().currentUser!.uid)")
-        db.runTransaction({ (transaction, errorPointer) -> Any? in
-            let uiDocument: DocumentSnapshot
-            do {
-                try uiDocument = transaction.getDocument(ui)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-           
-            guard let userBarChoice = uiDocument.data()?["bar"] as? String else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(uiDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
+    func getUserBarChoice(barName: String) {
+        User.getUser(uid: Auth.auth().currentUser!.uid) { (user: User?) in
+            self.user = user!
             
-            DispatchQueue.main.async {
-                if (userBarChoice == "nil"){
-                    // SHOULD JUST CALL ONCE AT END transaction.updateData(["bar": "nil"], forDocument: ui)
-                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                        self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
-                }
-                else if (userBarChoice == passedData.title){
-                        self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                        self.imGoingBtn.backgroundColor = UIColor.gray
-                }
-                else{
-                        let alert = UIAlertController(title: "You're already going somewhere!", message: "You're already going to \(userBarChoice)! Would you like to remove your old choice?", preferredStyle: .alert)
-                        
-                        // add an action (button)
-                        alert.addAction(UIAlertAction(title: "Remove", style: UIAlertAction.Style.default, handler: { action in
-                            // SHOULD ONLY DO ONCE transaction.updateData(["bar": "nil"], forDocument: ui)
-                            db.collection("User Info").document((Auth.auth().currentUser?.uid)!).updateData([
-                                "bar":"nil"]) { err in
-                                    if let err = err {
-                                        print(err.localizedDescription)
-                                    }
-                            }
-                            let doc = db.collection("Bars").document(userBarChoice)
-                            doc.getDocument(completion: { (document, error) in
-                                let amnt = document!.get("amountPeople")
-                                doc.updateData(["amountPeople":((amnt as! Int)-1)])
-                                { err in
-                                    if let err = err {
-                                        print(err.localizedDescription)
-                                    }
-                                }
-                                
-                            })
-                       
-                            self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                            self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
-                            
-                            self.dismiss(animated: true, completion: nil)
-                            
-                        }))
-                        
-                        alert.addAction(UIAlertAction(title: "View Bar", style: .cancel, handler: {action in
-                          //  self.dismiss(animated: true, completion: nil)
-                        }))
-                        
-                        // show the alert
-                        self.present(alert, animated: true, completion: nil)
-                        
-                        
-                        self.imGoingBtn.setTitle("Not Going", for: UIControl.State.normal)
-                        self.imGoingBtn.backgroundColor = UIColor.gray
-                }
+            if (user!.bar == "nil"){
+                self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
             }
-            
-            return nil
-        }) { (object, error) in
-            if let error = error {
-                print("User Bar Transaction failed: \(error)")
-            } else {
-                print("Successfully got user bar choice!")
+            else if (user!.bar == barName){
+                self.imGoingBtn.setTitle("You're Going Here!", for: UIControl.State.normal)
+                self.imGoingBtn.backgroundColor = UIColor.red
+                self.imGoingView.backgroundColor = UIColor.red
+            }
+            else{
+                self.imGoingBtn.setTitle("Already Going Somewhere!", for: UIControl.State.normal)
+                self.imGoingBtn.titleLabel!.font = self.imGoingBtn.titleLabel!.font.withSize(16.0)
+                self.imGoingBtn.backgroundColor = UIColor.gray
+                self.imGoingView.backgroundColor = UIColor.gray
             }
         }
-        
     }
     
     
@@ -691,9 +629,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     self.amntPeople.text = "\(newAmount)"
                     barAnnotation.amntPeople = newAmount
                     sender.passedCallout!.amntPeople.text = "\(newAmount)"
-                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor.gray
-                    self.imGoingView.backgroundColor = UIColor.gray
+                    self.imGoingBtn.setTitle("You're Going Here!", for: UIControl.State.normal)
+                    self.imGoingBtn.backgroundColor = UIColor.red
+                    self.imGoingView.backgroundColor = UIColor.red
                 }
             }
             else if (barChoice == sender.passedData!.title){
@@ -709,65 +647,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 }
             }
             else{
-                self.amntPeople.text = "\(oldAmount)"
-                sender.passedCallout!.amntPeople.text = "\(oldAmount)"
-                self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                self.imGoingBtn.backgroundColor = UIColor.gray
-                self.imGoingView.backgroundColor = UIColor.gray
-                let alert = UIAlertController(title: "You're already going somewhere!", message: "You're already going to \(barChoice)! Would you like to update your choice to this bar?", preferredStyle: .alert)
-                 // add an action (button)
-                 alert.addAction(UIAlertAction(title: "Update", style: UIAlertAction.Style.default, handler: { action in
-                     // SHOULD ONLY DO ONCE transaction.updateData(["bar": "nil"], forDocument: ui)
-                     db.collection("User Info").document((Auth.auth().currentUser?.uid)!).updateData([
-                         "bar":"\(sender.passedData!.title!)"]) { err in
-                             if let err = err {
-                                 print(err.localizedDescription)
-                             }
-                     }
-                    let newBar = db.collection("Bars").document("\(sender.passedData!.title!)")
-                    newBar.getDocument { (document, error) in
-                        let amnt = document!.get("amountPeople")
-                        newBar.updateData(["amountPeople":((amnt as! Int)+1)])
-                        { err in
-                            if let err = err {
-                                print(err.localizedDescription)
-                            }
-                        }
-                    }
-                     let doc = db.collection("Bars").document(barChoice)
-                     doc.getDocument(completion: { (document, error) in
-                         let amnt = document!.get("amountPeople")
-                         doc.updateData(["amountPeople":((amnt as! Int)-1)])
-                         { err in
-                             if let err = err {
-                                 print(err.localizedDescription)
-                             }
-                         }
-                         
-                     })
-                    DispatchQueue.main.async {
-                        self.amntPeople.text = "\(newAmount)"
-                        sender.passedCallout!.amntPeople.text = "\(newAmount)"
-                        self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
-                        self.imGoingBtn.backgroundColor = UIColor.gray
-                        self.imGoingView.backgroundColor = UIColor.gray
-                    }
-                     //self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                     //self.imGoingBtn.backgroundColor = UIColor(red:0.27, green:0.40, blue:1.00, alpha:1.0)
-                     
-                     //self.dismiss(animated: true, completion: nil)
-                     
-                 }))
-                 
-                 alert.addAction(UIAlertAction(title: "View Bar", style: .cancel, handler: {action in
-                   //  self.dismiss(animated: true, completion: nil)
-                 }))
-                 
-                 // show the alert
-                 self.present(alert, animated: true, completion: nil)
-                //transaction.updateData(["bar": barChoice], forDocument: ui)
-                //transaction.updateData(["amountPeople": oldAmount], forDocument: sfReference)
-                
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(oldAmount)"
+                    sender.passedCallout!.amntPeople.text = "\(oldAmount)"
+                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                    self.imGoingBtn.backgroundColor = UIColor.gray
+                    self.imGoingView.backgroundColor = UIColor.gray
+                }
             }
             return nil
         }) { (object, error) in
@@ -922,6 +808,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @objc func exitBarDetails(){
         UIView.animate(withDuration: 0.5) {
             FirstViewController.centerConstraint.constant = -85
+            self.view.layoutIfNeeded()
             self.barDetails.layoutIfNeeded()
         }
     }
