@@ -309,7 +309,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         let storage = Storage.storage()
         let httpsReference = storage.reference(forURL: barAnnotation.imageName!)
-        let placeholder = UIImage( named: "profile_picture_placeholder.png")
+        var placeholder: UIImage?
+        if #available(iOS 13.0, *) {
+            placeholder = UIImage(systemName: "questionmark")
+        } else {
+            // Fallback on earlier versions
+            placeholder = UIImage(named: "profile")
+        }
         calloutView.image.sd_setImage(with: httpsReference, placeholderImage: placeholder)
         //calloutView.image.image = UIImage(named: barAnnotation.imageName!)
         calloutView.amntPeople.text = "10"
@@ -750,6 +756,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         //showAllAnnotations(self)
         print("updated")
         
+    }
+    @IBAction func refresh(_ sender: Any) {
+        refreshButtonAction()
     }
     
     @objc func refreshButtonAction(){

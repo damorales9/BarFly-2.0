@@ -510,7 +510,11 @@
                                     <action selector="segue:" destination="9pv-A4-QxB" id="sq0-S7-AE0"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="arrow.clockwise" catalog="system" id="Qv1-Cr-qmm"/>
+                            <barButtonItem image="arrow.clockwise" catalog="system" id="Qv1-Cr-qmm">
+                                <connections>
+                                    <action selector="refresh:" destination="9pv-A4-QxB" id="jKw-db-RyJ"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -535,7 +539,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1478.2608695652175" y="-956.25"/>
+            <point key="canvasLocation" x="2323" y="-1586"/>
         </scene>
         <!--Bars-->
         <scene sceneID="oQq-U5-Db5">
@@ -1376,7 +1380,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="BIU-XA-BjM">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="882"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="882"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8b-fR-vCd">
                                 <rect key="frame" x="50" y="571" width="314" height="60"/>
@@ -1453,7 +1457,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get off Fortnite for once, Glen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YX7-Uk-BDC">
-                                <rect key="frame" x="7" y="100" width="400.5" height="35"/>
+                                <rect key="frame" x="16.5" y="100" width="381" height="35"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="30"/>
                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1547,10 +1551,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="z5J-mJ-eu3">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to start the party!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve6-Ou-eAe">
-                                <rect key="frame" x="55" y="100" width="304" height="35"/>
+                                <rect key="frame" x="59.5" y="100" width="295" height="35"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="30"/>
                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1695,7 +1699,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-SS-5Nn">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
@@ -2210,7 +2214,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-Tz-OQE">
-                                <rect key="frame" x="58" y="183" width="37" height="18"/>
+                                <rect key="frame" x="58" y="183" width="38" height="18"/>
                                 <fontDescription key="fontDescription" name="Roboto-Black" family="Roboto Black" pointSize="15"/>
                                 <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
