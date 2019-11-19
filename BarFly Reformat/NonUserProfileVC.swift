@@ -394,6 +394,11 @@ class NonUserProfileVC: UIViewController {
                     } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
                         
                         NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
+                        let userToken = "\(user.messagingID)"
+                        let notifPayload: [String: Any] = ["to": userToken,"notification": ["title":"New Follow Request","body":"\(AppDelegate.user?.username) has requested to follow you","badge":1,"sound":"default"]]
+                        User.sendPushNotification(payloadDict: notifPayload)
+                        
+                        
                         
                     } else if (!(AppDelegate.user?.friends.contains(user.uid))! &&  (user.requests.contains(AppDelegate.user?.uid))) {
                         

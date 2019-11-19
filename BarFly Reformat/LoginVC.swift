@@ -11,6 +11,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseMessaging
+import FirebaseInstanceID
 
 class LoginVC: UIViewController, UITextFieldDelegate {
     
@@ -255,10 +256,15 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     AppDelegate.loggedIn = true
                     
                     
-                    AppDelegate.user?.messagingID = Messaging.messaging().fcmToken
-                    
-                    User.updateUser(user: AppDelegate.user!)
-                    
+                    InstanceID.instanceID().instanceID { (result, error) in
+                          if let error = error {
+                            print("Error fetching remote instance ID: \(error)")
+                          } else if let result = result {
+                            print("Remote instance ID token: \(result.token)")
+                            AppDelegate.user?.messagingID = "\(result.token)"
+                            User.updateUser(user: AppDelegate.user!)
+                          }
+                    }
                     
                     completion()
                 })
