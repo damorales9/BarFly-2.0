@@ -18,6 +18,7 @@
 		0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA59D1A2370757E002F05A1 /* BarDetailsView.swift */; };
 		0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */; };
 		0EAE5C9E236E106C005F9710 /* CustomCallout.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9D236E106C005F9710 /* CustomCallout.xib */; };
+		0EAE7E3723842D68001C767D /* CheckClicked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAE7E3623842D68001C767D /* CheckClicked.swift */; };
 		0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DA236B230C00116650 /* AppDelegate.swift */; };
 		0EC363DD236B230C00116650 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DC236B230C00116650 /* FirstViewController.swift */; };
 		0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC363DE236B230C00116650 /* ProfileVC.swift */; };
@@ -68,6 +69,7 @@
 		0EA59D1A2370757E002F05A1 /* BarDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarDetailsView.swift; sourceTree = "<group>"; };
 		0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallout.swift; sourceTree = "<group>"; };
 		0EAE5C9D236E106C005F9710 /* CustomCallout.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCallout.xib; sourceTree = "<group>"; };
+		0EAE7E3623842D68001C767D /* CheckClicked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckClicked.swift; sourceTree = "<group>"; };
 		0EC363D7236B230C00116650 /* BarFly Reformat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BarFly Reformat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC363DA236B230C00116650 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EC363DC236B230C00116650 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				6FE48D9E236B525A00487E27 /* fonts */,
 				0EC363DA236B230C00116650 /* AppDelegate.swift */,
 				0EC363DC236B230C00116650 /* FirstViewController.swift */,
+				0EAE7E3623842D68001C767D /* CheckClicked.swift */,
 				0EE64708237B1236007DA55B /* URLButton.swift */,
 				0E018E832370E80E000122B7 /* AmountPeopleButton.swift */,
 				0E018E812370E29C000122B7 /* BarTimer.swift */,
@@ -354,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EAE7E3723842D68001C767D /* CheckClicked.swift in Sources */,
 				6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */,
 				6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */,
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,

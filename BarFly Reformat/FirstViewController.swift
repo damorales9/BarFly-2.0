@@ -46,7 +46,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var exitImGoing: UIView!
     @IBOutlet var checkImGoing: UIView!
     
-    @IBOutlet var checkBtn: UIButton!
+    @IBOutlet var checkBtn: CheckClicked!
     @IBOutlet var cancelBtn: UIButton!
     
     var confirmChangeBar = false
@@ -672,6 +672,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             newAmount = oldAmount + 1
             
             if (barChoice == "nil"){
+                /*
                 transaction.updateData(["bar": sender.passedData!.title!, "timestamp": NSDate().timeIntervalSince1970], forDocument: ui)
                 transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
                 DispatchQueue.main.async {
@@ -682,23 +683,28 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     self.imGoingBtn.backgroundColor = UIColor.red
                     self.imGoingView.backgroundColor = UIColor.red
                 }
+                */
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.5) {
+                            self.imGoingBtn.setTitle("Choose Bar?", for: UIControl.State.normal)
+                            self.imGoingBtn.backgroundColor = UIColor.green
+                            self.imGoingView.backgroundColor = UIColor.green
+                            self.cancelBtnWidth.constant = 50
+                            self.goingBtnConstraint.constant = -170
+                            self.checkBtnWidth.constant = 50
+                            self.barDetails.layoutIfNeeded()
+                            self.view.layoutIfNeeded()
+                    
+                    }
+                    self.checkBtn.title = sender.passedData!.title!
+                    self.checkBtn.amntBtnPassed = sender
+                    self.checkBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
+                    self.cancelBtn.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
+                }
             }
             else if (barChoice == sender.passedData!.title){
-                /*
-                if(self.confirmChangeBar){
-                    subtractOne = oldAmount - 1
-                    transaction.updateData(["bar": "nil"], forDocument: ui)
-                    transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
-                    DispatchQueue.main.async {
-                        self.amntPeople.text = "\(subtractOne)"
-                        sender.passedCallout!.amntPeople.text = "\(subtractOne)"
-                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                        self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-                        self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-                    }
-                }
-                */
-            
+                subtractOne = oldAmount - 1
+                
                 self.confirmChangeBar = true
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.5) {
@@ -712,21 +718,125 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                             self.view.layoutIfNeeded()
                     
                     }
+                    self.checkBtn.title = sender.passedData!.title!
+                    self.checkBtn.amntBtnPassed = sender
+                    self.checkBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
                     self.cancelBtn.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
                 }
+                
+                
                     
 
             }
             else{
                 DispatchQueue.main.async {
-                    self.amntPeople.text = "\(oldAmount)"
-                    sender.passedCallout!.amntPeople.text = "\(oldAmount)"
-                    self.imGoingBtn.setTitle("Change Choice?", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor.gray
-                    self.imGoingView.backgroundColor = UIColor.gray
-                    
-                    
+                    //self.amntPeople.text = "\(oldAmount)"
+                    //sender.passedCallout!.amntPeople.text = "\(oldAmount)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("Change to this Bar?", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.gray
+                        self.imGoingView.backgroundColor = UIColor.gray
+                    }
+                    self.checkBtn.title = sender.passedData!.title!
+                    self.checkBtn.amntBtnPassed = sender
+                    self.checkBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
+                    self.cancelBtn.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
                 }
+            }
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+            }
+        }
+    }
+    
+    @objc func checkClicked(sender: CheckClicked){
+        let barAnnotation = sender.amntBtnPassed.passedAnnotation!.annotation as! CustomBarAnnotation
+        var newAmount = 0
+        var subtractOne = 0
+        let db = Firestore.firestore()
+        //print("\(sender.passedData!.title ?? "nil")")
+        let sfReference = db.collection("Bars").document("\(sender.title!)")
+        let ui = db.collection("User Info").document("\(Auth.auth().currentUser!.uid)")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            let uiDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+                try uiDocument = transaction.getDocument(ui)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let oldAmount = sfDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            guard let barChoice = uiDocument.data()?["bar"] as? String else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve barchoice from snapshot \(uiDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            newAmount = oldAmount + 1
+            if (barChoice == "nil"){
+                transaction.updateData(["bar": sender.title!, "timestamp": NSDate().timeIntervalSince1970], forDocument: ui)
+                transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(newAmount)"
+                    //barAnnotation.amntPeople = newAmount
+                    sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(newAmount)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("You're Going Here!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.red
+                        self.imGoingView.backgroundColor = UIColor.red
+                        self.cancelBtnWidth.constant = 0
+                        self.goingBtnConstraint.constant = -50
+                        self.checkBtnWidth.constant = 0
+                        self.barDetails.layoutIfNeeded()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+                
+            }
+            else if (barChoice == sender.title!){
+                subtractOne = oldAmount - 1
+                transaction.updateData(["bar": "nil"], forDocument: ui)
+                transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(subtractOne)"
+                    sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(subtractOne)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                        self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                        self.cancelBtnWidth.constant = 0
+                        self.goingBtnConstraint.constant = -50
+                        self.checkBtnWidth.constant = 0
+                        self.barDetails.layoutIfNeeded()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+            else {
+                print("HAAAAA GAY")
             }
             return nil
         }) { (object, error) in
