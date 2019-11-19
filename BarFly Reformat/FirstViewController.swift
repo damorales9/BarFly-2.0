@@ -43,6 +43,18 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var refreshBtn: UIBarButtonItem!
     @IBOutlet var barImageBckg: UIView!
     
+    @IBOutlet var exitImGoing: UIView!
+    @IBOutlet var checkImGoing: UIView!
+    
+    @IBOutlet var checkBtn: UIButton!
+    @IBOutlet var cancelBtn: UIButton!
+    
+    var confirmChangeBar = false
+    
+    var checkBtnWidth: NSLayoutConstraint!
+    var goingBtnConstraint: NSLayoutConstraint!
+    var cancelBtnWidth: NSLayoutConstraint!
+    
     
     static var currentAnnotation: MKAnnotation!
     static var annotations = [MKAnnotation]()
@@ -92,6 +104,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
         self.barDetails.layer.borderColor = color.cgColor
         self.barDetails.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
+        
+        cancelBtnWidth = NSLayoutConstraint(item: exitImGoing!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        exitImGoing.addConstraint(cancelBtnWidth)
+        
+        checkBtnWidth = NSLayoutConstraint(item: checkImGoing!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        checkImGoing.addConstraint(checkBtnWidth)
+        
+        goingBtnConstraint = NSLayoutConstraint(item: imGoingView!, attribute: .trailing, relatedBy: .equal, toItem: barDetails, attribute: .trailing, multiplier: 1, constant: -50)
+        barDetails.addConstraint(goingBtnConstraint)
+        
         // Do any additional setup after loading the view.
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -256,6 +278,18 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         getUserBarChoice(barName: (view.annotation?.title!)!)
         
+        exitImGoing.layer.cornerRadius = 10
+        cancelBtn.layer.cornerRadius = 10
+        cancelBtn.layer.borderWidth = 4
+        cancelBtn.layer.borderColor = UIColor.black.cgColor
+        
+        checkImGoing.layer.cornerRadius = 10
+        checkBtn.layer.cornerRadius = 10
+        checkBtn.layer.borderWidth = 4
+        checkBtn.layer.borderColor = UIColor.black.cgColor
+        
+        confirmChangeBar = false
+        
         if view.annotation is MKUserLocation
         {
             // Don't proceed with custom callout
@@ -417,6 +451,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             return
         }
         else{
+            UIView.animate(withDuration: 0.5) {
+                    self.cancelBtnWidth.constant = 0
+                    self.goingBtnConstraint.constant = -50
+                    self.checkBtnWidth.constant = 0
+                    self.barDetails.layoutIfNeeded()
+                    self.view.layoutIfNeeded()
+            
+            }
+            
             let barAnnotation = view.annotation as! CustomBarAnnotation
             //let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
             //let calloutView = views?[0] as! CustomCallout
@@ -641,24 +684,48 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 }
             }
             else if (barChoice == sender.passedData!.title){
-                subtractOne = oldAmount - 1
-                transaction.updateData(["bar": "nil"], forDocument: ui)
-                transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
-                DispatchQueue.main.async {
-                    self.amntPeople.text = "\(subtractOne)"
-                    sender.passedCallout!.amntPeople.text = "\(subtractOne)"
-                    self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-                    self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                /*
+                if(self.confirmChangeBar){
+                    subtractOne = oldAmount - 1
+                    transaction.updateData(["bar": "nil"], forDocument: ui)
+                    transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
+                    DispatchQueue.main.async {
+                        self.amntPeople.text = "\(subtractOne)"
+                        sender.passedCallout!.amntPeople.text = "\(subtractOne)"
+                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                        self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                    }
                 }
+                */
+            
+                self.confirmChangeBar = true
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.5) {
+                            self.imGoingBtn.setTitle("Remove Choice?", for: UIControl.State.normal)
+                            self.imGoingBtn.backgroundColor = UIColor.gray
+                            self.imGoingView.backgroundColor = UIColor.gray
+                            self.cancelBtnWidth.constant = 50
+                            self.goingBtnConstraint.constant = -170
+                            self.checkBtnWidth.constant = 50
+                            self.barDetails.layoutIfNeeded()
+                            self.view.layoutIfNeeded()
+                    
+                    }
+                    self.cancelBtn.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
+                }
+                    
+
             }
             else{
                 DispatchQueue.main.async {
                     self.amntPeople.text = "\(oldAmount)"
                     sender.passedCallout!.amntPeople.text = "\(oldAmount)"
-                    self.imGoingBtn.setTitle("You're Going!", for: UIControl.State.normal)
+                    self.imGoingBtn.setTitle("Change Choice?", for: UIControl.State.normal)
                     self.imGoingBtn.backgroundColor = UIColor.gray
                     self.imGoingView.backgroundColor = UIColor.gray
+                    
+                    
                 }
             }
             return nil
@@ -668,6 +735,20 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             } else {
                 print("Transaction successfully committed!")
             }
+        }
+    }
+    
+    @objc func cancelButtonClicked(){
+        UIView.animate(withDuration: 0.5) {
+            self.imGoingBtn.setTitle("You're Going Here!", for: UIControl.State.normal)
+            self.imGoingBtn.backgroundColor = UIColor.red
+            self.imGoingView.backgroundColor = UIColor.red
+            self.cancelBtnWidth.constant = 0
+            self.goingBtnConstraint.constant = -50
+            self.checkBtnWidth.constant = 0
+            self.barDetails.layoutIfNeeded()
+            self.view.layoutIfNeeded()
+        
         }
     }
     
