@@ -79,7 +79,22 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
         var x = 0
         
         if isFollowers! {
+            
+            for i in followers {
+                if (i.username?.lowercased().contains(self.resultSearchController.searchBar.text!))! {
+                    
+                    self.filteredTableData.append(i)
+                    self.tableView.reloadData()
+                    x+=1
+                }
+                
+                if(x >= 20) {
+                    break
+                }
+            }
         
+        } else {
+            
             for i in (nonUser?.friends)!  {
                 User.getUser(uid: i!) { (user) in
                     
@@ -98,21 +113,7 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                     break
                 }
             }
-        
-        } else {
             
-            for i in followers {
-                if (i.username?.lowercased().contains(self.resultSearchController.searchBar.text!))! {
-                    
-                    self.filteredTableData.append(i)
-                    self.tableView.reloadData()
-                    x+=1
-                }
-                
-                if(x >= 20) {
-                    break
-                }
-            }
             
             
         }
@@ -126,6 +127,12 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             if !resultSearchController.isActive {
                 
                 if isFollowers! {
+                    if followers.count  < 20 {
+                         return followers.count
+                    } else {
+                        return 20
+                    }
+                } else {
                     if let user = nonUser {
                         if user.friends.count < 20 {
                             return user.friends.count
@@ -134,12 +141,6 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                         }
                     } else {
                         return 0
-                    }
-                } else {
-                    if followers.count  < 20 {
-                         return followers.count
-                    } else {
-                        return 20
                     }
                 }
             } else {
@@ -193,41 +194,80 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             
             if let user = nonUser {
                 
-                User.getUser(uid: user.friends[indexPath.row]!) { (u) in
+                if(isFollowers!) {
+                    let u = followers[indexPath.row]
+                        
+                        
+                            cell.textLabel?.text = u.username
+                            cell.detailTextLabel?.text = u.name
+                            
+                            cell.imageView?.clipsToBounds = true
+                            cell.imageView?.layer.cornerRadius = 24
+                            cell.imageView?.layer.borderWidth = 1
+                            cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
+                            cell.imageView?.contentMode = .scaleToFill
+                            
+                            var placeholder: UIImage?
+                            if #available(iOS 13.0, *) {
+                                placeholder = UIImage(systemName: "person.circle")
+                            } else {
+                                // Fallback on earlier versions
+                                placeholder = UIImage(named: "profile")
+                            }
+
+                            if (u.profileURL != "") {
+
+                                let storage = Storage.storage()
+                                let httpsReference = storage.reference(forURL: u.profileURL!)
+
+
+                                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+
+
+                            } else {
+                                cell.imageView?.image = placeholder
+                            }
+                            
+                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+                            
                     
-                    if let u = u {
-                        cell.textLabel?.text = u.username
-                        cell.detailTextLabel?.text = u.name
+                } else {
+                    User.getUser(uid: user.friends[indexPath.row]!) { (u) in
                         
-                        cell.imageView?.clipsToBounds = true
-                        cell.imageView?.layer.cornerRadius = 24
-                        cell.imageView?.layer.borderWidth = 1
-                        cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
-                        cell.imageView?.contentMode = .scaleToFill
-                        
-                        var placeholder: UIImage?
-                        if #available(iOS 13.0, *) {
-                            placeholder = UIImage(systemName: "person.circle")
-                        } else {
-                            // Fallback on earlier versions
-                            placeholder = UIImage(named: "profile")
+                        if let u = u {
+                            cell.textLabel?.text = u.username
+                            cell.detailTextLabel?.text = u.name
+                            
+                            cell.imageView?.clipsToBounds = true
+                            cell.imageView?.layer.cornerRadius = 24
+                            cell.imageView?.layer.borderWidth = 1
+                            cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
+                            cell.imageView?.contentMode = .scaleToFill
+                            
+                            var placeholder: UIImage?
+                            if #available(iOS 13.0, *) {
+                                placeholder = UIImage(systemName: "person.circle")
+                            } else {
+                                // Fallback on earlier versions
+                                placeholder = UIImage(named: "profile")
+                            }
+
+                            if (u.profileURL != "") {
+
+                                let storage = Storage.storage()
+                                let httpsReference = storage.reference(forURL: u.profileURL!)
+
+
+                                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+
+
+                            } else {
+                                cell.imageView?.image = placeholder
+                            }
+                            
+                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+                            
                         }
-
-                        if (u.profileURL != "") {
-
-                            let storage = Storage.storage()
-                            let httpsReference = storage.reference(forURL: u.profileURL!)
-
-
-                            cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-
-
-                        } else {
-                            cell.imageView?.image = placeholder
-                        }
-                        
-                        cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-                        
                     }
                 }
                 

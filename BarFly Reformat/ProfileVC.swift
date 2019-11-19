@@ -323,6 +323,21 @@ class ProfileVC: UIViewController {
 
     }
     
+    @IBAction func followingBtnClicked(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let listVC = storyBoard.instantiateViewController(withIdentifier: "nonUserList") as! NonUserListVC
+        listVC.isFollowers = false
+        listVC.nonUser = AppDelegate.user
+        self.navigationController?.pushViewController(listVC, animated:true)
+    }
+    
+    @IBAction func followersBtnClicked(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let listVC = storyBoard.instantiateViewController(withIdentifier: "nonUserList") as! NonUserListVC
+        listVC.isFollowers = true
+        listVC.nonUser = AppDelegate.user
+        self.navigationController?.pushViewController(listVC, animated:true)
+    }
 }
 
 extension ProfileVC: ImagePickerDelegate {

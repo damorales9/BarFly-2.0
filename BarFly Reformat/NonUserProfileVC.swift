@@ -394,8 +394,8 @@ class NonUserProfileVC: UIViewController {
                     } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
                         
                         NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
-                        let userToken = "\(user.messagingID)"
-                        let notifPayload: [String: Any] = ["to": userToken,"notification": ["title":"New Follow Request","body":"\(AppDelegate.user?.username) has requested to follow you","badge":1,"sound":"default"]]
+                        let userToken = user.messagingID ?? ""
+                        let notifPayload: [String: Any] = ["to": userToken,"notification": ["title":"\(self.getRequestMessage())","body":" \(AppDelegate.user!.username!) has requested to follow you","badge":1,"sound":"default"]]
                         User.sendPushNotification(payloadDict: notifPayload)
                         
                         
@@ -412,6 +412,20 @@ class NonUserProfileVC: UIViewController {
                 }
                 
             })
+        
+    }
+    
+    func getRequestMessage() -> String {
+        
+        let number = Int.random(in: 0 ..< 10)
+        
+        switch number {
+        case 0: return "LMAO Someone wants to follow you"
+        case 1: return "Put your dentures back in, Barbara"
+        case 2: return ""
+        default:
+            return "New Follow Request"
+        }
         
     }
     

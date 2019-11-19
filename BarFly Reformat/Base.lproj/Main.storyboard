@@ -994,6 +994,9 @@
                                         <state key="normal">
                                             <color key="titleColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
+                                        <connections>
+                                            <action selector="followingBtnClicked:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="Pow-xQ-LPa"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lhj-vp-tUU">
                                         <rect key="frame" x="50" y="135" width="100" height="25"/>
@@ -1018,6 +1021,9 @@
                                         <state key="normal">
                                             <color key="titleColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
+                                        <connections>
+                                            <action selector="followersBtnClicked:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="eUW-v9-hdE"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Faj-y9-Bga">
                                         <rect key="frame" x="50" y="115" width="100" height="12"/>
@@ -1727,7 +1733,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-SS-5Nn">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
@@ -2139,7 +2145,7 @@
         <!--Non User ListVC-->
         <scene sceneID="n7C-U9-To4">
             <objects>
-                <tableViewController id="8un-y4-75D" customClass="NonUserListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="nonUserList" id="8un-y4-75D" customClass="NonUserListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="48" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2kn-vI-32M">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

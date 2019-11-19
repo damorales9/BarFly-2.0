@@ -101,6 +101,7 @@ struct User {
     }
     
     static func sendPushNotification(payloadDict: [String: Any]) {
+        
        let url = URL(string: "https://fcm.googleapis.com/fcm/send")!
        var request = URLRequest(url: url)
        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
