@@ -24,13 +24,14 @@
 		0EC363E2236B230C00116650 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E0236B230C00116650 /* Main.storyboard */; };
 		0EC363E4236B230D00116650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E3236B230D00116650 /* Assets.xcassets */; };
 		0EC363E7236B230D00116650 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363E5236B230D00116650 /* LaunchScreen.storyboard */; };
-		0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EC363F0236B2E0400116650 /* GoogleService-Info.plist */; };
 		0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCC40E236E632000D7757D /* BarTapGesture.swift */; };
 		0EE64709237B1236007DA55B /* URLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE64708237B1236007DA55B /* URLButton.swift */; };
 		6F0754FE237ECD5400765317 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0754FD237ECD5400765317 /* EditProfileVC.swift */; };
 		6F075500237F454900765317 /* PreProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0754FF237F454900765317 /* PreProcess.swift */; };
 		6F075502237F84A600765317 /* TimestampCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F075501237F84A600765317 /* TimestampCell.swift */; };
 		6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0755032381DEE500765317 /* FavoriteBarCell.swift */; };
+		6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F27C1A52383155200B2078F /* NonUserListVC.swift */; };
+		6F27C1AB23835CCA00B2078F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F27C1AA23835CCA00B2078F /* GoogleService-Info.plist */; };
 		6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A861236E544D005E55A6 /* SocialVC.swift */; };
 		6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A863236E6D74005E55A6 /* SearchVC.swift */; };
 		6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */; };
@@ -75,7 +76,6 @@
 		0EC363E3236B230D00116650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0EC363E6236B230D00116650 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0EC363E8236B230D00116650 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0EC363F0236B2E0400116650 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0ECCC40E236E632000D7757D /* BarTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarTapGesture.swift; sourceTree = "<group>"; };
 		0EE64708237B1236007DA55B /* URLButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLButton.swift; sourceTree = "<group>"; };
 		28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BarFly Reformat.release.xcconfig"; path = "Target Support Files/Pods-BarFly Reformat/Pods-BarFly Reformat.release.xcconfig"; sourceTree = "<group>"; };
@@ -84,6 +84,9 @@
 		6F0754FF237F454900765317 /* PreProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreProcess.swift; sourceTree = "<group>"; };
 		6F075501237F84A600765317 /* TimestampCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampCell.swift; sourceTree = "<group>"; };
 		6F0755032381DEE500765317 /* FavoriteBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBarCell.swift; sourceTree = "<group>"; };
+		6F27C1A52383155200B2078F /* NonUserListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserListVC.swift; sourceTree = "<group>"; };
+		6F27C1A7238351F700B2078F /* BarFly Reformat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "BarFly Reformat.entitlements"; sourceTree = "<group>"; };
+		6F27C1AA23835CCA00B2078F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6F79A861236E544D005E55A6 /* SocialVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialVC.swift; sourceTree = "<group>"; };
 		6F79A863236E6D74005E55A6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileVC.swift; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 		0EC363D9236B230C00116650 /* BarFly Reformat */ = {
 			isa = PBXGroup;
 			children = (
+				6F27C1AA23835CCA00B2078F /* GoogleService-Info.plist */,
+				6F27C1A7238351F700B2078F /* BarFly Reformat.entitlements */,
 				6FE48D9E236B525A00487E27 /* fonts */,
 				0EC363DA236B230C00116650 /* AppDelegate.swift */,
 				0EC363DC236B230C00116650 /* FirstViewController.swift */,
@@ -162,7 +167,6 @@
 				0EC363E3236B230D00116650 /* Assets.xcassets */,
 				0EC363E5236B230D00116650 /* LaunchScreen.storyboard */,
 				0EC363E8236B230D00116650 /* Info.plist */,
-				0EC363F0236B2E0400116650 /* GoogleService-Info.plist */,
 				6FE48D95236B397900487E27 /* User.swift */,
 				6FE48D97236B3A8700487E27 /* LoginVC.swift */,
 				6FE48DCF236BBD6800487E27 /* CreateVC.swift */,
@@ -179,6 +183,7 @@
 				6F0754FF237F454900765317 /* PreProcess.swift */,
 				6F075501237F84A600765317 /* TimestampCell.swift */,
 				6F0755032381DEE500765317 /* FavoriteBarCell.swift */,
+				6F27C1A52383155200B2078F /* NonUserListVC.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -290,13 +295,13 @@
 				6FE48DC3236B55DF00487E27 /* Roboto-BlackItalic.ttf in Resources */,
 				6FE48DC5236B55DF00487E27 /* Roboto-Black.ttf in Resources */,
 				6FE48DCA236B55DF00487E27 /* Roboto-Regular.ttf in Resources */,
+				6F27C1AB23835CCA00B2078F /* GoogleService-Info.plist in Resources */,
 				6FE48DC7236B55DF00487E27 /* Roboto-Bold.ttf in Resources */,
 				6FE48DC6236B55DF00487E27 /* Roboto-Italic.ttf in Resources */,
 				6FE48DCE236B55DF00487E27 /* Roboto-ThinItalic.ttf in Resources */,
 				0EC363E2236B230C00116650 /* Main.storyboard in Resources */,
 				0EAE5C9E236E106C005F9710 /* CustomCallout.xib in Resources */,
 				6FE48DC9236B55DF00487E27 /* Roboto-MediumItalic.ttf in Resources */,
-				0EC363F1236B2E0400116650 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */,
+				6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */,
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
 				0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */,
@@ -523,15 +529,16 @@
 			baseConfigurationReference = 5A3D1A0593E8D9C65FB0D5DC /* Pods-BarFly Reformat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BarFly Reformat/BarFly Reformat.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H4ZHS68DBP;
+				DEVELOPMENT_TEAM = 22KKXRY8UF;
 				INFOPLIST_FILE = "BarFly Reformat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.LoFi.BarFly-2.0";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LoFi.BarFly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -544,15 +551,16 @@
 			baseConfigurationReference = 28C180CCB6C420187B9F0074 /* Pods-BarFly Reformat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BarFly Reformat/BarFly Reformat.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H4ZHS68DBP;
+				DEVELOPMENT_TEAM = 22KKXRY8UF;
 				INFOPLIST_FILE = "BarFly Reformat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.LoFi.BarFly-2.0";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LoFi.BarFly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

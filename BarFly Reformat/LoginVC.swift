@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseMessaging
 
 class LoginVC: UIViewController, UITextFieldDelegate {
     
@@ -252,6 +253,12 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     
                     AppDelegate.user = user!
                     AppDelegate.loggedIn = true
+                    
+                    
+                    AppDelegate.user?.messagingID = Messaging.messaging().fcmToken
+                    
+                    User.updateUser(user: AppDelegate.user!)
+                    
                     
                     completion()
                 })

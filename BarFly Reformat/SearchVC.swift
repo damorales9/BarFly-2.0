@@ -46,8 +46,6 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
             return controller
         })()
         
-        resultSearchController.searchBar.becomeFirstResponder();
-        
         // Reload the table
         
         tableView.rowHeight = 60
@@ -163,7 +161,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 return 0
             }
             
-        } else if(!resultSearchController.isActive) {
+        } else if(!resultSearchController.isActive ||  resultSearchController.searchBar.text?.count == 0) {
             
             print("getting this bad boy and he is \(timestampData.count)")
             socialView.isHidden = false
@@ -191,7 +189,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 cell.imageView?.clipsToBounds = true
                 cell.imageView?.layer.cornerRadius = 24
                 cell.imageView?.layer.borderWidth = 1
-                cell.imageView?.layer.borderColor = UIColor.white.cgColor
+                cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
                 cell.imageView?.contentMode = .scaleToFill
                 
                 var placeholder: UIImage?
@@ -260,8 +258,11 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
             cell.choiceLbl.text = timestampData[indexPath.row]?.bar
             
             cell.timeView.layer.borderWidth = 2
-            cell.timeView.layer.borderColor = UIColor.barflyblue.cgColor
+            cell.timeView.layer.borderColor = UIColor.black.cgColor
             cell.timeView.layer.cornerRadius = 20
+            
+            cell.bgView.layer.cornerRadius = 30
+            
             
             return cell
         }

@@ -117,6 +117,8 @@ class ProfileVC: UIViewController {
     
     func paintComponents() {
         
+        self.maskView.alpha = 0
+        
         User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
             
             AppDelegate.user = user!
@@ -127,6 +129,10 @@ class ProfileVC: UIViewController {
                 self.name.text = user.name
                 self.username.text = user.username
                 self.numFollowing.text = "\(AppDelegate.user!.friends.count)"
+                
+                user.getFollowers { (users) in
+                    self.numFollowers.text = "\(users.count)"
+                }
                 
                 var placeholder = UIImage( named: "person.circle.fill")
                 
@@ -227,19 +233,12 @@ class ProfileVC: UIViewController {
         if(AppDelegate.loggedIn) {
             self.paintComponents()
             self.updateBadge()
-            self.getFollowers()
                 
             let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
             fieldView.addGestureRecognizer(gesture)
             fieldView.isUserInteractionEnabled = true
         }
         
-    }
-    
-    func getFollowers(){
-        Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: AppDelegate.user?.uid).getDocuments { (snapshot,err)in (snapshot, err)
-            self.numFollowers.text = "\(snapshot!.documents.count)"
-        }
     }
     
     func updateBadge() {

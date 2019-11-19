@@ -19,7 +19,7 @@ class NonUserProfileVC: UIViewController {
     static var nonUser: User?
     
     var confirm = false
-
+    var confirmUnfollow = false
     
     @IBOutlet weak var dragIndicator: UILabel!
     @IBOutlet weak var fieldView: UIView!
@@ -34,6 +34,8 @@ class NonUserProfileVC: UIViewController {
     @IBOutlet weak var cancelView: UIView!
     @IBOutlet weak var blockView: UIView!
     @IBOutlet weak var followView: UIView!
+    @IBOutlet weak var cancelUnfollowView: UIView!
+    @IBOutlet weak var cancelUnfollow: UIButton!
     
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
@@ -45,9 +47,10 @@ class NonUserProfileVC: UIViewController {
     
     
     var trailingFollowConstraint: NSLayoutConstraint!
-    
+    var trailingUnfollowConstraint: NSLayoutConstraint!
+
     var cancelWidthConstraint: NSLayoutConstraint!
-    
+    var cancelUnfollowWidthConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         dragIndicator.layer.cornerRadius = 5
@@ -66,17 +69,27 @@ class NonUserProfileVC: UIViewController {
         cancelBlock.layer.borderWidth = 2
         cancelBlock.layer.borderColor = UIColor.black.cgColor
         cancelView.layer.cornerRadius = 10
+        cancelUnfollowView.layer.cornerRadius = 10
+        cancelUnfollow.layer.cornerRadius = 10
+        cancelUnfollow.layer.borderWidth = 2
+        cancelUnfollow.layer.borderColor = UIColor.black.cgColor
         blockView.layer.cornerRadius = 10
         followView.layer.cornerRadius = 10
 
         
-        trailingFollowConstraint = NSLayoutConstraint(item: blockView!, attribute: .trailing, relatedBy: .equal, toItem: follow, attribute: .trailing, multiplier: 1, constant: 0)
+        trailingFollowConstraint = NSLayoutConstraint(item: blockView!, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -50)
         
-        cancelWidthConstraint = NSLayoutConstraint(item: cancelView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        trailingUnfollowConstraint = NSLayoutConstraint(item: followView!, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -50)
         
+        cancelWidthConstraint = NSLayoutConstraint(item: cancelView!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        
+        cancelUnfollowWidthConstraint = NSLayoutConstraint(item: cancelUnfollowView!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+
         cancelView.addConstraint(cancelWidthConstraint)
+        cancelUnfollowView.addConstraint(cancelUnfollowWidthConstraint)
         
         view.addConstraint(trailingFollowConstraint)
+        view.addConstraint(trailingUnfollowConstraint)
         
         self.centerConstraint = fieldView.topAnchor.constraint(equalTo: view.bottomAnchor)
         self.centerConstraint.constant = startingConstant
@@ -278,12 +291,23 @@ class NonUserProfileVC: UIViewController {
         confirm = false
         
         UIView.animate(withDuration: 0.5) {
-            self.trailingFollowConstraint.constant = 0
+            self.trailingFollowConstraint.constant = -50
             self.cancelView.isHidden = true
             self.cancelWidthConstraint.constant = 0
             self.view.layoutIfNeeded()
         }
         
+    }
+    
+    @IBAction func cancelUnfollowButtonClicked(_ sender: Any) {
+        confirmUnfollow = false
+        
+        UIView.animate(withDuration: 0.5) {
+            self.trailingUnfollowConstraint.constant = -50
+            self.cancelUnfollowView.isHidden = true
+            self.cancelUnfollowWidthConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
     @IBAction func blockButtonClicked(_ sender: Any) {
@@ -301,7 +325,7 @@ class NonUserProfileVC: UIViewController {
                 self.updateFieldView()
                 
                 UIView.animate(withDuration: 0.5) {
-                    self.trailingFollowConstraint.constant = 0
+                    self.trailingFollowConstraint.constant = -50
                     self.cancelView.isHidden = true
                     self.cancelWidthConstraint.constant = 0
                     self.view.layoutIfNeeded()
@@ -314,7 +338,7 @@ class NonUserProfileVC: UIViewController {
         } else {
             
             UIView.animate(withDuration: 0.5) {
-                self.trailingFollowConstraint.constant = -60
+                self.trailingFollowConstraint.constant = -110
                 self.cancelView.isHidden = false
                 self.cancelWidthConstraint.constant = 50
                 self.view.layoutIfNeeded()
@@ -325,39 +349,64 @@ class NonUserProfileVC: UIViewController {
     }
     
     @IBAction func followButtonClicked(_ sender: Any) {
-        
-        User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
-            NonUserProfileVC.nonUser = user!
             
-            if let user = NonUserProfileVC.nonUser {
+            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
+                NonUserProfileVC.nonUser = user!
                 
-                if ((AppDelegate.user?.friends.contains(user.uid))!) {
+                if let user = NonUserProfileVC.nonUser {
                     
-                    self.okCancel(msg: "\(user.username!) contributes to charity. Are you sure you want to unfollow them?", after: { () -> Void in
+                    if ((AppDelegate.user?.friends.contains(user.uid))!) {
                         
-                        AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
-                        self.updateFieldView()
-                        User.updateUser(user: AppDelegate.user)
-                        User.updateUser(user: NonUserProfileVC.nonUser)
+                        if(self.confirmUnfollow) {
                             
-                    })
-                    
-                } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
-                    
-                    NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
-                    
-                } else if (!(AppDelegate.user?.friends.contains(user.uid))! &&  (user.requests.contains(AppDelegate.user?.uid))) {
-                    
-                    NonUserProfileVC.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
-                   
+                            self.confirmUnfollow = false
+                            
+                            UIView.animate(withDuration: 0.5) {
+                                self.trailingUnfollowConstraint.constant = -50
+                                self.cancelUnfollowView.isHidden = false
+                                self.cancelUnfollowWidthConstraint.constant = 0
+                                self.view.layoutIfNeeded()
+                                
+                            }
+                        
+                            AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
+                            self.updateFieldView()
+                            User.updateUser(user: AppDelegate.user)
+                            User.updateUser(user: NonUserProfileVC.nonUser)
+                            
+                        } else {
+                         
+                            self.confirmUnfollow = true
+                            
+                            UIView.animate(withDuration: 0.5) {
+                                self.trailingUnfollowConstraint.constant = -110
+                                self.cancelUnfollowView.isHidden = false
+                                self.cancelUnfollowWidthConstraint.constant = 50
+                                self.view.layoutIfNeeded()
+                                
+                            }
+                            
+                            return
+                            
+                        }
+
+                        
+                    } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
+                        
+                        NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
+                        
+                    } else if (!(AppDelegate.user?.friends.contains(user.uid))! &&  (user.requests.contains(AppDelegate.user?.uid))) {
+                        
+                        NonUserProfileVC.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
+                       
+                    }
+                
+                    self.updateFieldView()
+                    User.updateUser(user: AppDelegate.user)
+                    User.updateUser(user: NonUserProfileVC.nonUser)
                 }
-            
-                self.updateFieldView()
-                User.updateUser(user: AppDelegate.user)
-                User.updateUser(user: NonUserProfileVC.nonUser)
-            }
-            
-        })
+                
+            })
         
     }
     

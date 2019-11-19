@@ -11,7 +11,8 @@ target 'BarFly Reformat' do
    pod 'FirebaseUI/Storage'   
    pod 'Firebase/Analytics'
    pod 'GoogleMapsTileOverlay'
-
+   pod 'Firebase/Messaging'
+   
    use_frameworks!
   # Pods for BarFly Reformat
 

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>573753465747-e2qh03gapgqmsm2ijq6qocrrf5572mu7.apps.googleusercontent.com</string>
+	<string>573753465747-cha96i97imvsc44rranp2a7bpstkada0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.573753465747-e2qh03gapgqmsm2ijq6qocrrf5572mu7</string>
+	<string>com.googleusercontent.apps.573753465747-cha96i97imvsc44rranp2a7bpstkada0</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDjLVtjTsbJadxeieWV9EL_ZJOXYaTuOh4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.LoFi.BarFly-Reformat</string>
+	<string>com.LoFi.BarFly</string>
 	<key>PROJECT_ID</key>
 	<string>barfly-reformat</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:573753465747:ios:70feecbf7bdadaae7c2666</string>
+	<string>1:573753465747:ios:7f64345740014e157c2666</string>
 	<key>DATABASE_URL</key>
 	<string>https://barfly-reformat.firebaseio.com</string>
 </dict>

@@ -21,6 +21,24 @@ struct User {
     var requests: [String?]
     var favorites: [String?]
     var profileURL: String?
+    var messagingID: String?
+    
+    func getFollowers(completion: @escaping ([User]) -> Void){
+        var users = [User]()
+        if let uid = uid {
+            Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: uid).getDocuments { (snapshot,err)in (snapshot, err)
+                for i in snapshot!.documents  {
+                    User.getUser(uid: i.documentID) { (user) in
+                        if let user = user {
+                            users.append(user)
+                        }
+                    }
+                }
+                
+                completion(users)
+            }
+        }
+    }
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
         
@@ -43,8 +61,9 @@ struct User {
                 let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let email = ((document!.get("email")) as? String  ?? "")
+                let msgID = ((document!.get("messagingID")) as? String ?? "")
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL, messagingID: msgID)
                 
                 setFunction(user)
                 
@@ -69,7 +88,8 @@ struct User {
                 "friends": user.friends,
                 "favorites": user.favorites,
                 "timestamp": user.timestamp ??  0,
-                "requests":user.requests
+                "requests":user.requests,
+                "messagingID":user.messagingID ?? ""
             ]
 
             Firestore.firestore().collection(LoginVC.USER_DATABASE).document(user.uid!).setData(docData) {err in

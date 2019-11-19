@@ -11,6 +11,8 @@ import UIKit
 
 class TimestampCell: UITableViewCell {
     
+    
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var timeLbl: UILabel!
     @IBOutlet weak var timeView: UIView!

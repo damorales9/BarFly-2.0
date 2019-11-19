@@ -30,19 +30,19 @@ class EditProfileVC: UIViewController {
         saveButton.layer.borderWidth = 2
         
         name.layer.cornerRadius = 5
-        name.layer.borderWidth = 1
+        name.layer.borderWidth = 0
         name.layer.borderColor = UIColor.barflyblue.cgColor
         
         username.layer.cornerRadius = 5
-        username.layer.borderWidth = 1
+        username.layer.borderWidth = 0
         username.layer.borderColor = UIColor.barflyblue.cgColor
         
         email.layer.cornerRadius = 5
-        email.layer.borderWidth = 1
+        email.layer.borderWidth = 0
         email.layer.borderColor = UIColor.barflyblue.cgColor
         
         password.layer.cornerRadius = 5
-        password.layer.borderWidth = 1
+        password.layer.borderWidth = 0
         password.layer.borderColor = UIColor.barflyblue.cgColor
         
     }
