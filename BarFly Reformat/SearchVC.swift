@@ -110,14 +110,16 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     let name = ((document!.get("name")) as! String)
                     let username = ((document!.get("username")) as! String)
                     let bar = ((document!.get("bar")) as! String)
-                    let friends = ((document!.get("friends")) as! [String])
+                    let friends = ((document!.get("friends") ?? [String]()) as! [String])
                     let profileURL = ((document!.get("profileURL")) as! String)
                     let requests = [String]()
                     let favorites = [String]()
+                    let followers = [String]()
+                    let blocked = [String]()
                     
                     if (username.contains(self.resultSearchController.searchBar.text!.lowercased())) {
                         print("adding \(username)")
-                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL)
+                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL)
                         
                         var dup = false
                         for i in self.filteredTableData {
@@ -279,13 +281,15 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 }
             })
         } else {
-            User.getUser(uid: (timestampData[indexPath.row]?.uid!)!, setFunction: {(user: User?) -> Void in
-                NonUserProfileVC.nonUser = user!
-                    
-                self.dismiss(animated: true) {
-                    self.performSegue(withIdentifier: "showNonUser", sender: self)
-                }
-            })
+            if(indexPath.row < timestampData.count) {
+                User.getUser(uid: (timestampData[indexPath.row]?.uid!)!, setFunction: {(user: User?) -> Void in
+                    NonUserProfileVC.nonUser = user!
+                        
+                    self.dismiss(animated: true) {
+                        self.performSegue(withIdentifier: "showNonUser", sender: self)
+                    }
+                })
+            }
         }
     }
     

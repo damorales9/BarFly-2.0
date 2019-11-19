@@ -15,8 +15,6 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
     
     var isFollowers: Bool?
     
-    var followers = [User]()
-    
     var filteredTableData = [User]()
     
     var nonUser: User?
@@ -49,12 +47,6 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             return controller
         })()
         
-        //get the followers
-        nonUser?.getFollowers(completion: { (users) in
-            self.followers = users
-            self.tableView.reloadData()
-        })
-
         tableView.reloadData()
         
     }
@@ -80,12 +72,29 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
         
         if isFollowers! {
             
-            for i in followers {
-                if (i.username?.lowercased().contains(self.resultSearchController.searchBar.text!))! {
+            for i in (nonUser?.followers)!  {
+                
+                User.getUser(uid: i!) { (user) in
                     
-                    self.filteredTableData.append(i)
-                    self.tableView.reloadData()
-                    x+=1
+                    if let user = user, let username = user.username {
+                
+                        if(username.lowercased().contains(self.resultSearchController.searchBar.text!.lowercased())) {
+                            
+                            var dup = false
+                            for j in self.filteredTableData {
+                                if j.username == username {
+                                    dup = true
+                                }
+                            }
+                                    
+                            if !dup {
+                                self.filteredTableData.append(user)
+                                self.tableView.reloadData()
+                                x+=1
+                            }
+                            
+                        }
+                    }
                 }
                 
                 if(x >= 20) {
@@ -100,11 +109,21 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                     
                     if let user = user, let username = user.username {
                 
-                        if(username.lowercased().contains(self.resultSearchController.searchBar.text!)) {
+                        if(username.lowercased().contains(self.resultSearchController.searchBar.text!.lowercased())) {
                             
-                            self.filteredTableData.append(user)
-                            self.tableView.reloadData()
-                            x+=1
+                            var dup = false
+                            for j in self.filteredTableData {
+                                if j.username == username {
+                                    dup = true
+                                }
+                            }
+                                    
+                            if !dup {
+                                self.filteredTableData.append(user)
+                                self.tableView.reloadData()
+                                x+=1
+                            }
+                            
                         }
                     }
                 }
@@ -127,10 +146,14 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             if !resultSearchController.isActive {
                 
                 if isFollowers! {
-                    if followers.count  < 20 {
-                         return followers.count
+                    if let user = nonUser {
+                        if user.followers.count < 20 {
+                            return user.followers.count
+                        } else {
+                            return 20
+                        }
                     } else {
-                        return 20
+                        return 0
                     }
                 } else {
                     if let user = nonUser {
@@ -195,9 +218,10 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             if let user = nonUser {
                 
                 if(isFollowers!) {
-                    let u = followers[indexPath.row]
+                    
+                    User.getUser(uid: user.followers[indexPath.row]!) { (u) in
                         
-                        
+                        if let u = u {
                             cell.textLabel?.text = u.username
                             cell.detailTextLabel?.text = u.name
                             
@@ -230,8 +254,12 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                             
                             cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                             
+                        }
+                    }
+                            
                     
                 } else {
+                    
                     User.getUser(uid: user.friends[indexPath.row]!) { (u) in
                         
                         if let u = u {

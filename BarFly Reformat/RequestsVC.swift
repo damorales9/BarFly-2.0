@@ -89,6 +89,7 @@ class RequestsVC: UITableViewController {
             
             var u = user!
             
+            AppDelegate.user?.followers.append(u.uid)
             u.friends.append(AppDelegate.user?.uid)
             AppDelegate.user?.requests.remove(at: sender.tag)
             

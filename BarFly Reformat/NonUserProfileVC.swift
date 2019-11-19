@@ -157,8 +157,8 @@ class NonUserProfileVC: UIViewController {
     
     func updateFieldView() {
         
-        User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
-            AppDelegate.user = user!
+        User.getUser(uid: AppDelegate.user!.uid!) { (currentUser: User?) in
+            AppDelegate.user = currentUser!
         
             User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: User?) in
                 
@@ -175,6 +175,13 @@ class NonUserProfileVC: UIViewController {
                         self.blockView.isHidden = false
                     }  else {
                         self.blockView.isHidden = true
+                        if((AppDelegate.user?.blocked.contains(user.uid))!) {
+                            self.block.setTitle("Unblock", for: .normal)
+                            self.blockView.backgroundColor = .lightGray
+                        } else {
+                            self.block.setTitle("Block", for: .normal)
+                            self.blockView.backgroundColor = .darkGray
+                        }
                     }
                     
                     var placeholder: UIImage?
@@ -187,13 +194,13 @@ class NonUserProfileVC: UIViewController {
                     self.barChoice.image = placeholder
                     
                 
-                    if((AppDelegate.user?.friends.contains(user.uid))!) {
+                    if((currentUser?.friends.contains(user.uid))!) {
                         
                         self.follow.setTitle("Unfollow", for: .normal);
                         self.follow.backgroundColor = .red
                         self.followView.backgroundColor = .red
                         
-                        if(user.bar == "nil") {
+                        if(user.bar == "nil" || user.blocked.contains(currentUser?.uid!)) {
                             self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
                         } else {
                             self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
@@ -314,26 +321,52 @@ class NonUserProfileVC: UIViewController {
         
         if(confirm) {
             
-            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
-
-                NonUserProfileVC.nonUser = user!
-                
-                NonUserProfileVC.nonUser?.friends.remove(at: user!.friends.firstIndex(of: AppDelegate.user?.uid)!)
-                User.updateUser(user: NonUserProfileVC.nonUser)
-                
-                
-                self.updateFieldView()
-                
-                UIView.animate(withDuration: 0.5) {
-                    self.trailingFollowConstraint.constant = -50
-                    self.cancelView.isHidden = true
-                    self.cancelWidthConstraint.constant = 0
-                    self.view.layoutIfNeeded()
+            if((AppDelegate.user?.blocked.contains(NonUserProfileVC.nonUser!.uid))!) {
                     
-                }
-                self.confirm = false
+                    User.getUser(uid: AppDelegate.user!.uid!) { (user) in
+                        AppDelegate.user = user!
+                        
+                        AppDelegate.user?.blocked.remove(at: (user?.blocked.firstIndex(of: NonUserProfileVC.nonUser?.uid))!)
+                        
+                        User.updateUser(user: AppDelegate.user)
+                        
+                        self.updateFieldView()
+                                                   
+                        UIView.animate(withDuration: 0.5) {
+                            self.trailingFollowConstraint.constant = -50
+                            self.cancelView.isHidden = true
+                            self.cancelWidthConstraint.constant = 0
+                            self.view.layoutIfNeeded()
+                                    
+                        }
+                        self.confirm = false
+                    
+                    }
+                
+                } else {
+                    User.getUser(uid: AppDelegate.user!.uid!, setFunction: { (user: User?) -> Void in
 
-            })
+                            AppDelegate.user = user!
+                            
+        
+                            AppDelegate.user?.blocked.append(NonUserProfileVC.nonUser?.uid)
+                            
+                        
+                            User.updateUser(user: AppDelegate.user)
+                            
+                            self.updateFieldView()
+                            
+                            UIView.animate(withDuration: 0.5) {
+                                self.trailingFollowConstraint.constant = -50
+                                self.cancelView.isHidden = true
+                                self.cancelWidthConstraint.constant = 0
+                                self.view.layoutIfNeeded()
+                                
+                            }
+                            self.confirm = false
+
+                        })
+                    }
             
         } else {
             
@@ -357,9 +390,9 @@ class NonUserProfileVC: UIViewController {
                     
                     if ((AppDelegate.user?.friends.contains(user.uid))!) {
                         
+                        //UNFOLLOW CASE
+                        
                         if(self.confirmUnfollow) {
-                            
-                            self.confirmUnfollow = false
                             
                             UIView.animate(withDuration: 0.5) {
                                 self.trailingUnfollowConstraint.constant = -50
@@ -370,9 +403,16 @@ class NonUserProfileVC: UIViewController {
                             }
                         
                             AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
+                            NonUserProfileVC.nonUser?.followers.remove(at: user.followers.firstIndex(of: AppDelegate.user?.uid)!)
+                            if (user.blocked.contains(AppDelegate.user?.uid)) {
+                                NonUserProfileVC.nonUser?.blocked.remove(at: user.blocked.firstIndex(of: AppDelegate.user?.uid)!)
+                            }
+                            
                             self.updateFieldView()
                             User.updateUser(user: AppDelegate.user)
                             User.updateUser(user: NonUserProfileVC.nonUser)
+                            
+                            self.confirmUnfollow = false
                             
                         } else {
                          
@@ -393,6 +433,8 @@ class NonUserProfileVC: UIViewController {
                         
                     } else if (!(AppDelegate.user?.friends.contains(user.uid))! && !(user.requests.contains(AppDelegate.user?.uid))) {
                         
+                        //REQUEST CASE
+                        
                         NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
                         let userToken = user.messagingID ?? ""
                         let notifPayload: [String: Any] = ["to": userToken,"notification": ["title":"\(self.getRequestMessage())","body":" \(AppDelegate.user!.username!) has requested to follow you","badge":1,"sound":"default"]]
@@ -401,6 +443,8 @@ class NonUserProfileVC: UIViewController {
                         
                         
                     } else if (!(AppDelegate.user?.friends.contains(user.uid))! &&  (user.requests.contains(AppDelegate.user?.uid))) {
+                        
+                        //REMOVE REQUEST
                         
                         NonUserProfileVC.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
                        
@@ -422,7 +466,13 @@ class NonUserProfileVC: UIViewController {
         switch number {
         case 0: return "LMAO Someone wants to follow you"
         case 1: return "Put your dentures back in, Barbara"
-        case 2: return ""
+        case 2: return "Don't get your panties knackered, Jessica"
+        case 3: return "Focus on your career some other night"
+        case 4: return "Go out for once you peice of sh*t"
+        case 5: return "TBD0"
+        case 6: return "TBD1"
+        case 7: return "TBD2"
+        case 8: return "TBD3"
         default:
             return "New Follow Request"
         }

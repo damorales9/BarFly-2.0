@@ -128,11 +128,8 @@ class ProfileVC: UIViewController {
                 self.navigationController?.isNavigationBarHidden = false
                 self.name.text = user.name
                 self.username.text = user.username
-                self.numFollowing.text = "\(AppDelegate.user!.friends.count)"
-                
-                user.getFollowers { (users) in
-                    self.numFollowers.text = "\(users.count)"
-                }
+                self.numFollowing.text = "\(user.friends.count)"
+                self.numFollowers.text = "\(user.followers.count)"
                 
                 var placeholder = UIImage( named: "person.circle.fill")
                 
@@ -293,7 +290,6 @@ class ProfileVC: UIViewController {
         case .began:
             self.startingConstant = self.centerConstraint.constant
         case .changed:
-            print("alpha to \(abs(self.centerConstraint.constant+200) / 800)")
             self.maskView.alpha = abs(self.centerConstraint.constant+200) / 800
 //            self.maskView.layoutIfNeeded()
             let translation = gestureRecognizer.translation(in: self.view)

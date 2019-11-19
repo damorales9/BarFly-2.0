@@ -10,35 +10,21 @@ import Foundation
 import FirebaseFirestore
 
 struct User {
+    
     var uid:String?
     var name:String?
     var username: String?
     var bar:String?
     var timestamp: NSNumber?
-    var admin:Bool?
+    var admin: Bool?
     var email: String?
     var friends: [String?]
+    var followers: [String?]
+    var blocked: [String?]
     var requests: [String?]
     var favorites: [String?]
     var profileURL: String?
     var messagingID: String?
-    
-    func getFollowers(completion: @escaping ([User]) -> Void){
-        var users = [User]()
-        if let uid = uid {
-            Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: uid).getDocuments { (snapshot,err)in (snapshot, err)
-                for i in snapshot!.documents  {
-                    User.getUser(uid: i.documentID) { (user) in
-                        if let user = user {
-                            users.append(user)
-                        }
-                    }
-                }
-                
-                completion(users)
-            }
-        }
-    }
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
         
@@ -59,11 +45,13 @@ struct User {
                 let friends = ((document!.get("friends")) as? [String] ?? [String]())
                 let requests = ((document!.get("requests")) as? [String] ?? [String]())
                 let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
+                let followers = ((document!.get("followers")) as? [String] ?? [String]())
+                let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let email = ((document!.get("email")) as? String  ?? "")
                 let msgID = ((document!.get("messagingID")) as? String ?? "")
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, requests: requests, favorites: favorites, profileURL: profileURL, messagingID: msgID)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, messagingID: msgID)
                 
                 setFunction(user)
                 
@@ -86,6 +74,8 @@ struct User {
                 "profileURL": user.profileURL ?? "",
                 "email": user.email!,
                 "friends": user.friends,
+                "followers": user.followers,
+                "blocked": user.blocked,
                 "favorites": user.favorites,
                 "timestamp": user.timestamp ??  0,
                 "requests":user.requests,
