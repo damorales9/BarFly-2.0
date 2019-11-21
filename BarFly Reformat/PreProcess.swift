@@ -17,6 +17,10 @@ class PreProcess: UIViewController {
     @IBOutlet weak var label: UILabel!
     
     override func viewDidLoad() {
+       
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         progressView.progress = 0
         progressView.layer.cornerRadius  = 6
         
@@ -62,6 +66,7 @@ class PreProcess: UIViewController {
                                self.view.layoutIfNeeded()
                            }
                            print("LOGGED IN")
+                        self.progressView.progress = 0
                            self.navigationController?.popViewController(animated: true)
                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                            let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
@@ -73,6 +78,8 @@ class PreProcess: UIViewController {
                                self.view.layoutIfNeeded()
                            }
                            print("NEEDS LOGIN")
+                            
+                        self.progressView.progress = 0
                            self.navigationController?.popViewController(animated: true)
                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                            let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
@@ -84,16 +91,14 @@ class PreProcess: UIViewController {
                            self.view.layoutIfNeeded()
                        }
                        print("needs login")
+                    
+                    self.progressView.progress = 0
+
                        self.navigationController?.popViewController(animated: true)
                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                        let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
                        self.navigationController?.pushViewController(loginVC, animated:true)
                    }
         }
-        
-       
-            
-        
-       
     }
 }

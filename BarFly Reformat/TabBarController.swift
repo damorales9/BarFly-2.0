@@ -21,12 +21,11 @@ class TabBarController: UITabBarController {
         
         findAndUpdate()
         
-//        scheduledTimerWithTimeInterval()
-        
-        //if there are requests we paint the number on the vc label
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        findAndUpdate()
         
     }
     

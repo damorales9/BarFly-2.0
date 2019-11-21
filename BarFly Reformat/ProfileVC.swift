@@ -24,7 +24,7 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var dragIndicator: UILabel!
-    @IBOutlet weak var requestsButton: UIBarButtonItem!
+
     @IBOutlet weak var changeBarChoiceView: UIView!
     @IBOutlet weak var changeBarChoice: UIButton!
     @IBOutlet weak var barChoiceLabel: UILabel!
@@ -87,6 +87,19 @@ class ProfileVC: UIViewController {
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
+        
+        UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
+                   initialSpringVelocity: 0.2,
+                   options: .allowAnimatedContent,
+                   animations: {
+                       self.centerConstraint.constant = self.startingConstant - 20
+                       self.view.layoutIfNeeded()
+                   }, completion: { (value: Bool) in
+                       UIView.animate(withDuration: 0.3) {
+                           self.centerConstraint.constant = self.startingConstant
+                           self.view.layoutIfNeeded()
+                       }
+                   })
     }
     
     
@@ -156,9 +169,37 @@ class ProfileVC: UIViewController {
                 }
                 
                 if(user.requests.count == 0) {
-                    self.requestsButton.tintColor = .clear
+                    self.navigationItem.setRightBarButtonItems([ self.settingsButton], animated: true)
                 } else {
-                    self.requestsButton.tintColor = .barflyblue
+                    
+                    let button = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+                    button.tintColor = .barflyblue
+
+                    let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
+                    if #available(iOS 13.0, *) {
+                        iv.image = UIImage(systemName: "circle.fill")
+                    }
+                    iv.tintColor = .red
+
+                    let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
+                    lbl.text = "\(user.requests.count)"
+                    lbl.textColor = .black
+                    lbl.textAlignment = .center
+                    lbl.font = UIFont(name: "Roboto-Black", size: 10)
+                    
+                    iv.addSubview(lbl)
+                   
+                    button.addSubview(iv)
+                   
+                    if #available(iOS 13.0, *) {
+                        button.setImage(UIImage(systemName: "person.fill"), for: .normal)
+                    }
+                    
+                    button.addTarget(self, action: #selector(self.showRequests), for: .touchUpInside)
+                   
+                    let requests = UIBarButtonItem(customView: button)
+                    self.navigationItem.setRightBarButtonItems([ self.settingsButton, requests], animated: true)
+                    
                 }
                 
                 if(user.bar == "nil") {
@@ -197,7 +238,10 @@ class ProfileVC: UIViewController {
                             let storage = Storage.storage()
                             let httpsReference = storage.reference(forURL: imageURL)
                             
-                            self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                            let tempIV = UIImageView()
+                            tempIV.sd_setImage(with: httpsReference, placeholderImage: placeholder, completion: {(a, b, c, d) in
+                                self.barChoice.image = tempIV.image
+                            })
                                 
                         }
                     }
@@ -208,20 +252,17 @@ class ProfileVC: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
-        initialSpringVelocity: 0.2,
-        options: .allowAnimatedContent,
-        animations: {
-            self.centerConstraint.constant = self.startingConstant - 20
-            self.view.layoutIfNeeded()
-        }, completion: { (value: Bool) in
-            UIView.animate(withDuration: 0.3) {
-                self.centerConstraint.constant = self.startingConstant
-                self.view.layoutIfNeeded()
-            }
-        })
+    @objc func showRequests() {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let req = storyBoard.instantiateViewController(withIdentifier: "requestsVC") as! RequestsVC
+        self.navigationController?.pushViewController(req, animated:true)
         
+//        self.performSegue(withIdentifier: "showRequests", sender: self)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+
         paintIfLoggedIn()
     }
     
@@ -240,9 +281,9 @@ class ProfileVC: UIViewController {
     
     func updateBadge() {
         if(AppDelegate.user?.requests.count != 0){
-            tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
+            self.tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
         } else {
-            tabBarItem.badgeValue = nil
+            self.tabBarItem.badgeValue = nil
         }
     }
     

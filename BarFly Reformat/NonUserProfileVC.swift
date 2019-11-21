@@ -16,7 +16,7 @@ class NonUserProfileVC: UIViewController {
     
     
     
-    static var nonUser: User?
+    var nonUser: User?
     
     var confirm = false
     var confirmUnfollow = false
@@ -97,7 +97,7 @@ class NonUserProfileVC: UIViewController {
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
     
-        if let user = NonUserProfileVC.nonUser {
+        if let user = nonUser {
             
             updateFieldView()
             
@@ -149,7 +149,7 @@ class NonUserProfileVC: UIViewController {
     }
     
     func getFollowers(){
-        Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: NonUserProfileVC.nonUser?.uid).getDocuments { (snapshot,err)in (snapshot, err)
+        Firestore.firestore().collection(LoginVC.USER_DATABASE).whereField("friends", arrayContains: nonUser?.uid).getDocuments { (snapshot,err)in (snapshot, err)
             self.numFollowers.text = "\(snapshot!.documents.count)"
         }
     }
@@ -160,11 +160,11 @@ class NonUserProfileVC: UIViewController {
         User.getUser(uid: AppDelegate.user!.uid!) { (currentUser: User?) in
             AppDelegate.user = currentUser!
         
-            User.getUser(uid: NonUserProfileVC.nonUser!.uid!) { (user: User?) in
+            User.getUser(uid: self.nonUser!.uid!) { (user: User?) in
                 
-                NonUserProfileVC.nonUser = user!
+                self.nonUser = user!
         
-                if let user = NonUserProfileVC.nonUser {
+                if let user = self.nonUser {
                     
                     self.name.text = user.name
                     self.username.text = user.username
@@ -321,12 +321,12 @@ class NonUserProfileVC: UIViewController {
         
         if(confirm) {
             
-            if((AppDelegate.user?.blocked.contains(NonUserProfileVC.nonUser!.uid))!) {
+            if((AppDelegate.user?.blocked.contains(self.nonUser!.uid))!) {
                     
                     User.getUser(uid: AppDelegate.user!.uid!) { (user) in
                         AppDelegate.user = user!
                         
-                        AppDelegate.user?.blocked.remove(at: (user?.blocked.firstIndex(of: NonUserProfileVC.nonUser?.uid))!)
+                        AppDelegate.user?.blocked.remove(at: (user?.blocked.firstIndex(of: self.nonUser?.uid))!)
                         
                         User.updateUser(user: AppDelegate.user)
                         
@@ -349,7 +349,7 @@ class NonUserProfileVC: UIViewController {
                             AppDelegate.user = user!
                             
         
-                            AppDelegate.user?.blocked.append(NonUserProfileVC.nonUser?.uid)
+                            AppDelegate.user?.blocked.append(self.nonUser?.uid)
                             
                         
                             User.updateUser(user: AppDelegate.user)
@@ -383,10 +383,10 @@ class NonUserProfileVC: UIViewController {
     
     @IBAction func followButtonClicked(_ sender: Any) {
             
-            User.getUser(uid: NonUserProfileVC.nonUser!.uid!, setFunction: { (user: User?) -> Void in
-                NonUserProfileVC.nonUser = user!
+            User.getUser(uid: self.nonUser!.uid!, setFunction: { (user: User?) -> Void in
+                self.nonUser = user!
                 
-                if let user = NonUserProfileVC.nonUser {
+                if let user = self.nonUser {
                     
                     if ((AppDelegate.user?.friends.contains(user.uid))!) {
                         
@@ -403,14 +403,14 @@ class NonUserProfileVC: UIViewController {
                             }
                         
                             AppDelegate.user!.friends.remove(at: (AppDelegate.user!.friends.firstIndex(of: user.uid)!))
-                            NonUserProfileVC.nonUser?.followers.remove(at: user.followers.firstIndex(of: AppDelegate.user?.uid)!)
+                            self.nonUser?.followers.remove(at: user.followers.firstIndex(of: AppDelegate.user?.uid)!)
                             if (user.blocked.contains(AppDelegate.user?.uid)) {
-                                NonUserProfileVC.nonUser?.blocked.remove(at: user.blocked.firstIndex(of: AppDelegate.user?.uid)!)
+                                self.nonUser?.blocked.remove(at: user.blocked.firstIndex(of: AppDelegate.user?.uid)!)
                             }
                             
                             self.updateFieldView()
                             User.updateUser(user: AppDelegate.user)
-                            User.updateUser(user: NonUserProfileVC.nonUser)
+                            User.updateUser(user: self.nonUser)
                             
                             self.confirmUnfollow = false
                             
@@ -435,7 +435,7 @@ class NonUserProfileVC: UIViewController {
                         
                         //REQUEST CASE
                         
-                        NonUserProfileVC.nonUser!.requests.append(AppDelegate.user?.uid)
+                        self.nonUser!.requests.append(AppDelegate.user?.uid)
                         let userToken = user.messagingID ?? ""
                         let notifPayload: [String: Any] = ["to": userToken,"notification": ["title":"\(self.getRequestMessage())","body":" \(AppDelegate.user!.username!) has requested to follow you","badge":1,"sound":"default"]]
                         User.sendPushNotification(payloadDict: notifPayload)
@@ -446,13 +446,13 @@ class NonUserProfileVC: UIViewController {
                         
                         //REMOVE REQUEST
                         
-                        NonUserProfileVC.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
+                        self.nonUser?.requests.remove(at: (user.requests.firstIndex(of: AppDelegate.user?.uid))!)
                        
                     }
                 
                     self.updateFieldView()
                     User.updateUser(user: AppDelegate.user)
-                    User.updateUser(user: NonUserProfileVC.nonUser)
+                    User.updateUser(user: self.nonUser)
                 }
                 
             })
@@ -492,6 +492,22 @@ class NonUserProfileVC: UIViewController {
 
         self.present(refreshAlert, animated: true, completion: nil)
     }
+    
+    @IBAction func followingBtnClicked(_ sender: Any) {
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let listVC = storyBoard.instantiateViewController(withIdentifier: "nonUserList") as! NonUserListVC
+            listVC.isFollowers = false
+            listVC.nonUser = self.nonUser!
+            self.navigationController?.pushViewController(listVC, animated:true)
+       }
+       
+       @IBAction func followersBtnClicked(_ sender: Any) {
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let listVC = storyBoard.instantiateViewController(withIdentifier: "nonUserList") as! NonUserListVC
+            listVC.isFollowers = true
+            listVC.nonUser = self.nonUser!
+            self.navigationController?.pushViewController(listVC, animated:true)
+       }
     
 }
 

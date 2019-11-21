@@ -1170,25 +1170,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="person" catalog="system" selectedImage="person.fill" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="" image="person" catalog="system" selectedImage="person.fill" id="cPa-gy-q4n">
+                        <color key="badgeColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" title="Profile" id="AfN-V2-UQd">
                         <barButtonItem key="leftBarButtonItem" image="camera.fill" catalog="system" id="G5f-s8-dRF">
                             <connections>
                                 <action selector="cameraButtonClicked:" destination="8rJ-Kc-sve" id="O0D-cn-L17"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem image="gear" catalog="system" id="6DL-dJ-f8j">
-                                <connections>
-                                    <segue destination="0Fy-Ob-spd" kind="show" id="jmI-iE-Cxx"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="person.badge.plus.fill" catalog="system" id="ASf-tE-sW5">
-                                <connections>
-                                    <segue destination="nvf-RB-36u" kind="show" id="vMC-pv-WhY"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="gear" catalog="system" id="6DL-dJ-f8j">
+                            <connections>
+                                <segue destination="0Fy-Ob-spd" kind="show" id="jmI-iE-Cxx"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="barChoice" destination="yGE-w2-zfS" id="FjE-Rh-QUy"/>
@@ -1207,7 +1202,6 @@
                         <outlet property="numFollowers" destination="h4I-yn-6bJ" id="eux-2c-kxf"/>
                         <outlet property="numFollowing" destination="Lhj-vp-tUU" id="k6j-lS-hNs"/>
                         <outlet property="profileImage" destination="v5t-2T-4cv" id="r7g-0l-Iuu"/>
-                        <outlet property="requestsButton" destination="ASf-tE-sW5" id="xmH-gO-ggS"/>
                         <outlet property="settingsButton" destination="6DL-dJ-f8j" id="qia-Vz-qxm"/>
                         <outlet property="username" destination="mZF-Vu-3ch" id="NlC-vc-uw6"/>
                     </connections>
@@ -1306,7 +1300,7 @@
         <!--Requests-->
         <scene sceneID="JVh-cZ-lY1">
             <objects>
-                <tableViewController title="Requests" id="nvf-RB-36u" customClass="RequestsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="requestsVC" title="Requests" id="nvf-RB-36u" customClass="RequestsVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="kfC-GT-klK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1851,7 +1845,7 @@
         <!--Non User ProfileVC-->
         <scene sceneID="kS5-nL-zsO">
             <objects>
-                <viewController id="ttH-Ym-YLc" customClass="NonUserProfileVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="nonUserProfileVC" id="ttH-Ym-YLc" customClass="NonUserProfileVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IrT-0X-aOJ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1920,6 +1914,9 @@
                                         <state key="normal">
                                             <color key="titleColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
+                                        <connections>
+                                            <action selector="followingBtnClicked:" destination="ttH-Ym-YLc" eventType="touchUpInside" id="9VM-cw-Qzu"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-B1-LYc">
                                         <rect key="frame" x="50" y="135" width="100" height="25"/>
@@ -1944,6 +1941,9 @@
                                         <state key="normal">
                                             <color key="titleColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
+                                        <connections>
+                                            <action selector="followersBtnClicked:" destination="ttH-Ym-YLc" eventType="touchUpInside" id="p3l-fm-HjB"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJl-Wh-vMI">
                                         <rect key="frame" x="50" y="115" width="100" height="12"/>
@@ -2146,7 +2146,7 @@
         <scene sceneID="n7C-U9-To4">
             <objects>
                 <tableViewController storyboardIdentifier="nonUserList" id="8un-y4-75D" customClass="NonUserListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2kn-vI-32M">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2kn-vI-32M">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -2377,7 +2377,6 @@
         <image name="person" catalog="system" width="64" height="58"/>
         <image name="person.3" catalog="system" width="72" height="35"/>
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
-        <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>
         <image name="person.circle.fill" catalog="system" width="64" height="60"/>
         <image name="person.fill" catalog="system" width="64" height="60"/>
         <image name="profile" width="24" height="24"/>

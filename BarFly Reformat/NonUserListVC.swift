@@ -304,6 +304,12 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
             return cell
         }
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(resultSearchController.isActive) {
+            
+        }
+    }
 }
 
 extension StringProtocol {

@@ -274,20 +274,19 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == self.tableView) {
             User.getUser(uid: filteredTableData[indexPath.row].uid!, setFunction: {(user: User?) -> Void in
-                NonUserProfileVC.nonUser = user!
-                    
-                self.dismiss(animated: true) {
-                    self.performSegue(withIdentifier: "showNonUser", sender: self)
-                }
+                
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                userVC.nonUser = user!
+                self.navigationController?.pushViewController(userVC, animated:true)
             })
         } else {
             if(indexPath.row < timestampData.count) {
                 User.getUser(uid: (timestampData[indexPath.row]?.uid!)!, setFunction: {(user: User?) -> Void in
-                    NonUserProfileVC.nonUser = user!
-                        
-                    self.dismiss(animated: true) {
-                        self.performSegue(withIdentifier: "showNonUser", sender: self)
-                    }
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.navigationController?.pushViewController(userVC, animated:true)
                 })
             }
         }
