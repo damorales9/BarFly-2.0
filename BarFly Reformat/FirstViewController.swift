@@ -154,8 +154,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         //scheduledTimerWithTimeInterval()
         
-        
         if let coor = myMapView.userLocation.location?.coordinate{
+            print(coor)
             myMapView.setCenter(coor, animated: true)
         }
         if let userLocation = locationManager.location?.coordinate {
@@ -239,18 +239,17 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        /*
         guard !annotation.isKind(of: MKUserLocation.self) else {
             // Make a fast exit if the annotation is the `MKUserLocation`, as it's not an annotation view we wish to customize.
             return nil
         }
-        */
         
         var annotationView: MKAnnotationView?
         
         if let annotation = annotation as? CustomBarAnnotation {
             
             annotationView = setupBarAnnotationView(for: annotation, on: mapView)
+            annotationView?.displayPriority = .required
         }
         
         
@@ -535,7 +534,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             markerAnnotationView.canShowCallout = true
             let image = UIImage(named: "lofi")?.withRenderingMode(.alwaysTemplate)
             markerAnnotationView.glyphImage = image!
-            markerAnnotationView.selectedGlyphImage = #imageLiteral(resourceName: "logo.noborder")
+            //markerAnnotationView.selectedGlyphImage = image!
+            markerAnnotationView.displayPriority = .required
             markerAnnotationView.glyphTintColor = UIColor.black
             markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
             //markerAnnotationView.image = UIImage(named: "logo.noborder")
