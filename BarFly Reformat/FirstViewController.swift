@@ -534,7 +534,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             markerAnnotationView.canShowCallout = true
             markerAnnotationView.glyphTintColor = UIColor.black
             markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-            //markerAnnotationView.image = UIImage(named: "logo")
+            markerAnnotationView.image = UIImage(named: "logo.noborder")
             
 
             // Provide an image view to use as the accessory view's detail view.
