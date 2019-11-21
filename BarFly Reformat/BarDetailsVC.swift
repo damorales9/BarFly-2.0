@@ -147,7 +147,7 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
                 let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].imageName!)
 
 
-                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
 
 
             } else {

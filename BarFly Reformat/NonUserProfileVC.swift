@@ -114,7 +114,7 @@ class NonUserProfileVC: UIViewController {
                 let storage = Storage.storage()
                 let httpsReference = storage.reference(forURL: user.profileURL!)
                 
-                self.profileImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                self.profileImage.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
             
                     
             } else {
@@ -217,7 +217,15 @@ class NonUserProfileVC: UIViewController {
                                     let storage = Storage.storage()
                                     let httpsReference = storage.reference(forURL: imageURL)
                                     
-                                    self.barChoice.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                    httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
+                                        if error != nil {
+                                        
+                                        self.profileImage.image = placeholder
+                                      } else {
+                                        
+                                        self.profileImage.image = UIImage(data: data!)
+                                      }
+                                    }
                                         
                                 }
                             }

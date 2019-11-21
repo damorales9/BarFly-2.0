@@ -13,6 +13,7 @@ target 'BarFly Reformat' do
    pod 'GoogleMapsTileOverlay'
    pod 'Firebase/Messaging'
    pod 'NotificationBannerSwift', '~> 3.0.0'
+   pod 'YPImagePicker'
 
    use_frameworks!
   # Pods for BarFly Reformat

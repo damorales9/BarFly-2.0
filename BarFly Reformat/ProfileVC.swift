@@ -16,7 +16,7 @@ import FirebaseUI
 class ProfileVC: UIViewController {
         
     //VAR
-    var imagePicker: ImagePicker!
+    
     var editting = false
     
     //UI
@@ -35,7 +35,6 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var editButtonView: UIView!
     
     @IBOutlet weak var settingsButton: UIBarButtonItem!
-    @IBOutlet weak var changeProfileButton: UIBarButtonItem!
     
     @IBOutlet weak var numFollowers: UILabel!
     @IBOutlet weak var numFollowing: UILabel!
@@ -85,8 +84,6 @@ class ProfileVC: UIViewController {
         username.layer.borderColor = UIColor.barflyblue.cgColor
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
-        
-        self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
         UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
                    initialSpringVelocity: 0.2,
@@ -156,13 +153,15 @@ class ProfileVC: UIViewController {
                     let storage = Storage.storage()
                     let httpsReference = storage.reference(forURL: user.profileURL!)
                     
-                    let tempIV = UIImageView()
-                    tempIV.sd_setImage(with: httpsReference, placeholderImage: placeholder, completion: { (image, error, cache, storageRef) -> Void in
-                    
-                        self.profileImage.image = tempIV.image
-                    })
-                   
-                
+                    httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
+                      if let error = error {
+                        
+                        self.profileImage.image = placeholder
+                      } else {
+                        
+                        self.profileImage.image = UIImage(data: data!)
+                      }
+                    }
                         
                 } else {
                     self.profileImage.image = placeholder
@@ -238,10 +237,7 @@ class ProfileVC: UIViewController {
                             let storage = Storage.storage()
                             let httpsReference = storage.reference(forURL: imageURL)
                             
-                            let tempIV = UIImageView()
-                            tempIV.sd_setImage(with: httpsReference, placeholderImage: placeholder, completion: {(a, b, c, d) in
-                                self.barChoice.image = tempIV.image
-                            })
+                            self.barChoice.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
                                 
                         }
                     }
@@ -285,44 +281,6 @@ class ProfileVC: UIViewController {
         } else {
             self.tabBarItem.badgeValue = nil
         }
-    }
-    
-    @IBAction func cameraButtonClicked(_ sender: Any) {
-        self.imagePicker.present(from: view)
-    }
-    
-    func saveFIRData(){
-        self.uploadMedia(image: profileImage.image!){ url in
-            self.saveImage(userName: Auth.auth().currentUser!.uid, profileImageURL: url!){ success in
-                if (success != nil){
-                    self.dismiss(animated: true, completion: nil)
-                }
-                
-            }
-        }
-    }
-    
-    func uploadMedia(image :UIImage, completion: @escaping ((_ url: URL?) -> ())) {
-        let uid = (Auth.auth().currentUser?.uid)!
-        let uidStr = uid + ".png"
-        let storageRef = Storage.storage().reference().child(uidStr)
-        let imgData = self.profileImage.image?.pngData()
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/png"
-        storageRef.putData(imgData!, metadata: metaData) { (metadata, error) in
-            if error == nil{
-                storageRef.downloadURL(completion: { (url, error) in
-                    completion(url)
-                })
-            }else{
-                print("error in save image")
-                completion(nil)
-            }
-        }
-    }
-    
-    func saveImage(userName:String, profileImageURL: URL , completion: @escaping ((_ url: URL?) -> ())){
-        Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
     }
 
     @objc func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
@@ -376,15 +334,3 @@ class ProfileVC: UIViewController {
         self.navigationController?.pushViewController(listVC, animated:true)
     }
 }
-
-extension ProfileVC: ImagePickerDelegate {
-
-    func didSelect(image: UIImage?) {
-        
-        if let image = image {
-            self.profileImage.image = image
-            self.saveFIRData()
-        }
-    }
-}
-

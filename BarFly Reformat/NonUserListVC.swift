@@ -201,7 +201,7 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                 let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].profileURL!)
 
 
-                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
 
             } else {
@@ -244,8 +244,7 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                                 let storage = Storage.storage()
                                 let httpsReference = storage.reference(forURL: u.profileURL!)
 
-
-                                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
 
                             } else {
@@ -285,8 +284,15 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                                 let storage = Storage.storage()
                                 let httpsReference = storage.reference(forURL: u.profileURL!)
 
-
-                                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                                httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
+                                  if let error = error {
+                                    
+                                    cell.imageView?.image = placeholder
+                                  } else {
+                                    
+                                    cell.imageView?.image = UIImage(data: data!)
+                                  }
+                                }
 
 
                             } else {
@@ -308,33 +314,54 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(resultSearchController.isActive) {
             
-            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-            userVC.nonUser = filteredTableData[indexPath.row]
-            self.resultSearchController.dismiss(animated: true)
-            self.navigationController?.pushViewController(userVC, animated:true)
+            if(filteredTableData[indexPath.row].uid == AppDelegate.user?.uid) {
+                
+            } else {
+            
+                self.resultSearchController.dismiss(animated: true)
+                self.navigationController?.popToRootViewController(animated: true)
+                
+            }
             
         } else {
             
             if isFollowers! {
                 
-                User.getUser(uid: (nonUser?.followers[indexPath.row])!) { (user) in
-                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-                    userVC.nonUser = user!
+                if(nonUser?.followers[indexPath.row] == AppDelegate.user?.uid) {
+                    
                     self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.pushViewController(userVC, animated:true)
+                    self.navigationController?.popToRootViewController(animated: true)
+                    
+                } else {
+                
+                    User.getUser(uid: (nonUser?.followers[indexPath.row])!) { (user) in
+                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                        let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                        userVC.nonUser = user!
+                        self.resultSearchController.dismiss(animated: true)
+                        self.navigationController?.pushViewController(userVC, animated:true)
+                    }
+                    
                 }
                 
                 
             } else {
                 
-                User.getUser(uid: (nonUser?.friends[indexPath.row])!) { (user) in
-                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-                    userVC.nonUser = user!
+                if(nonUser?.friends[indexPath.row] == AppDelegate.user?.uid) {
+                    
                     self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.pushViewController(userVC, animated:true)
+                    self.navigationController?.popToRootViewController(animated: true)
+                    
+                } else {
+                
+                    User.getUser(uid: (nonUser?.friends[indexPath.row])!) { (user) in
+                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                        let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                        userVC.nonUser = user!
+                        self.resultSearchController.dismiss(animated: true)
+                        self.navigationController?.pushViewController(userVC, animated:true)
+                    }
+                    
                 }
                 
             }
@@ -350,4 +377,17 @@ extension StringProtocol {
 }
 extension String.Index {
     func distance<S: StringProtocol>(in string: S) -> Int { string.distance(from: string.startIndex, to: self) }
+}
+
+extension UIImageView {
+    
+    func setFirebaseImage(ref: StorageReference, placeholder: UIImage, maxMB: Int) {
+        ref.getData(maxSize: Int64(maxMB * 1024 * 1024)) { data, error in
+            if error != nil {
+                self.image = placeholder
+          } else {
+                self.image = UIImage(data: data!)
+          }
+        }
+    }
 }

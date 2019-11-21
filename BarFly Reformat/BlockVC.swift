@@ -33,6 +33,8 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
             return controller
         })()
         
+        self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+        
         tableView.reloadData()
     
     }
@@ -115,7 +117,7 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
                 let httpsReference = storage.reference(forURL: (filteredSearchResults[indexPath.row]?.profileURL!)!)
 
 
-                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
 
             } else {
@@ -150,9 +152,7 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
                     let storage = Storage.storage()
                     let httpsReference = storage.reference(forURL: (user?.profileURL!)!)
 
-
-                    cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
-
+                    cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
                 } else {
                     cell.imageView?.image = placeholder
@@ -165,5 +165,32 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if(resultSearchController.isActive) {
+            
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+            userVC.nonUser = filteredSearchResults[indexPath.row]
+            self.resultSearchController.dismiss(animated: true)
+            self.navigationController?.pushViewController(userVC, animated:true)
+            
+        } else {
+            
+            User.getUser(uid: (AppDelegate.user?.blocked[indexPath.row])!) { (user) in
+            
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                userVC.nonUser = user!
+                self.resultSearchController.dismiss(animated: true)
+                self.navigationController?.pushViewController(userVC, animated:true)
+                
+            }
+            
+            
+        }
+            
     }
 }

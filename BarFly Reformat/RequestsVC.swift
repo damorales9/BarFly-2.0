@@ -69,7 +69,7 @@ class RequestsVC: UITableViewController {
                 let httpsReference = storage.reference(forURL: (user?.profileURL!)!)
 
 
-                cell.profileImage?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                cell.profileImage?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
 
             } else {

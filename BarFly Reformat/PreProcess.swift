@@ -43,7 +43,7 @@ class PreProcess: UIViewController {
                 
                 let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar.title = NSLocalizedString(name!, comment: name!)
-                bar.imageName = imageURL!
+                bar.imageName = imageURL ?? ""
                 bar.amntPeople = amntPeople
                 bar.url = url
                 //print(bar.imageName as Any)

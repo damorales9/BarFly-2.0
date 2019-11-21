@@ -204,7 +204,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].profileURL!)
 
 
-                    cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                    cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
 
 
                 } else {
@@ -313,7 +313,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 let storage = Storage.storage()
                 let httpsReference = storage.reference(forURL: bar!.imageName!)
 
-                cell.imageView?.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
                 
                 cell.nameLbl.text = bar?.title
                 cell.guestsLbl.text = "\(bar!.amntPeople ?? 0)"

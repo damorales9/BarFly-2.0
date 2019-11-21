@@ -1174,11 +1174,6 @@
                         <color key="badgeColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
                     <navigationItem key="navigationItem" title="Profile" id="AfN-V2-UQd">
-                        <barButtonItem key="leftBarButtonItem" image="camera.fill" catalog="system" id="G5f-s8-dRF">
-                            <connections>
-                                <action selector="cameraButtonClicked:" destination="8rJ-Kc-sve" id="O0D-cn-L17"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="gear" catalog="system" id="6DL-dJ-f8j">
                             <connections>
                                 <segue destination="0Fy-Ob-spd" kind="show" id="jmI-iE-Cxx"/>
@@ -1190,7 +1185,6 @@
                         <outlet property="barChoiceLabel" destination="ZSf-8o-CWR" id="mB6-z1-mgJ"/>
                         <outlet property="changeBarChoice" destination="wQF-xk-WVw" id="e0h-JA-mYi"/>
                         <outlet property="changeBarChoiceView" destination="f6X-gu-O5M" id="KFp-RE-qMt"/>
-                        <outlet property="changeProfileButton" destination="G5f-s8-dRF" id="emz-vi-3Y8"/>
                         <outlet property="dragIndicator" destination="V0P-hM-aZn" id="99x-cd-VC5"/>
                         <outlet property="editButton" destination="XK3-4D-MNg" id="2pY-QX-FGN"/>
                         <outlet property="editButtonView" destination="pso-6e-gz9" id="kEu-Xp-N12"/>
@@ -2167,13 +2161,13 @@
         <!--Non User ListVC-->
         <scene sceneID="n7C-U9-To4">
             <objects>
-                <tableViewController storyboardIdentifier="nonUserListVC" id="8un-y4-75D" customClass="NonUserListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="nonUserList" id="8un-y4-75D" customClass="NonUserListVC" customModule="BarFly_Reformat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2kn-vI-32M">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="Cell" textLabel="Rd0-Cp-gB5" detailTextLabel="K5N-X3-MtB" imageView="uje-Q4-jyp" style="IBUITableViewCellStyleSubtitle" id="g4n-G2-CNa">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="Rd0-Cp-gB5" detailTextLabel="K5N-X3-MtB" imageView="uje-Q4-jyp" style="IBUITableViewCellStyleSubtitle" id="g4n-G2-CNa">
                                 <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="g4n-G2-CNa" id="beL-sd-xSc">
@@ -2370,7 +2364,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lV6-Pa-3PE"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Edit" id="3qO-FP-c1k"/>
+                    <navigationItem key="navigationItem" title="Edit" id="3qO-FP-c1k">
+                        <barButtonItem key="rightBarButtonItem" image="camera.fill" catalog="system" id="Ixw-xu-Zgo">
+                            <connections>
+                                <action selector="cameraButtonClicked:" destination="4oo-KZ-aZc" id="CIn-HZ-Jtd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="email" destination="MPc-dl-8jJ" id="cDo-sS-ej3"/>
                         <outlet property="errorLabel" destination="eh1-Ll-uCz" id="MQi-Qw-XT7"/>
@@ -2394,7 +2394,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="Cell" textLabel="slw-Gt-UcK" detailTextLabel="smO-Wp-uyg" imageView="VbO-nI-bCs" style="IBUITableViewCellStyleSubtitle" id="bNz-Sr-8xy">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="slw-Gt-UcK" detailTextLabel="smO-Wp-uyg" imageView="VbO-nI-bCs" style="IBUITableViewCellStyleSubtitle" id="bNz-Sr-8xy">
                                 <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bNz-Sr-8xy" id="RIi-HF-qLn">

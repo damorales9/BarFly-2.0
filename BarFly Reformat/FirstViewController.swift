@@ -350,7 +350,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             // Fallback on earlier versions
             placeholder = UIImage(named: "profile")
         }
-        calloutView.image.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+        calloutView.image.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
         //calloutView.image.image = UIImage(named: barAnnotation.imageName!)
         calloutView.amntPeople.text = "10"
         calloutView.amntPeople.layer.cornerRadius = 10
@@ -376,7 +376,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         barDetailsTitle.text = barAnnotation.title!
         barDetailsTitle.layer.cornerRadius = 15
-        barDetailsImage.sd_setImage(with: httpsReference, placeholderImage: placeholder)
+        barDetailsImage.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
         barDetailsImage.layer.cornerRadius = 10
         barDetailsImage.layer.borderWidth = 6
         barDetailsImage.layer.borderColor = UIColor.black.cgColor

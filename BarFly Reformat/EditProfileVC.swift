@@ -11,8 +11,11 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
+import YPImagePicker
 
 class EditProfileVC: UIViewController {
+    
+    var image: UIImage?
     
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var saveButtonView: UIView!
@@ -44,6 +47,8 @@ class EditProfileVC: UIViewController {
         password.layer.cornerRadius = 5
         password.layer.borderWidth = 0
         password.layer.borderColor = UIColor.barflyblue.cgColor
+        
+        
         
     }
         
@@ -97,6 +102,10 @@ class EditProfileVC: UIViewController {
                                     }
                                 })
                                 
+                                if let image = self.image {
+                                    self.saveFIRData(image: image)
+                                }
+                                
                                 User.updateUser(user: AppDelegate.user!)
                                 self.navigationController?.popToRootViewController(animated: true)
                             } else {
@@ -119,4 +128,57 @@ class EditProfileVC: UIViewController {
             
         }
     }
+    
+    func saveFIRData(image: UIImage){
+        self.uploadMedia(image: image){ url in
+            self.saveImage(userName: Auth.auth().currentUser!.uid, profileImageURL: url!){ success in
+                if (success != nil){
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            }
+        }
+    }
+    
+    func uploadMedia(image :UIImage, completion: @escaping ((_ url: URL?) -> ())) {
+        let uid = (Auth.auth().currentUser?.uid)!
+        let uidStr = uid + ".png"
+        let storageRef = Storage.storage().reference().child(uidStr)
+        let imgData = image.pngData()
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/png"
+        storageRef.putData(imgData!, metadata: metaData) { (metadata, error) in
+            if error == nil{
+                storageRef.downloadURL(completion: { (url, error) in
+                    completion(url)
+                })
+            }else{
+                print("error in save image")
+                completion(nil)
+            }
+        }
+    }
+    
+    func saveImage(userName:String, profileImageURL: URL , completion: @escaping ((_ url: URL?) -> ())){
+        Firestore.firestore().collection(LoginVC.USER_DATABASE).document(Auth.auth().currentUser!.uid).updateData(["profileURL":profileImageURL.absoluteString])
+    }
+    
+    @IBAction func cameraButtonClicked(_ sender: Any) {
+        var config = YPImagePickerConfiguration()
+        //config for image picker
+        config.onlySquareImagesFromCamera = false
+        config.screens = [.library]
+        config.library.maxNumberOfItems = 1
+        
+        let picker = YPImagePicker(configuration: config)
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let photo = items.singlePhoto {
+                self.image = photo.image
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
+        
+    }
+    
 }
