@@ -565,7 +565,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 let translation = gestureRecognizer.translation(in: self.view)
                 FirstViewController.centerConstraint.constant = FirstViewController.startingConstant + translation.y
             case .ended:
-                if(FirstViewController.centerConstraint.constant < -400) {
+                if(FirstViewController.centerConstraint.constant < -450) {
                     
                     print("high enough")
                     
