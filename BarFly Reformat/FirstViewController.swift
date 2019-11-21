@@ -159,7 +159,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             myMapView.setCenter(coor, animated: true)
         }
         if let userLocation = locationManager.location?.coordinate {
-            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 3500, longitudinalMeters: 3500)
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
             myMapView.setRegion(viewRegion, animated: false)
         }
 
@@ -1216,7 +1216,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             myMapView.setCenter(coor, animated: true)
         }
         if let userLocation = locationManager.location?.coordinate {
-            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 3500, longitudinalMeters: 3500)
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
             myMapView.setRegion(viewRegion, animated: false)
         }
     }
