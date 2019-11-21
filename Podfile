@@ -12,7 +12,8 @@ target 'BarFly Reformat' do
    pod 'Firebase/Analytics'
    pod 'GoogleMapsTileOverlay'
    pod 'Firebase/Messaging'
-   
+   pod 'NotificationBannerSwift', '~> 3.0.0'
+
    use_frameworks!
   # Pods for BarFly Reformat
 

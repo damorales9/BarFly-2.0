@@ -308,6 +308,38 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(resultSearchController.isActive) {
             
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+            userVC.nonUser = filteredTableData[indexPath.row]
+            self.resultSearchController.dismiss(animated: true)
+            self.navigationController?.pushViewController(userVC, animated:true)
+            
+        } else {
+            
+            if isFollowers! {
+                
+                User.getUser(uid: (nonUser?.followers[indexPath.row])!) { (user) in
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.pushViewController(userVC, animated:true)
+                }
+                
+                
+            } else {
+                
+                User.getUser(uid: (nonUser?.friends[indexPath.row])!) { (user) in
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.pushViewController(userVC, animated:true)
+                }
+                
+            }
+            
+            
         }
     }
 }

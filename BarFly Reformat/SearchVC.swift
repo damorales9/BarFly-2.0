@@ -10,13 +10,9 @@ import Foundation
 import FirebaseFirestore
 import FirebaseStorage
 import UIKit
+import MapKit
 
 class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionViewDataSource, UICollectionViewDelegate {
-    
- 
-    
-
-    
     
     @IBOutlet weak var socialView: UIView!
     
@@ -278,6 +274,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                 let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
                 userVC.nonUser = user!
+                self.resultSearchController.dismiss(animated: true)
                 self.navigationController?.pushViewController(userVC, animated:true)
             })
         } else {
@@ -286,6 +283,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                     let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
                     userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
                     self.navigationController?.pushViewController(userVC, animated:true)
                 })
             }
@@ -348,14 +346,31 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if(indexPath.row < (AppDelegate.user?.favorites.count)!) {
-            let mapVC = (tabBarController?.viewControllers![0]) as! UINavigationController
-            tabBarController?.selectedIndex = 0
-            mapVC.popToRootViewController(animated: true)
+
+            CustomBarAnnotation.getBar(name: (AppDelegate.user!.favorites[indexPath.row])!) { (bar: inout CustomBarAnnotation?) in
+                let mapVC = (self.tabBarController?.viewControllers![0]) as! UINavigationController
+                self.tabBarController?.selectedIndex = 0
+                mapVC.popToRootViewController(animated: true)
+                if let fVC = mapVC.viewControllers[0] as? FirstViewController {
+                    fVC.myMapView.setCenter(bar!.coordinate, animated: true)
+                    
+                    var currentBar: MKAnnotation!
+                    currentBar = FirstViewController.getAnnotation(title: bar!.title!)
+                    fVC.myMapView.selectAnnotation(currentBar!, animated: true)
+                }
+            }
+            
             //DISPLAY DETAIL THINGY
         } else {
             let mapVC = (tabBarController?.viewControllers![0]) as! UINavigationController
             tabBarController?.selectedIndex = 0
             mapVC.popToRootViewController(animated: true)
+            if let fVC = mapVC.viewControllers[0] as? FirstViewController {
+                
+                fVC.refresh(fVC)
+                
+            }
+            
         }
         
         

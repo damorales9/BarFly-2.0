@@ -12,6 +12,7 @@ import FirebaseStorage
 import FirebaseFirestore
 import FirebaseMessaging
 import MapKit
+import NotificationBannerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
@@ -49,7 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-   
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        
+        let image = UIImageView(image: UIImage(named: "logo"))
+        let banner = FloatingNotificationBanner(title: notification.request.content.title, subtitle: notification.request.content.body, leftView: image, rightView: nil, style: .info, colors: BarflyBannerColors())
+        banner.titleLabel?.font = UIFont(name: "Roboto-Light", size: 16)
+        banner.titleLabel?.textColor = .black
+        banner.subtitleLabel!.font = UIFont(name: "Roboto-Light", size: 13)
+        banner.subtitleLabel!.textColor = .black
+        banner.onTap = {
+            if AppDelegate.loggedIn {
+                
+            }
+        }
+        banner.show()
+        
+    }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
