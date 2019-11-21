@@ -133,19 +133,6 @@ class NonUserProfileVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
-        initialSpringVelocity: 0.2,
-        options: .allowAnimatedContent,
-        animations: {
-            self.centerConstraint.constant = self.startingConstant - 20
-            self.view.layoutIfNeeded()
-        }, completion: { (value: Bool) in
-            UIView.animate(withDuration: 0.3) {
-                self.centerConstraint.constant = self.startingConstant
-                self.view.layoutIfNeeded()
-            }
-        })
-        
     }
     
     func getFollowers(){
@@ -173,15 +160,19 @@ class NonUserProfileVC: UIViewController {
                     
                     if(user.friends.contains(AppDelegate.user?.uid)) {
                         self.blockView.isHidden = false
-                    }  else {
-                        self.blockView.isHidden = true
                         if((AppDelegate.user?.blocked.contains(user.uid))!) {
                             self.block.setTitle("Unblock", for: .normal)
-                            self.blockView.backgroundColor = .lightGray
+                            self.block.setTitleColor(.barflyblue, for: .normal)
+                            self.block.layer.borderColor = UIColor.barflyblue.cgColor
+                            self.blockView.backgroundColor = .black
                         } else {
                             self.block.setTitle("Block", for: .normal)
-                            self.blockView.backgroundColor = .darkGray
+                            self.block.setTitleColor(.black, for: .normal)
+                            self.block.layer.borderColor = UIColor.black.cgColor
+                            self.blockView.backgroundColor = .red
                         }
+                    } else {
+                        self.blockView.isHidden = true
                     }
                     
                     var placeholder: UIImage?

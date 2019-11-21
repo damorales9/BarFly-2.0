@@ -14,6 +14,7 @@ class SettingsVC: UITableViewController {
     @IBOutlet weak var logOutCell: UITableViewCell!
     @IBOutlet weak var privacy: UITableViewCell!
     @IBOutlet weak var security: UITableViewCell!
+    @IBOutlet weak var blockedCell: UITableViewCell!
     
     override func viewDidLoad() {
         
@@ -24,7 +25,7 @@ class SettingsVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.row == 2) {
+        if(indexPath.row == 3) {
             UserDefaults.standard.removeObject(forKey: "email")
             UserDefaults.standard.removeObject(forKey: "password")
             AppDelegate.loggedIn = false
@@ -35,7 +36,7 @@ class SettingsVC: UITableViewController {
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
             self.tabBarController?.navigationController?.pushViewController(loginVC, animated:true)
-        }
+        } 
     }
     
 }
