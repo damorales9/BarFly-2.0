@@ -15,6 +15,7 @@
 		0E5137EF236BCE47008C00AB /* overlay.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E5137EE236BCE47008C00AB /* overlay.json */; };
 		0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */; };
 		0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */; };
+		0E5C5EA623862EE300413476 /* CustomMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C5EA523862EE300413476 /* CustomMarker.swift */; };
 		0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA59D1A2370757E002F05A1 /* BarDetailsView.swift */; };
 		0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */; };
 		0EAE5C9E236E106C005F9710 /* CustomCallout.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAE5C9D236E106C005F9710 /* CustomCallout.xib */; };
@@ -67,6 +68,7 @@
 		0E5137EE236BCE47008C00AB /* overlay.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = overlay.json; sourceTree = "<group>"; };
 		0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarAnnotation.swift; sourceTree = "<group>"; };
+		0E5C5EA523862EE300413476 /* CustomMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarker.swift; sourceTree = "<group>"; };
 		0EA59D1A2370757E002F05A1 /* BarDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarDetailsView.swift; sourceTree = "<group>"; };
 		0EAE5C9B236E0F06005F9710 /* CustomCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallout.swift; sourceTree = "<group>"; };
 		0EAE5C9D236E106C005F9710 /* CustomCallout.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCallout.xib; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				6FE48D9E236B525A00487E27 /* fonts */,
 				0EC363DA236B230C00116650 /* AppDelegate.swift */,
 				0EC363DC236B230C00116650 /* FirstViewController.swift */,
+				0E5C5EA523862EE300413476 /* CustomMarker.swift */,
 				0EAE7E3623842D68001C767D /* CheckClicked.swift */,
 				0EE64708237B1236007DA55B /* URLButton.swift */,
 				0E018E832370E80E000122B7 /* AmountPeopleButton.swift */,
@@ -369,6 +372,7 @@
 				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
 				6F2A206823862E2300B0E9D0 /* BarflyBannerColors.swift in Sources */,
 				6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */,
+				0E5C5EA623862EE300413476 /* CustomMarker.swift in Sources */,
 				6F075502237F84A600765317 /* TimestampCell.swift in Sources */,
 				6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */,
 				0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */,

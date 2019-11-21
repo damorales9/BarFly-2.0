@@ -99,6 +99,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        myMapView.register(CustomMarker.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         self.barDetails.layer.cornerRadius = 20
         self.barDetails.layer.borderWidth = 4
         let color = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
@@ -532,9 +533,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout = true
+            let image = UIImage(named: "lofi")?.withRenderingMode(.alwaysTemplate)
+            markerAnnotationView.glyphImage = image!
+            markerAnnotationView.selectedGlyphImage = #imageLiteral(resourceName: "logo.noborder")
             markerAnnotationView.glyphTintColor = UIColor.black
             markerAnnotationView.markerTintColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
-            markerAnnotationView.image = UIImage(named: "logo.noborder")
+            //markerAnnotationView.image = UIImage(named: "logo.noborder")
             
 
             // Provide an image view to use as the accessory view's detail view.
@@ -1229,4 +1233,3 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
 
 
 }
-
