@@ -51,6 +51,12 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     
     var zipcode: String?
     
+    var phone: String?
+    
+    var price: String?
+    
+    var image: UIImageView?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()
@@ -78,6 +84,8 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 let state = document!.data()!["state"] as? String
                 let country = document!.data()!["country"] as? String
                 let zipcode = document!.data()!["zipcode"] as? String
+                let phone = document!.data()!["phone"] as? String
+                let price = document!.data()!["price"] as? String
                 
                 bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar!.title = NSLocalizedString(name!, comment: name!)
@@ -89,6 +97,19 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 bar!.state = state
                 bar!.country = country
                 bar!.zipcode = zipcode
+                bar!.phone = phone
+                bar!.price = price
+                
+                let storage = Storage.storage()
+                let httpsReference = storage.reference(forURL: imageURL!)
+                var placeholder: UIImage?
+                if #available(iOS 13.0, *) {
+                    placeholder = UIImage(systemName: "questionmark")
+                } else {
+                    // Fallback on earlier versions
+                    placeholder = UIImage(named: "profile")
+                }
+                bar!.image!.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
                 
                 setFunction(&bar)
                 

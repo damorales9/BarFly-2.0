@@ -45,6 +45,8 @@ class PreProcess: UIViewController {
                 let state = barDocument.data()["state"] as? String
                 let country = barDocument.data()["country"] as? String
                 let zipcode = barDocument.data()["zipcode"] as? String
+                let phone = barDocument.data()["phone"] as? String
+                let price = barDocument.data()["price"] as? String
                 
                 let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar.title = NSLocalizedString(name!, comment: name!)
@@ -56,6 +58,8 @@ class PreProcess: UIViewController {
                 bar.state = state
                 bar.country = country
                 bar.zipcode = zipcode
+                bar.phone = phone
+                bar.price = price
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)
