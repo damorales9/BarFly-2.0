@@ -41,6 +41,16 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
     
     var url: String?
     
+    var street: String?
+    
+    var city: String?
+    
+    var state: String?
+    
+    var country: String?
+    
+    var zipcode: String?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()
@@ -63,12 +73,22 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 let longitude = document!.data()!["longitude"] as? Double
                 let imageURL = document!.data()!["imageURL"] as? String
                 let url = document!.data()!["url"] as? String
+                let street = document!.data()!["street"] as? String
+                let city = document!.data()!["city"] as? String
+                let state = document!.data()!["state"] as? String
+                let country = document!.data()!["country"] as? String
+                let zipcode = document!.data()!["zipcode"] as? String
                 
                 bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar!.title = NSLocalizedString(name!, comment: name!)
                 bar!.imageName = imageURL!
                 bar!.amntPeople = amntPeople
                 bar!.url = url
+                bar!.street = street
+                bar!.city = city
+                bar!.state = state
+                bar!.country = country
+                bar!.zipcode = zipcode
                 
                 setFunction(&bar)
                 

@@ -101,7 +101,13 @@ class NonUserProfileVC: UIViewController {
             
             updateFieldView()
             
-            let placeholder = UIImage( named: "person.circle.fill")
+            var placeholder: UIImage?
+            
+            if #available(iOS 13.0, *) {
+                placeholder = UIImage(systemName: "person.circle.fill")
+            } else {
+                placeholder = UIImage(named: "profile")
+            }
             
             
             print("profileURL is \(user.profileURL!)")
@@ -220,10 +226,10 @@ class NonUserProfileVC: UIViewController {
                                     httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
                                         if error != nil {
                                         
-                                        self.profileImage.image = placeholder
+                                        self.barChoice.image = placeholder
                                       } else {
                                         
-                                        self.profileImage.image = UIImage(data: data!)
+                                        self.barChoice.image = UIImage(data: data!)
                                       }
                                     }
                                         

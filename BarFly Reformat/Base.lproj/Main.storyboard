@@ -90,21 +90,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ei2-0T-ded">
-                                        <rect key="frame" x="27.5" y="443" width="38" height="12"/>
+                                        <rect key="frame" x="27.5" y="443" width="38" height="14"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="10"/>
                                         <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Street" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IpV-o4-m0C">
-                                        <rect key="frame" x="27.5" y="454" width="44.5" height="23"/>
+                                        <rect key="frame" x="27.5" y="457" width="44.5" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="23" id="cHV-b5-xu6"/>
+                                            <constraint firstAttribute="height" constant="20" id="cHV-b5-xu6"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="17"/>
                                         <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wk-qn-1ta">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wk-qn-1ta" userLabel="City Lbl">
                                         <rect key="frame" x="27.5" y="477" width="28.5" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="RDL-xL-XLE"/>
@@ -452,7 +452,7 @@
                                     <constraint firstItem="E0C-YR-KES" firstAttribute="leading" secondItem="fVl-Nb-hRQ" secondAttribute="leading" id="Jqp-ma-FcW"/>
                                     <constraint firstItem="X2l-QR-wmX" firstAttribute="top" secondItem="L7W-MO-JPc" secondAttribute="bottom" constant="8" id="KBb-dS-3QZ"/>
                                     <constraint firstItem="10m-F7-BYi" firstAttribute="leading" secondItem="tgw-4i-dFW" secondAttribute="leading" constant="182" id="LYs-RP-JTd"/>
-                                    <constraint firstItem="IpV-o4-m0C" firstAttribute="top" secondItem="ei2-0T-ded" secondAttribute="bottom" constant="-1" id="M9n-WM-xXb"/>
+                                    <constraint firstItem="IpV-o4-m0C" firstAttribute="top" secondItem="ei2-0T-ded" secondAttribute="bottom" id="M9n-WM-xXb"/>
                                     <constraint firstItem="TES-qr-jVH" firstAttribute="leading" secondItem="fVl-Nb-hRQ" secondAttribute="leading" id="NOg-oZ-bkK"/>
                                     <constraint firstItem="BUm-Mg-66J" firstAttribute="top" secondItem="E0C-YR-KES" secondAttribute="bottom" id="OMN-4q-hqx"/>
                                     <constraint firstItem="TES-qr-jVH" firstAttribute="top" secondItem="3Xa-5S-uUs" secondAttribute="bottom" id="Oei-bH-rhv"/>
@@ -550,6 +550,8 @@
                         <outlet property="cancelBtn" destination="ahu-Dt-tpf" id="mzn-NV-EJl"/>
                         <outlet property="checkBtn" destination="RfY-jG-Nq7" id="SZ1-UM-QMR"/>
                         <outlet property="checkImGoing" destination="n4x-wR-s3j" id="4Nn-dH-qSd"/>
+                        <outlet property="cityLbl" destination="3Wk-qn-1ta" id="7rZ-iR-lR0"/>
+                        <outlet property="countryLbl" destination="ons-rN-uN0" id="NFN-7w-kBA"/>
                         <outlet property="dragButton" destination="10m-F7-BYi" id="GqU-c6-mIK"/>
                         <outlet property="exitDetails" destination="HAQ-vd-NXc" id="1Sj-83-ydn"/>
                         <outlet property="exitImGoing" destination="hZm-iR-DgT" id="JP1-Tg-dHD"/>
@@ -560,8 +562,11 @@
                         <outlet property="locationBtn" destination="rMl-Cx-azB" id="M2Q-y9-h5g"/>
                         <outlet property="myMapView" destination="Yjs-px-UtM" id="9Sp-iw-ckn"/>
                         <outlet property="refreshBtn" destination="Qv1-Cr-qmm" id="zog-wt-FhI"/>
+                        <outlet property="stateLbl" destination="E0C-YR-KES" id="OWq-N4-m26"/>
+                        <outlet property="streetLbl" destination="IpV-o4-m0C" id="I5g-KG-GtT"/>
                         <outlet property="viewFriendsBtn" destination="afg-wR-jtr" id="us8-Qq-n1P"/>
                         <outlet property="viewFriendsView" destination="Cls-1a-FrQ" id="Kss-SD-olF"/>
+                        <outlet property="zipcodeLbl" destination="BUm-Mg-66J" id="xpg-bh-w1v"/>
                         <segue destination="thA-cw-Wfk" kind="show" identifier="showBarList" id="H1y-h7-DJD"/>
                     </connections>
                 </viewController>
@@ -1743,7 +1748,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-SS-5Nn">
-                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
+                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>

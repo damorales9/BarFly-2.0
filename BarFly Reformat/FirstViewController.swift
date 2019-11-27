@@ -51,6 +51,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     var confirmChangeBar = false
     
+    @IBOutlet var streetLbl: UILabel!
+    @IBOutlet var cityLbl: UILabel!
+    @IBOutlet var stateLbl: UILabel!
+    @IBOutlet var zipcodeLbl: UILabel!
+    @IBOutlet var countryLbl: UILabel!
+    
+    
     var checkBtnWidth: NSLayoutConstraint!
     var goingBtnConstraint: NSLayoutConstraint!
     var cancelBtnWidth: NSLayoutConstraint!
@@ -389,6 +396,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         viewFriendsBtn.layer.cornerRadius = 10
         viewFriendsBtn.layer.borderWidth = 4
         viewFriendsBtn.layer.borderColor = UIColor.black.cgColor
+        streetLbl.text = barAnnotation.street!
+        cityLbl.text = barAnnotation.city!
+        stateLbl.text = barAnnotation.state!
+        countryLbl.text = barAnnotation.country!
+        zipcodeLbl.text = barAnnotation.zipcode!
         
         imGoingBtn.passedData = barAnnotation
         imGoingBtn.passedAnnotation = view
@@ -1170,12 +1182,22 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 let longitude = barDocument.data()["longitude"] as? Double
                 let imageURL = barDocument.data()["imageURL"] as? String
                 let url = barDocument.data()["url"] as? String
+                let street = barDocument.data()["street"] as? String
+                let city = barDocument.data()["city"] as? String
+                let state = barDocument.data()["state"] as? String
+                let country = barDocument.data()["country"] as? String
+                let zipcode = barDocument.data()["zipcode"] as? String
                 
                 let bar = CustomBarAnnotation(coordinate: CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!))
                 bar.title = NSLocalizedString(name!, comment: name!)
                 bar.imageName = imageURL!
                 bar.amntPeople = amntPeople
                 bar.url = url
+                bar.street = street
+                bar.city = city
+                bar.state = state
+                bar.country = country
+                bar.zipcode = zipcode
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)
