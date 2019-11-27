@@ -12,7 +12,7 @@ import FirebaseStorage
 import FirebaseFirestore
 import FirebaseUI
 
-class NonUserProfileVC: UIViewController {
+class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
     
     
     
@@ -23,7 +23,7 @@ class NonUserProfileVC: UIViewController {
     
     @IBOutlet weak var dragIndicator: UILabel!
     @IBOutlet weak var fieldView: UIView!
-    @IBOutlet weak var profileImage: UIImageView!
+    
     @IBOutlet weak var follow: UIButton!
     @IBOutlet weak var block: UIButton!
     @IBOutlet weak var cancelBlock: UIButton!
@@ -42,9 +42,16 @@ class NonUserProfileVC: UIViewController {
     @IBOutlet weak var barChoice: UIImageView!
     @IBOutlet weak var barChoiceLbl: UILabel!
     
+    var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    var scrollView: UIScrollView?
+    var profileImage: UIImageView?
+    var galleryImages = [UIImageView]()
+    
     var centerConstraint: NSLayoutConstraint!
     var startingConstant: CGFloat  = -200
     
+    var frame: CGRect = CGRect(x:0, y:0, width:0, height:0)
+    @IBOutlet weak var pageControl: UIPageControl!
     
     var trailingFollowConstraint: NSLayoutConstraint!
     var trailingUnfollowConstraint: NSLayoutConstraint!
@@ -75,7 +82,6 @@ class NonUserProfileVC: UIViewController {
         cancelUnfollow.layer.borderColor = UIColor.black.cgColor
         blockView.layer.cornerRadius = 10
         followView.layer.cornerRadius = 10
-
         
         trailingFollowConstraint = NSLayoutConstraint(item: blockView!, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -50)
         
@@ -96,38 +102,50 @@ class NonUserProfileVC: UIViewController {
         self.centerConstraint.isActive = true
         
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
-    
-        if let user = nonUser {
+        
+        self.pageControl.currentPageIndicatorTintColor = .barflyblue
+        self.scrollView = UIScrollView(frame: CGRect(x:0, y:0, width: view.frame.width, height: view.frame.height))
+        self.scrollView!.delegate = self
+        self.scrollView!.isPagingEnabled = true
+        self.scrollView?.showsVerticalScrollIndicator = false
+        self.scrollView?.contentInsetAdjustmentBehavior = .never
+        self.view.addSubview(pageControl)
+        self.view.addSubview(self.scrollView!)
+        self.view.sendSubviewToBack(scrollView!)
+        self.configurePageControl()
+        
+        self.frame.origin.x = 0
+        self.frame.size = self.scrollView!.frame.size
+        profileImage = UIImageView(frame: frame)
+        profileImage?.contentMode = .scaleAspectFill
+        profileImage?.clipsToBounds = true
+        self.scrollView?.addSubview(self.profileImage!)
+        
+        for index in 1...4 {
             
-            updateFieldView()
-            
-            var placeholder: UIImage?
-            
-            if #available(iOS 13.0, *) {
-                placeholder = UIImage(systemName: "person.circle.fill")
-            } else {
-                placeholder = UIImage(named: "profile")
-            }
-            
-            
-            print("profileURL is \(user.profileURL!)")
-            
-            if (user.profileURL != "") {
-                
-                SDImageCache.shared.clearMemory()
-                SDImageCache.shared.clearDisk()
-                
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: user.profileURL!)
-                
-                self.profileImage.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
-            
-                    
-            } else {
-                self.profileImage.image = placeholder
-            }
+            print("we at \(index) mother fucker")
 
+            self.frame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
+            self.frame.size = self.scrollView!.frame.size
+            
+            let iv = UIImageView(frame: frame)
+            iv.contentMode = .scaleAspectFill
+            iv.clipsToBounds = true
+            self.scrollView?.addSubview(iv)
+            self.galleryImages.append(iv)
+            
         }
+        
+        profileSpinner.translatesAutoresizingMaskIntoConstraints = false
+        profileSpinner.startAnimating()
+        profileImage?.addSubview(profileSpinner)
+
+        profileSpinner.centerXAnchor.constraint(equalTo: profileImage!.centerXAnchor).isActive = true
+        profileSpinner.centerYAnchor.constraint(equalTo: profileImage!.centerYAnchor).isActive = true
+        
+        self.pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControl.Event.valueChanged)
+    
+        
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged))
         fieldView.addGestureRecognizer(gesture)
@@ -139,6 +157,7 @@ class NonUserProfileVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        updateFieldView()
     }
     
     func getFollowers(){
@@ -186,9 +205,33 @@ class NonUserProfileVC: UIViewController {
                         placeholder = UIImage(systemName: "questionmark")
                     } else {
                         // Fallback on earlier versions
-                        placeholder = UIImage(named: "profile")
+                        placeholder = UIImage(named: "first")
                     }
                     self.barChoice.image = placeholder
+                    
+                    
+                    if user.profileURL != "" {
+                        
+                        self.profileImage!.getImage(ref: user.profileURL!, placeholder: placeholder!, maxMB: 40) {
+                            self.profileSpinner.stopAnimating()
+                            self.profileSpinner.isHidden = true
+                            self.configurePageControl()
+                        }
+                    } else {
+                        self.profileImage?.image = placeholder
+                        self.profileSpinner.stopAnimating()
+                        self.profileSpinner.isHidden = true
+                        self.configurePageControl()
+                    }
+                    
+                    
+                    for i in 0..<self.nonUser!.galleryURLs.count {
+                        
+                        self.galleryImages[i].getImage(ref: user.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
+                            self.configurePageControl()
+                        }
+                        
+                    }
                     
                 
                     if((currentUser?.friends.contains(user.uid))!) {
@@ -201,6 +244,8 @@ class NonUserProfileVC: UIViewController {
                             self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
                         } else {
                             self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
+                            
+                            
                            
                             let firestore = Firestore.firestore()
                             let userRef = firestore.collection("Bars")
@@ -226,10 +271,10 @@ class NonUserProfileVC: UIViewController {
                                     httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
                                         if error != nil {
                                         
-                                        self.barChoice.image = placeholder
+                                            self.barChoice!.image = placeholder
                                       } else {
                                         
-                                        self.barChoice.image = UIImage(data: data!)
+                                            self.barChoice!.image = UIImage(data: data!)
                                       }
                                     }
                                         
@@ -512,6 +557,28 @@ class NonUserProfileVC: UIViewController {
             listVC.isFollowers = true
             listVC.nonUser = self.nonUser!
             self.navigationController?.pushViewController(listVC, animated:true)
+       }
+    
+    func configurePageControl() {
+    
+           // The total number of pages that are available is based on how many available colors we have.
+           self.pageControl.numberOfPages = (nonUser?.galleryURLs.count)! + 1
+           
+           self.scrollView?.contentSize = CGSize(width: self.view.frame.width * CGFloat((nonUser?.galleryURLs.count)! + 1), height: scrollView!.frame.size.height)
+           
+           print("set page number")
+       }
+
+       // MARK : TO CHANGE WHILE CLICKING ON PAGE CONTROL
+       @objc func changePage(sender: AnyObject) -> () {
+           let x = CGFloat(pageControl.currentPage) * scrollView!.frame.size.width
+           scrollView!.setContentOffset(CGPoint(x:x, y:0), animated: true)
+       }
+
+       func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
+           let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+           pageControl.currentPage = Int(pageNumber)
        }
     
 }

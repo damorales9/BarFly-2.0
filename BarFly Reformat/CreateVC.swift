@@ -286,9 +286,10 @@ class CreateVC: UIViewController, UITextFieldDelegate {
                                 let favorites = [String]()
                                 let followers = [String]()
                                 let blocked = [String]()
+                                let galleryURLs = [String]()
                                 let timestamp = NSNumber(integerLiteral: 0)
                                      
-                                    AppDelegate.user = User(uid: Auth.auth().currentUser!.uid,name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: "")
+                                    AppDelegate.user = User(uid: Auth.auth().currentUser!.uid,name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: "", galleryURLs: galleryURLs)
                                 }
                                 AppDelegate.loggedIn = true
                                 User.updateUser(user: AppDelegate.user)

@@ -24,6 +24,7 @@ struct User {
     var requests: [String?]
     var favorites: [String?]
     var profileURL: String?
+    var galleryURLs: [String?]
     var messagingID: String?
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
@@ -48,10 +49,11 @@ struct User {
                 let followers = ((document!.get("followers")) as? [String] ?? [String]())
                 let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
+                let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
                 let email = ((document!.get("email")) as? String  ?? "")
                 let msgID = ((document!.get("messagingID")) as? String ?? "")
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, messagingID: msgID)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID)
                 
                 setFunction(user)
                 
@@ -72,6 +74,7 @@ struct User {
                 "username" : user.username!,
                 "admin" : user.admin ?? false,
                 "profileURL": user.profileURL ?? "",
+                "galleryURLs" : user.galleryURLs,
                 "email": user.email!,
                 "friends": user.friends,
                 "followers": user.followers,

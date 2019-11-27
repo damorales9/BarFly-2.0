@@ -33,9 +33,9 @@ class SettingsVC: UITableViewController {
             
         self.tabBarController?.navigationController?.popToRootViewController(animated: true)
             
-            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
-            self.tabBarController?.navigationController?.pushViewController(loginVC, animated:true)
+//            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+//            let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
+//            self.tabBarController?.navigationController?.pushViewController(loginVC, animated:true)
         } 
     }
     

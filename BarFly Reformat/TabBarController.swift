@@ -31,8 +31,8 @@ class TabBarController: UITabBarController {
     
     func findAndUpdate() {
         for i in viewControllers! {
-            if(i is ProfileVC) {
-                (i as! ProfileVC).updateBadge()
+            if((i as! UINavigationController).viewControllers[0] is ProfileVC) {
+                ((i as! UINavigationController).viewControllers[0] as! ProfileVC).updateBadge()
             }
         }
     }
@@ -42,15 +42,6 @@ class TabBarController: UITabBarController {
 //        timer = Timer.scheduledTimer(timeInterval: 60*2, target: self, selector: #selector(self.updateUser), userInfo: nil, repeats: true)
 //    }
 //
-//    @objc func updateUser() {
-//
-//        if(AppDelegate.loggedIn) {
-//            User.getUser(uid: AppDelegate.user!.uid!) { (user: inout User?) in
-//                AppDelegate.user = user!
-//                self.findAndUpdate()
-//            }
-//        }
-//    }
     
     func checkForNewRequests() {
            

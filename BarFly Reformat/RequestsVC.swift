@@ -65,11 +65,7 @@ class RequestsVC: UITableViewController {
 
             if (user?.profileURL != "") {
 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: (user?.profileURL!)!)
-
-
-                cell.profileImage?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                cell.profileImage?.getImage(ref: user!.profileURL!, placeholder: placeholder!, maxMB: 40)
 
 
             } else {
@@ -98,6 +94,8 @@ class RequestsVC: UITableViewController {
             
             self.tableView.reloadData()
             
+            (self.tabBarController as! TabBarController).findAndUpdate()
+            
         }
     }
     
@@ -109,6 +107,9 @@ class RequestsVC: UITableViewController {
             User.updateUser(user: AppDelegate.user)
             
             self.tableView.reloadData()
+            
+            (self.tabBarController as! TabBarController).findAndUpdate()
+
             
         }
         

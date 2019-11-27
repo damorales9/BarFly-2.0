@@ -197,11 +197,7 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
 
             if (filteredTableData[indexPath.row].profileURL != "") {
 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].profileURL!)
-
-
-                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                cell.imageView?.getImage(ref: filteredTableData[indexPath.row].profileURL!, placeholder: placeholder!, maxMB: 40)
 
 
             } else {
@@ -241,17 +237,12 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
 
                             if (u.profileURL != "") {
 
-                                let storage = Storage.storage()
-                                let httpsReference = storage.reference(forURL: u.profileURL!)
-
-                                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                                cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
 
 
                             } else {
                                 cell.imageView?.image = placeholder
                             }
-                            
-                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                             
                         }
                     }
@@ -280,26 +271,12 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                             }
 
                             if (u.profileURL != "") {
-
-                                let storage = Storage.storage()
-                                let httpsReference = storage.reference(forURL: u.profileURL!)
-
-                                httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
-                                  if let error = error {
-                                    
-                                    cell.imageView?.image = placeholder
-                                  } else {
-                                    
-                                    cell.imageView?.image = UIImage(data: data!)
-                                  }
-                                }
-
-
+                                
+                                cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
+                                
                             } else {
                                 cell.imageView?.image = placeholder
                             }
-                            
-                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                             
                         }
                     }
@@ -381,13 +358,67 @@ extension String.Index {
 
 extension UIImageView {
     
-    func setFirebaseImage(ref: StorageReference, placeholder: UIImage, maxMB: Int) {
-        ref.getData(maxSize: Int64(maxMB * 1024 * 1024)) { data, error in
-            if error != nil {
-                self.image = placeholder
-          } else {
-                self.image = UIImage(data: data!)
-          }
+    func getImage(ref: String, placeholder: UIImage, maxMB: Int) {
+        self.getImage(ref: ref, placeholder: placeholder, maxMB: maxMB, completion: {
+            //convenience
+        })
+    }
+    
+    func getImage(ref: String, placeholder: UIImage, maxMB: Int, completion: @escaping () -> Void) {
+//        ref.getData(maxSize: Int64(maxMB * 1024 * 1024)) { data, error in
+//            if error != nil {
+//                self.image = placeholder
+//          } else {
+//                self.image = UIImage(data: data!)
+//          }
+//
+//            completion()
+//        }
+        dnldImage(from: URL(string: ref)!, completion: { (image) in
+            self.image = image
+            completion()
+        }, error: {
+            self.image = placeholder
+            completion()
+        })
+    }
+    
+    
+    static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    static func downloadImage(from url: URL, completion: @escaping (UIImage) -> Void, error: @escaping () -> Void) {
+        print("Download Started for image at \(url.absoluteString)")
+        getData(from: url) { data, response, err in
+            guard let data = data, err == nil else {
+                error()
+                return
+            }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                completion(UIImage(data: data)!)
+            }
+        }
+    }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func dnldImage(from url: URL, completion: @escaping (UIImage) -> Void, error: @escaping () -> Void) {
+        print("Download Started for image at \(url.absoluteString)")
+        getData(from: url) { data, response, err in
+            guard let data = data, err == nil else {
+                error()
+                return
+            }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                completion(UIImage(data: data)!)
+            }
         }
     }
 }

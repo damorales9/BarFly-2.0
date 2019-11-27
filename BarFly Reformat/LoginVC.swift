@@ -75,6 +75,12 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         login.layer.borderColor = UIColor.black.cgColor
         create.layer.borderWidth  = 3
         create.layer.borderColor = UIColor.barflyblue.cgColor
+        
+        password.delegate = self
+        email.delegate  = self
+        
+        email.tag = 1
+        password.tag = 0
 
         email.addTarget(self, action: #selector(emailChange), for: UIControl.Event.editingChanged)
         
@@ -96,27 +102,27 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
     
-        if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
-            self.email.text = email
-            self.password.text = password
-            emailChange()
-            passwordChange()
-            //login(email: email, password: password)
-            
-            enableDisableLogin()
-        }
-        
-        password.delegate = self
-        email.delegate  = self
-
-        email.tag = 1
-        password.tag = 0
-        
-        email.addTarget(self, action: #selector(eEdit), for: .editingDidBegin)
-               email.addTarget(self, action: #selector(eEditOver), for: .editingDidEnd)
-               
-               password.addTarget(self, action: #selector(pwEdit), for: .editingDidBegin)
-                      password.addTarget(self, action: #selector(pwEditOver), for: .editingDidEnd)
+//        if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
+//            self.email.text = email
+//            self.password.text = password
+//            emailChange()
+//            passwordChange()
+//            //login(email: email, password: password)
+//
+//            enableDisableLogin()
+//        }
+//
+//        password.delegate = self
+//        email.delegate  = self
+//
+//        email.tag = 1
+//        password.tag = 0
+//
+//        email.addTarget(self, action: #selector(eEdit), for: .editingDidBegin)
+//               email.addTarget(self, action: #selector(eEditOver), for: .editingDidEnd)
+//
+//               password.addTarget(self, action: #selector(pwEdit), for: .editingDidBegin)
+//                      password.addTarget(self, action: #selector(pwEditOver), for: .editingDidEnd)
                
         
 //      performSegue(withIdentifier: "hasLogin", sender: self)

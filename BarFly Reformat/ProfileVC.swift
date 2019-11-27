@@ -13,14 +13,13 @@ import FirebaseStorage
 import FirebaseFirestore
 import FirebaseUI
 
-class ProfileVC: UIViewController {
+class ProfileVC: UIViewController, UIScrollViewDelegate {
         
     //VAR
     
     var editting = false
     
     //UI
-    @IBOutlet var profileImage: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var dragIndicator: UILabel!
@@ -41,11 +40,18 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var followingButton: UIButton!
     @IBOutlet weak var followersButton: UIButton!
     
-    
     @IBOutlet weak var fieldView: UIView!
+    
+    var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    var scrollView: UIScrollView?
+    var profileImage: UIImageView?
+    var galleryImages = [UIImageView]()
     
     var centerConstraint: NSLayoutConstraint!
     var startingConstant: CGFloat  = -250
+    
+    var frame: CGRect = CGRect(x:0, y:0, width:0, height:0)
+    @IBOutlet weak var pageControl: UIPageControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,17 +92,62 @@ class ProfileVC: UIViewController {
         fieldView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
         
         UIView.animate(withDuration:0.3, delay: 0.1, usingSpringWithDamping: 1,
-                   initialSpringVelocity: 0.2,
-                   options: .allowAnimatedContent,
-                   animations: {
-                       self.centerConstraint.constant = self.startingConstant - 20
+               initialSpringVelocity: 0.2,
+               options: .allowAnimatedContent,
+               animations: {
+                   self.centerConstraint.constant -= 20
+                   self.view.layoutIfNeeded()
+               }, completion: { (value: Bool) in
+                   UIView.animate(withDuration: 0.3) {
+                       self.centerConstraint.constant += 20
                        self.view.layoutIfNeeded()
-                   }, completion: { (value: Bool) in
-                       UIView.animate(withDuration: 0.3) {
-                           self.centerConstraint.constant = self.startingConstant
-                           self.view.layoutIfNeeded()
-                       }
-                   })
+                   }
+               })
+        
+        self.pageControl.currentPageIndicatorTintColor = .barflyblue
+        self.scrollView = UIScrollView(frame: CGRect(x:0, y:0, width: view.frame.width, height: view.frame.height))
+        self.scrollView!.delegate = self
+        self.scrollView!.isPagingEnabled = true
+        self.scrollView?.showsVerticalScrollIndicator = false
+        self.scrollView?.contentInsetAdjustmentBehavior = .never
+        self.view.addSubview(pageControl)
+        self.view.addSubview(self.scrollView!)
+        self.view.sendSubviewToBack(scrollView!)
+        self.configurePageControl()
+        
+        self.frame.origin.x = 0
+        self.frame.size = self.scrollView!.frame.size
+        profileImage = UIImageView(frame: frame)
+        profileImage?.contentMode = .scaleAspectFill
+        profileImage?.clipsToBounds = true
+        profileImage?.tintColor = .barflyblue
+        self.scrollView?.addSubview(self.profileImage!)
+        
+        for index in 1...4 {
+            
+            print("we at \(index) mother fucker")
+
+            self.frame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
+            self.frame.size = self.scrollView!.frame.size
+            
+            let iv = UIImageView(frame: frame)
+            iv.contentMode = .scaleAspectFill
+            iv.clipsToBounds = true
+            self.scrollView?.addSubview(iv)
+            self.galleryImages.append(iv)
+            
+        }
+        
+        profileSpinner.translatesAutoresizingMaskIntoConstraints = false
+        profileSpinner.startAnimating()
+        profileImage?.addSubview(profileSpinner)
+
+        profileSpinner.centerXAnchor.constraint(equalTo: profileImage!.centerXAnchor).isActive = true
+        profileSpinner.centerYAnchor.constraint(equalTo: profileImage!.centerYAnchor).isActive = true
+        
+        self.pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControl.Event.valueChanged)
+        
+        
     }
     
     
@@ -106,7 +157,6 @@ class ProfileVC: UIViewController {
 //        requestsButton.tintColor = .clear
 //        changeBarChoice.tintColor = .clear
 //        settingsButton.tintColor = .clear
-        self.navigationController?.isNavigationBarHidden = true
         
         name.text = ""
         username.text = ""
@@ -123,6 +173,7 @@ class ProfileVC: UIViewController {
         self.barChoice.image = placeholder
         
         barChoiceLabel.text = ""
+        
     }
     
     func paintComponents() {
@@ -141,30 +192,38 @@ class ProfileVC: UIViewController {
                 self.numFollowing.text = "\(user.friends.count)"
                 self.numFollowers.text = "\(user.followers.count)"
                 
-                var placeholder = UIImage( named: "person.circle.fill")
                 
-                print("profileURL is \(user.profileURL)")
-                
-                if (user.profileURL != "") {
-                    
-                    SDImageCache.shared.clearMemory()
-                    SDImageCache.shared.clearDisk()
-                    
-                    let storage = Storage.storage()
-                    let httpsReference = storage.reference(forURL: user.profileURL!)
-                    
-                    httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
-                      if let error = error {
-                        
-                        self.profileImage.image = placeholder
-                      } else {
-                        
-                        self.profileImage.image = UIImage(data: data!)
-                      }
-                    }
-                        
+                var placeholder: UIImage?
+                if #available(iOS 13.0, *) {
+                    placeholder = UIImage(systemName: "person")
                 } else {
-                    self.profileImage.image = placeholder
+                    // Fallback on earlier versions
+                    placeholder = UIImage(named: "profile")
+                }
+                    
+                SDImageCache.shared.clearMemory()
+                SDImageCache.shared.clearDisk()
+    
+                
+                if AppDelegate.user?.profileURL != "" {
+                    self.profileImage!.getImage(ref: user.profileURL!, placeholder: placeholder!, maxMB: 40) {
+                        self.profileSpinner.stopAnimating()
+                        self.profileSpinner.isHidden = true
+                        self.configurePageControl()
+                    }
+                } else {
+                    self.profileImage?.image = placeholder
+                    self.profileSpinner.stopAnimating()
+                    self.profileSpinner.isHidden = true
+                    self.configurePageControl()
+                }
+                
+                for i in 0..<AppDelegate.user!.galleryURLs.count {
+                    
+                    self.galleryImages[i].getImage(ref: AppDelegate.user!.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
+                        self.configurePageControl()
+                    }
+                    
                 }
                 
                 if(user.requests.count == 0) {
@@ -234,10 +293,8 @@ class ProfileVC: UIViewController {
                                 placeholder = UIImage(named: "first")
                             }
                             
-                            let storage = Storage.storage()
-                            let httpsReference = storage.reference(forURL: imageURL)
                             
-                            self.barChoice.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
+                            self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 6)
                                 
                         }
                     }
@@ -277,9 +334,9 @@ class ProfileVC: UIViewController {
     
     func updateBadge() {
         if(AppDelegate.user?.requests.count != 0){
-            self.tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
+            self.navigationController?.tabBarItem.badgeValue = "\(AppDelegate.user!.requests.count)"
         } else {
-            self.tabBarItem.badgeValue = nil
+            self.navigationController?.tabBarItem.badgeValue = nil
         }
     }
 
@@ -332,5 +389,65 @@ class ProfileVC: UIViewController {
         listVC.isFollowers = true
         listVC.nonUser = AppDelegate.user
         self.navigationController?.pushViewController(listVC, animated:true)
+    }
+    
+    func configurePageControl() {
+        // The total number of pages that are available is based on how many available colors we have.
+        if (AppDelegate.loggedIn) {
+            self.pageControl.numberOfPages = (AppDelegate.user?.galleryURLs.count)! + 1
+            self.scrollView?.contentSize = CGSize(width: self.view.frame.width * CGFloat((AppDelegate.user?.galleryURLs.count)! + 1), height: scrollView!.frame.size.height)
+        }
+        
+        print("set page number")
+    }
+
+    // MARK : TO CHANGE WHILE CLICKING ON PAGE CONTROL
+    @objc func changePage(sender: AnyObject) -> () {
+        let x = CGFloat(pageControl.currentPage) * scrollView!.frame.size.width
+        scrollView!.setContentOffset(CGPoint(x:x, y:0), animated: true)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl.currentPage = Int(pageNumber)
+    }
+    
+}
+
+extension UIImage {
+    
+    static func cropToBounds(image: UIImage, width: Double, height: Double) -> UIImage {
+
+        let cgimage = image.cgImage!
+        let contextImage: UIImage = UIImage(cgImage: cgimage)
+        let contextSize: CGSize = contextImage.size
+        var posX: CGFloat = 0.0
+        var posY: CGFloat = 0.0
+        var cgwidth: CGFloat = CGFloat(width)
+        var cgheight: CGFloat = CGFloat(height)
+
+        // See what size is longer and create the center off of that
+        if contextSize.width > contextSize.height {
+            posX = ((contextSize.width - contextSize.height) / 2)
+            posY = 0
+            cgwidth = contextSize.height
+            cgheight = contextSize.height
+        } else {
+            posX = 0
+            posY = ((contextSize.height - contextSize.width) / 2)
+            cgwidth = contextSize.width
+            cgheight = contextSize.width
+        }
+
+        let rect: CGRect = CGRect(x: posX, y: posY, width: cgwidth, height: cgheight)
+
+        // Create bitmap image from context using the rect
+        let imageRef: CGImage = cgimage.cropping(to: rect)!
+
+        // Create a new image based on the imageRef and rotate back to the original orientation
+        let image: UIImage = UIImage(cgImage: imageRef, scale: image.scale, orientation: image.imageOrientation)
+
+        return image
     }
 }

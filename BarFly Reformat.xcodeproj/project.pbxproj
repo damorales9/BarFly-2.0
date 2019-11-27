@@ -32,6 +32,7 @@
 		6F075500237F454900765317 /* PreProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0754FF237F454900765317 /* PreProcess.swift */; };
 		6F075502237F84A600765317 /* TimestampCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F075501237F84A600765317 /* TimestampCell.swift */; };
 		6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0755032381DEE500765317 /* FavoriteBarCell.swift */; };
+		6F122F69238949EC00ACD9A1 /* GalleryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F122F68238949EC00ACD9A1 /* GalleryViewCell.swift */; };
 		6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F27C1A52383155200B2078F /* NonUserListVC.swift */; };
 		6F27C1AB23835CCA00B2078F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F27C1AA23835CCA00B2078F /* GoogleService-Info.plist */; };
 		6F2A206823862E2300B0E9D0 /* BarflyBannerColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2A206723862E2300B0E9D0 /* BarflyBannerColors.swift */; };
@@ -90,6 +91,7 @@
 		6F0754FF237F454900765317 /* PreProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreProcess.swift; sourceTree = "<group>"; };
 		6F075501237F84A600765317 /* TimestampCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampCell.swift; sourceTree = "<group>"; };
 		6F0755032381DEE500765317 /* FavoriteBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBarCell.swift; sourceTree = "<group>"; };
+		6F122F68238949EC00ACD9A1 /* GalleryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewCell.swift; sourceTree = "<group>"; };
 		6F27C1A52383155200B2078F /* NonUserListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserListVC.swift; sourceTree = "<group>"; };
 		6F27C1A7238351F700B2078F /* BarFly Reformat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "BarFly Reformat.entitlements"; sourceTree = "<group>"; };
 		6F27C1AA23835CCA00B2078F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				6F27C1A52383155200B2078F /* NonUserListVC.swift */,
 				6F2A206723862E2300B0E9D0 /* BarflyBannerColors.swift */,
 				6F4C2FDC2386EFB8001A885B /* BlockVC.swift */,
+				6F122F68238949EC00ACD9A1 /* GalleryViewCell.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
 				6F2A206823862E2300B0E9D0 /* BarflyBannerColors.swift in Sources */,
 				6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */,
+				6F122F69238949EC00ACD9A1 /* GalleryViewCell.swift in Sources */,
 				0E5C5EA623862EE300413476 /* CustomMarker.swift in Sources */,
 				6F075502237F84A600765317 /* TimestampCell.swift in Sources */,
 				6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */,

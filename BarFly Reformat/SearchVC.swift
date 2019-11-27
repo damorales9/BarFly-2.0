@@ -111,11 +111,12 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     let requests = [String]()
                     let favorites = [String]()
                     let followers = [String]()
+                    let galleryURLs = [String]()
                     let blocked = [String]()
                     
                     if (username.contains(self.resultSearchController.searchBar.text!.lowercased())) {
                         print("adding \(username)")
-                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL)
+                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs)
                         
                         var dup = false
                         for i in self.filteredTableData {
@@ -200,11 +201,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
 
                 if (filteredTableData[indexPath.row].profileURL != "") {
 
-                    let storage = Storage.storage()
-                    let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].profileURL!)
-
-
-                    cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                    cell.imageView?.getImage(ref: filteredTableData[indexPath.row].profileURL!, placeholder: placeholder!, maxMB: 40)
 
 
                 } else {
@@ -310,10 +307,7 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     placeholder = UIImage(named: "pin")
                 }
 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: bar!.imageName!)
-
-                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                cell.imageView?.getImage(ref: bar!.imageName!, placeholder: placeholder!, maxMB: 40)
                 
                 cell.nameLbl.text = bar?.title
                 cell.guestsLbl.text = "\(bar!.amntPeople ?? 0)"

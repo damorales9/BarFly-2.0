@@ -113,11 +113,7 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
 
             if (filteredSearchResults[indexPath.row]?.profileURL != "") {
 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: (filteredSearchResults[indexPath.row]?.profileURL!)!)
-
-
-                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                cell.imageView?.getImage(ref: (filteredSearchResults[indexPath.row]?.profileURL!)!, placeholder: placeholder!, maxMB: 40)
 
 
             } else {
@@ -149,10 +145,7 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
 
                 if (user?.profileURL != "") {
 
-                    let storage = Storage.storage()
-                    let httpsReference = storage.reference(forURL: (user?.profileURL!)!)
-
-                    cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 40)
+                    cell.imageView?.getImage(ref: (user?.profileURL!)!, placeholder: placeholder!, maxMB: 40)
 
                 } else {
                     cell.imageView?.image = placeholder

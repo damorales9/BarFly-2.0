@@ -142,12 +142,9 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
             }
 
             if (filteredTableData[indexPath.row].imageName != "nil") {
+                
 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: filteredTableData[indexPath.row].imageName!)
-
-
-                cell.imageView?.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
+                cell.imageView?.getImage(ref: filteredTableData[indexPath.row].imageName!, placeholder: placeholder!, maxMB: 6)
 
 
             } else {

@@ -22,7 +22,7 @@ class PreProcess: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         progressView.progress = 0
-        progressView.layer.cornerRadius  = 6
+        progressView.layer.cornerRadius = 6
         
         self.label.text = "Getting Bars..."
         let basicQuery = Firestore.firestore().collection("Bars").limit(to: 50)
@@ -77,7 +77,7 @@ class PreProcess: UIViewController {
                            }
                            print("LOGGED IN")
                         self.progressView.progress = 0
-                           self.navigationController?.popViewController(animated: true)
+//                           self.navigationController?.popViewController(animated: true)
                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                            let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
                            self.navigationController?.pushViewController(tabVC, animated:true)
@@ -90,7 +90,7 @@ class PreProcess: UIViewController {
                            print("NEEDS LOGIN")
                             
                         self.progressView.progress = 0
-                           self.navigationController?.popViewController(animated: true)
+//                           self.navigationController?.popViewController(animated: true)
                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                            let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
                            self.navigationController?.pushViewController(loginVC, animated:true)
@@ -104,7 +104,7 @@ class PreProcess: UIViewController {
                     
                     self.progressView.progress = 0
 
-                       self.navigationController?.popViewController(animated: true)
+//                       self.navigationController?.popViewController(animated: true)
                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                        let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
                        self.navigationController?.pushViewController(loginVC, animated:true)
