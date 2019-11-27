@@ -186,6 +186,8 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
             
             if let user = AppDelegate.user {
                 
+                self.title = user.username
+                
                 self.navigationController?.isNavigationBarHidden = false
                 self.name.text = user.name
                 self.username.text = user.username

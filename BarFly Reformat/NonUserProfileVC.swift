@@ -178,6 +178,8 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
         
                 if let user = self.nonUser {
                     
+                    self.title = user.username
+                    
                     self.name.text = user.name
                     self.username.text = user.username
                     self.numFollowing.text = "\(user.friends.count)"
