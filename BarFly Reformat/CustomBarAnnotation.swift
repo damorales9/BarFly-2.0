@@ -100,16 +100,11 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 bar!.phone = phone
                 bar!.price = price
                 
-                let storage = Storage.storage()
-                let httpsReference = storage.reference(forURL: imageURL!)
-                var placeholder: UIImage?
-                if #available(iOS 13.0, *) {
-                    placeholder = UIImage(systemName: "questionmark")
-                } else {
-                    // Fallback on earlier versions
-                    placeholder = UIImage(named: "profile")
+                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
+                    bar!.image?.image = image
+                }) {
+                    print("no image")
                 }
-                bar!.image!.setFirebaseImage(ref: httpsReference, placeholder: placeholder!, maxMB: 6)
                 
                 setFunction(&bar)
                 

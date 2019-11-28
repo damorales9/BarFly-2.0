@@ -13,7 +13,6 @@ import FirebaseFirestore
 import FirebaseMessaging
 import MapKit
 import NotificationBannerSwift
-import SwiftyDropbox
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
@@ -43,9 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
               application.registerUserNotificationSettings(settings)
         }
-         
-        
-        DropboxClientsManager.setupWithAppKey("n288bpx0hcodum4")
         
         
         application.registerForRemoteNotifications()

@@ -356,7 +356,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             // Fallback on earlier versions
             placeholder = UIImage(named: "profile")
         }
-        calloutView.image.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
+        //calloutView.image.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
+        calloutView.image = barAnnotation.image
         //calloutView.image.image = UIImage(named: barAnnotation.imageName!)
         calloutView.amntPeople.text = "10"
         calloutView.amntPeople.layer.cornerRadius = 10
@@ -382,7 +383,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         barDetailsTitle.text = barAnnotation.title!
         barDetailsTitle.layer.cornerRadius = 15
-        barDetailsImage.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
+        //barDetailsImage.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
+        barDetailsImage.image = barAnnotation.image!.image
         barDetailsImage.layer.cornerRadius = 10
         barDetailsImage.layer.borderWidth = 6
         barDetailsImage.layer.borderColor = UIColor.black.cgColor
@@ -1203,6 +1205,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 bar.zipcode = zipcode
                 bar.phone = phone
                 bar.price = price
+                
+                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
+                    bar.image?.image = image
+                }) {
+                    print("no image")
+                }
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)

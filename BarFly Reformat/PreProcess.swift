@@ -60,6 +60,12 @@ class PreProcess: UIViewController {
                 bar.zipcode = zipcode
                 bar.phone = phone
                 bar.price = price
+                
+                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
+                    bar.image!.image = image
+                }) {
+                    print("no image")
+                }
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)
