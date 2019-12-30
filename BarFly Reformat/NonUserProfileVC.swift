@@ -43,6 +43,8 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var barChoiceLbl: UILabel!
     
     var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    var barChoiceSpinner = UIActivityIndicatorView(style: .whiteLarge)
+
     var scrollView: UIScrollView?
     var profileImage: UIImageView?
     var galleryImages = [UIImageView]()
@@ -218,21 +220,21 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                             self.profileSpinner.stopAnimating()
                             self.profileSpinner.isHidden = true
                             self.configurePageControl()
+                            
+                            for i in 0..<self.nonUser!.galleryURLs.count {
+                                
+                                self.galleryImages[i].getImage(ref: user.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
+                                    self.configurePageControl()
+                                }
+                                
+                            }
+                            
                         }
                     } else {
                         self.profileImage?.image = placeholder
                         self.profileSpinner.stopAnimating()
                         self.profileSpinner.isHidden = true
                         self.configurePageControl()
-                    }
-                    
-                    
-                    for i in 0..<self.nonUser!.galleryURLs.count {
-                        
-                        self.galleryImages[i].getImage(ref: user.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
-                            self.configurePageControl()
-                        }
-                        
                     }
                     
                 
@@ -267,17 +269,17 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                                         placeholder = UIImage(named: "first")
                                     }
                                     
-                                    let storage = Storage.storage()
-                                    let httpsReference = storage.reference(forURL: imageURL)
+                                    self.barChoiceSpinner.translatesAutoresizingMaskIntoConstraints = false
+                                    self.barChoiceSpinner.startAnimating()
+                                    self.barChoice?.addSubview(self.barChoiceSpinner)
+
+                                    self.barChoiceSpinner.centerXAnchor.constraint(equalTo: self.barChoice!.centerXAnchor).isActive = true
+                                    self.barChoiceSpinner.centerYAnchor.constraint(equalTo: self.barChoice!.centerYAnchor).isActive = true
                                     
-                                    httpsReference.getData(maxSize: 40 * 1024 * 1024) { data, error in
-                                        if error != nil {
-                                        
-                                            self.barChoice!.image = placeholder
-                                      } else {
-                                        
-                                            self.barChoice!.image = UIImage(data: data!)
-                                      }
+                                    
+                                    self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 40) {
+                                        self.barChoiceSpinner.stopAnimating()
+                                        self.barChoiceSpinner.isHidden = true
                                     }
                                         
                                 }

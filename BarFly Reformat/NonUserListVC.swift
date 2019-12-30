@@ -54,6 +54,11 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
     func getName() -> String {
     
         if let user = nonUser, let name = user.username {
+            
+            if name == AppDelegate.user?.username {
+                return "your"
+            }
+            
             //NAME IS USERNAME I WAS TOO LAZY TO CHANGE THE NAME
             if(name.indexDistance(of: "s") == name.count-1) {
                 return "\(name)'"

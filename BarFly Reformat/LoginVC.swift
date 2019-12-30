@@ -51,6 +51,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var login: UIButton!
     @IBOutlet weak var create: UIButton!
+    @IBOutlet weak var loginView: UIView!
     
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var passwordLbl: UILabel!
@@ -64,11 +65,13 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         
+        
         email.layer.cornerRadius = 15
         password.layer.cornerRadius = 15
         login.layer.cornerRadius = 10
         create.layer.cornerRadius = 10
 
+        loginView.layer.cornerRadius = 10   
         
         login.isEnabled = false
         login.layer.borderWidth = 3
@@ -79,8 +82,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         password.delegate = self
         email.delegate  = self
         
-        email.tag = 1
-        password.tag = 0
+        email.tag = 0
+        password.tag = 1
 
         email.addTarget(self, action: #selector(emailChange), for: UIControl.Event.editingChanged)
         
@@ -193,6 +196,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
        } else {
           // Not found, so remove keyboard.
           textField.resignFirstResponder()
+            loginButtonClicked(login!)
        }
        // Do not add a line break
        return false

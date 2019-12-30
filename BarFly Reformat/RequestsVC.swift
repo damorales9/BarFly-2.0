@@ -17,9 +17,17 @@ class RequestsVC: UITableViewController {
         
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
 
+        self.title = "Requests"
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        User.getUser(uid: (AppDelegate.user?.requests[indexPath.row])!) { (user) in
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+            userVC.nonUser = user!
+            self.navigationController?.pushViewController(userVC, animated:true)
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,7 +80,6 @@ class RequestsVC: UITableViewController {
                 cell.profileImage?.image = placeholder
             }
             
-            cell.profileImage?.image = cell.profileImage?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
         }
         
         return cell

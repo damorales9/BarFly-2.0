@@ -216,6 +216,7 @@ class CreateVC: UIViewController, UITextFieldDelegate {
        } else {
           // Not found, so remove keyboard.
           textField.resignFirstResponder()
+            createClicked(create!)
        }
        // Do not add a line break
        return false

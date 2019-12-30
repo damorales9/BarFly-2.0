@@ -26,6 +26,8 @@ struct User {
     var profileURL: String?
     var galleryURLs: [String?]
     var messagingID: String?
+    var profileImage: UIImage?
+    var galleryImages: [UIImage]?
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
         
@@ -55,7 +57,34 @@ struct User {
                 
                 user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID)
                 
+//                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
+//                    user?.profileImage = image
+//
+//                    var x = 0
+//                    for i in user!.galleryURLs {
+//
+//                        UIImageView.downloadImage(from: URL(string: i!)!, completion: { (image) in
+//                            user?.galleryImages?.append(image)
+//                            x+=1
+//
+//                            if x == user!.galleryURLs.count {
+//                                setFunction(user)
+//                            }
+//                        }) {
+//                            print("this image twas fucked")
+//                            x+=1
+//
+//                            if x == user!.galleryURLs.count {
+//                                setFunction(user)
+//                            }
+//                        }
+//                    }
+//                }) {
+//                    setFunction(user)
+//                }
+//
                 setFunction(user)
+               
                 
             }
                 

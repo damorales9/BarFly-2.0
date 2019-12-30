@@ -40,6 +40,8 @@
 		6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A861236E544D005E55A6 /* SocialVC.swift */; };
 		6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A863236E6D74005E55A6 /* SearchVC.swift */; };
 		6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */; };
+		6F94729A23918044003A470B /* LogOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729923918044003A470B /* LogOutVC.swift */; };
+		6F94729C23918320003A470B /* GeneralSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729B23918320003A470B /* GeneralSettingsVC.swift */; };
 		6FC9A058237C8D5C00CDD8C4 /* RequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */; };
 		6FC9A05A237C9C7700CDD8C4 /* RequestCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */; };
 		6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */; };
@@ -100,6 +102,8 @@
 		6F79A861236E544D005E55A6 /* SocialVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialVC.swift; sourceTree = "<group>"; };
 		6F79A863236E6D74005E55A6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileVC.swift; sourceTree = "<group>"; };
+		6F94729923918044003A470B /* LogOutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutVC.swift; sourceTree = "<group>"; };
+		6F94729B23918320003A470B /* GeneralSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsVC.swift; sourceTree = "<group>"; };
 		6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsVC.swift; sourceTree = "<group>"; };
 		6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCellView.swift; sourceTree = "<group>"; };
 		6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -199,6 +203,8 @@
 				6F2A206723862E2300B0E9D0 /* BarflyBannerColors.swift */,
 				6F4C2FDC2386EFB8001A885B /* BlockVC.swift */,
 				6F122F68238949EC00ACD9A1 /* GalleryViewCell.swift */,
+				6F94729923918044003A470B /* LogOutVC.swift */,
+				6F94729B23918320003A470B /* GeneralSettingsVC.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -375,11 +381,13 @@
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
 				0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */,
+				6F94729C23918320003A470B /* GeneralSettingsVC.swift in Sources */,
 				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
 				6F2A206823862E2300B0E9D0 /* BarflyBannerColors.swift in Sources */,
 				6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */,
 				6F122F69238949EC00ACD9A1 /* GalleryViewCell.swift in Sources */,
 				0E5C5EA623862EE300413476 /* CustomMarker.swift in Sources */,
+				6F94729A23918044003A470B /* LogOutVC.swift in Sources */,
 				6F075502237F84A600765317 /* TimestampCell.swift in Sources */,
 				6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */,
 				0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */,

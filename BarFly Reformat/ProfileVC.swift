@@ -43,6 +43,8 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var fieldView: UIView!
     
     var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    var barChoiceSpinner = UIActivityIndicatorView(style: .whiteLarge)
+
     var scrollView: UIScrollView?
     var profileImage: UIImageView?
     var galleryImages = [UIImageView]()
@@ -212,20 +214,20 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                         self.profileSpinner.stopAnimating()
                         self.profileSpinner.isHidden = true
                         self.configurePageControl()
+                        
+                        for i in 0..<AppDelegate.user!.galleryURLs.count {
+                            
+                            self.galleryImages[i].getImage(ref: AppDelegate.user!.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
+                                self.configurePageControl()
+                            }
+                            
+                        }
                     }
                 } else {
                     self.profileImage?.image = placeholder
                     self.profileSpinner.stopAnimating()
                     self.profileSpinner.isHidden = true
                     self.configurePageControl()
-                }
-                
-                for i in 0..<AppDelegate.user!.galleryURLs.count {
-                    
-                    self.galleryImages[i].getImage(ref: AppDelegate.user!.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
-                        self.configurePageControl()
-                    }
-                    
                 }
                 
                 if(user.requests.count == 0) {
@@ -264,7 +266,6 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                 
                 if(user.bar == "nil") {
                     
-                    var placeholder: UIImage?
                     if #available(iOS 13.0, *) {
                         placeholder = UIImage(systemName: "questionmark")
                     } else {
@@ -289,14 +290,17 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                         } else {
                             let imageURL = document?.get("imageURL") as! String
                             
-                            if #available(iOS 13.0, *) {
-                                placeholder = UIImage(systemName: "questionmark")
-                            } else {
-                                placeholder = UIImage(named: "first")
+                            self.barChoiceSpinner.translatesAutoresizingMaskIntoConstraints = false
+                            self.barChoiceSpinner.startAnimating()
+                            self.barChoice?.addSubview(self.barChoiceSpinner)
+
+                            self.barChoiceSpinner.centerXAnchor.constraint(equalTo: self.barChoice!.centerXAnchor).isActive = true
+                            self.barChoiceSpinner.centerYAnchor.constraint(equalTo: self.barChoice!.centerYAnchor).isActive = true
+                            
+                            self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 6) {
+                                self.barChoiceSpinner.stopAnimating()
+                                self.barChoiceSpinner.isHidden = true
                             }
-                            
-                            
-                            self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 6)
                                 
                         }
                     }
@@ -324,6 +328,7 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
     func paintIfLoggedIn() {
     
         if(AppDelegate.loggedIn) {
+            print("i was in here LMFAO")
             self.paintComponents()
             self.updateBadge()
                 
@@ -413,6 +418,17 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
 
         let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl.currentPage = Int(pageNumber)
+    }
+    
+    @IBAction func changeChoiceClicked(_ sender: Any) {
+        self.navigationController?.tabBarController?.selectedIndex = 0
+    }
+    
+    @IBAction func editButtonClicked(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let editVC = storyBoard.instantiateViewController(withIdentifier: "EditProfile") as! EditProfileVC
+        editVC.delegate = self
+        self.navigationController?.pushViewController(editVC, animated:true)
     }
     
 }

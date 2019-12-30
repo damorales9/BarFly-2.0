@@ -15,6 +15,7 @@ import YPImagePicker
 
 class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
     
+    var delegate: UIViewController?
     
     var config = YPImagePickerConfiguration()
     
@@ -243,6 +244,7 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                 
                                 User.updateUser(user: AppDelegate.user!)
                                 
+                                (self.delegate as! ProfileVC).paintIfLoggedIn()
                                 self.navigationController?.popViewController(animated: true)
                                 
                             } else {
