@@ -61,8 +61,10 @@ class PreProcess: UIViewController {
                 bar.phone = phone
                 bar.price = price
                 
+                bar.image = UIImageView()
+                
                 UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar.image!.image = image
+                    bar.image?.image = image
                 }) {
                     print("no image")
                 }

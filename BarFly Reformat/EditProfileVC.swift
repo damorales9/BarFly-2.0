@@ -12,6 +12,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
 import YPImagePicker
+import NVActivityIndicatorView
 
 class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
     
@@ -27,9 +28,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     var saveEnabled = false
     
-    var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
-    var gallerySpinner = UIActivityIndicatorView(style: .whiteLarge)
-
+    var profileSpinner: NVActivityIndicatorView?
+    var gallerySpinner: NVActivityIndicatorView?
+    
+    
+    var indicator: NVActivityIndicatorView?
+    
     
 
     @IBOutlet weak var password: UITextField!
@@ -51,7 +55,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     @IBOutlet weak var cancelButtonView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     
+    @IBOutlet weak var savingView: UIView!
+    @IBOutlet weak var savingProgress: UILabel!
+    
     @IBOutlet weak var profileImage: UIImageView!
+    
+    var navbar: UINavigationBar?
     
     override func viewDidLoad() {
         
@@ -96,6 +105,11 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         confirmView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelDelete)))
         
         view.bringSubviewToFront(confirmView)
+        view.bringSubviewToFront(savingView)
+        
+        indicator = NVActivityIndicatorView(frame: CGRect(x: savingView.frame.width / 2 - 50, y: savingView.frame.height / 2 - 50, width: 100, height: 100), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
+        
+        savingView.addSubview(indicator!)
         
         config.colors.tintColor = .barflyblue
         config.onlySquareImagesFromCamera = false
@@ -104,12 +118,9 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         config.showsCrop = .rectangle(ratio: 0.5)
         config.shouldSaveNewPicturesToAlbum = false
         
-        profileSpinner.translatesAutoresizingMaskIntoConstraints = false
-        profileSpinner.startAnimating()
-        profileImage?.addSubview(profileSpinner)
-
-        profileSpinner.centerXAnchor.constraint(equalTo: profileImage!.centerXAnchor).isActive = true
-        profileSpinner.centerYAnchor.constraint(equalTo: profileImage!.centerYAnchor).isActive = true
+        profileSpinner = NVActivityIndicatorView(frame: CGRect(x: profileImage.frame.width / 2 - 30, y: profileImage.frame.height / 2 - 30, width: 60, height: 60), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
+        profileSpinner?.startAnimating()
+        profileImage?.addSubview(profileSpinner!)
         
         var placeholder: UIImage?
         if #available(iOS 13.0, *) {
@@ -122,13 +133,13 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         if AppDelegate.user?.profileURL != "" {
 
             self.profileImage.getImage(ref: AppDelegate.user!.profileURL!, placeholder: placeholder!, maxMB: 40) {
-                self.profileSpinner.stopAnimating()
-                self.profileSpinner.isHidden = true
+                self.profileSpinner!.stopAnimating()
+                self.profileSpinner!.isHidden = true
             }
         } else {
             self.profileImage.image = placeholder
-            self.profileSpinner.stopAnimating()
-            self.profileSpinner.isHidden = true
+            self.profileSpinner!.stopAnimating()
+            self.profileSpinner!.isHidden = true
         }
         
         if 0 == AppDelegate.user!.galleryURLs.count {
@@ -136,27 +147,28 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             saveEnabled = true
         }  else {
             
-            gallerySpinner.translatesAutoresizingMaskIntoConstraints = false
-            gallerySpinner.startAnimating()
-            galleryView?.addSubview(gallerySpinner)
-
-            gallerySpinner.centerXAnchor.constraint(equalTo: galleryView!.centerXAnchor).isActive = true
-            gallerySpinner.centerYAnchor.constraint(equalTo: galleryView!.centerYAnchor).isActive = true
+            gallerySpinner = NVActivityIndicatorView(frame: CGRect(x: galleryView.frame.width / 2 - 20, y: galleryView.frame.height / 2 - 20, width: 40, height: 40), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
+            gallerySpinner!.startAnimating()
+            galleryView?.addSubview(gallerySpinner!)
             
             var x = 0
             
             for i in AppDelegate.user!.galleryURLs {
                 
-                UIImageView.downloadImage(from: URL(fileURLWithPath: i!), completion: { (image) in
+                print("im here image url is \(i!)")
+                
+                UIImageView.downloadImage(from: URL(string: i!)!, completion: { (image) in
                     self.galleryImages.append(image)
                     self.galleryView.reloadData()
+                    
+                    print("image is \(image)")
                     
                     x+=1
                     if(x == AppDelegate.user!.galleryURLs.count) {
                         print("enabling save")
                         self.saveEnabled = true
-                        self.gallerySpinner.stopAnimating()
-                        self.gallerySpinner.isHidden = true
+                        self.gallerySpinner!.stopAnimating()
+                        self.gallerySpinner!.isHidden = true
                     }
                 }) {
                     
@@ -197,6 +209,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     func saveProfile() {
         
+        savingView.alpha = 1
+        savingProgress.text = "Saving your information and pictures..."
+        indicator?.startAnimating()
+        self.navigationController?.navigationBar.alpha = 0
+        self.tabBarController?.tabBar.alpha = 0
+        
         User.getUser(uid: AppDelegate.user!.uid!) { (user: User?) in
             AppDelegate.user = user!
             
@@ -214,6 +232,8 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                 AppDelegate.user?.name = self.name.text
                                 AppDelegate.user?.email = email
                                 
+                                self.savingProgress.text = "Saving your password..."
+
                                 Auth.auth().currentUser?.updatePassword(to: password) { (error) in
                                     if(error == nil) {
                                         UserDefaults.standard.set(password, forKey: "password")
@@ -221,6 +241,9 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                         self.password.text = UserDefaults.standard.string(forKey: "password")
                                     }
                                 }
+                                
+                                self.savingProgress.text = "Saving your email..."
+
                                 Auth.auth().currentUser?.updateEmail(to: email, completion: { (error) in
                                     if(error == nil) {
                                         UserDefaults.standard.set(email, forKey: "email")
@@ -229,43 +252,73 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                     }
                                 })
                                 
+                                self.savingProgress.text = "Saving your profile picture..."
+                                
                                 if let image = self.image {
                                     self.saveFIRData(image: image)
                                 }
                                 
                                 AppDelegate.user?.galleryURLs.removeAll()
                                 
+                                
+                                self.savingProgress.text = "Saving your gallery images..."
+                                
                                 var x = 0
+                                var num_finished = 0
                                 for i in self.galleryImages {
-                                    
-                                    self.saveGalleryFIRData(image: i, galleryNum: x)
+                                    print("saving \(i)")
+                                    self.saveGalleryFIRData(image: i, galleryNum: x, completion: {
+                                        print("saved \(i)")
+                                        num_finished+=1
+                                        if(num_finished == self.galleryImages.count) {
+                                            print("final update and pop back")
+                                        
+                                            self.navigationController?.navigationBar.alpha = 1
+                                            self.tabBarController?.tabBar.alpha = 1
+
+                                            User.updateUser(user: AppDelegate.user!)
+                                            (self.delegate as! ProfileVC).paintIfLoggedIn()
+                                            self.navigationController?.popViewController(animated: true)
+                                        }
+                                    })
                                     x+=1
                                 }
                                 
-                                User.updateUser(user: AppDelegate.user!)
-                                
-                                (self.delegate as! ProfileVC).paintIfLoggedIn()
-                                self.navigationController?.popViewController(animated: true)
                                 
                             } else {
                                 self.errorLabel.text = "This email is not valid"
+                                self.savingView.alpha = 0
+                                self.indicator?.stopAnimating()
+                                self.navigationController?.navigationBar.alpha = 1
+                                self.tabBarController?.tabBar.alpha = 1
+
                             }
                 
                         } else {
                             self.errorLabel.text = "This password is not long enough"
+                            self.savingView.alpha = 0
+                            self.indicator?.stopAnimating()
+                            self.navigationController?.navigationBar.alpha = 1
+                            self.tabBarController?.tabBar.alpha = 1
+
                         }
                     
                     } else {
                         self.errorLabel.text =  "This username is taken"
+                        self.savingView.alpha = 0
+                        self.indicator?.stopAnimating()
+                        self.navigationController?.navigationBar.alpha = 1
+                        self.tabBarController?.tabBar.alpha = 1
+
                     }
+                    
                     
                     
                 }
             }
             
-            
-            
         }
+        
     }
     
     func saveFIRData(image: UIImage){
@@ -276,12 +329,13 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         }
     }
     
-    func saveGalleryFIRData(image: UIImage, galleryNum: Int) {
+    func saveGalleryFIRData(image: UIImage, galleryNum: Int, completion: @escaping () -> Void ){
         
         self.uploadGalleryImage(image: image, galleryNum: galleryNum) { url, gallerNum in
-            self.saveGalleryImage(galleryURL: url!, galleryNum: galleryNum) { success in
+            self.saveGalleryImage(galleryURL: url!, galleryNum: galleryNum, completion: {
                 //if you please
-            }
+                completion()
+            })
         }
     }
     
@@ -305,10 +359,9 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         
     }
     
-    func saveGalleryImage(galleryURL: URL, galleryNum: Int, completion: @escaping ((_ url: URL?) -> ())) {
+    func saveGalleryImage(galleryURL: URL, galleryNum: Int, completion: @escaping () -> Void) {
         AppDelegate.user?.galleryURLs.append(galleryURL.absoluteString)
-        User.updateUser(user: AppDelegate.user!)
-        
+        completion()
     }
     
     func uploadMedia(image :UIImage, completion: @escaping ((_ url: URL?) -> ())) {
@@ -437,6 +490,8 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     @objc func deleteImage(sender: UIButton) {
         self.confirmIndex = sender.tag
         self.confirmImageView.image = galleryImages[confirmIndex]
+        self.navbar = self.navigationController?.navigationBar
+        self.navigationController?.navigationBar.alpha = 0
         UIView.animate(withDuration: 0.5) {
             self.confirmView.alpha = 1
             self.view.layoutIfNeeded()
@@ -446,15 +501,25 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     @objc func confirmDelete() {
         self.galleryImages.remove(at: confirmIndex)
         self.galleryView.reloadData()
+        self.navigationController?.navigationBar.alpha = 1
         cancelDelete()
     }
     
     @objc func cancelDelete() {
         self.confirmIndex = -1
+        self.navigationController?.navigationBar.alpha = 1
         UIView.animate(withDuration: 0.5) {
             self.confirmView.alpha = 0
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func hideNavBar() {
+        
+    }
+    
+    func showNavBar() {
+        
     }
     
     func updateNavBarSettings() {

@@ -249,6 +249,8 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                                 cell.imageView?.image = placeholder
                             }
                             
+                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+                            
                         }
                     }
                             
@@ -282,6 +284,8 @@ class NonUserListVC: UITableViewController, UISearchResultsUpdating {
                             } else {
                                 cell.imageView?.image = placeholder
                             }
+                            
+                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                             
                         }
                     }

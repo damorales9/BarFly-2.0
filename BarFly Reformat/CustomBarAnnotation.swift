@@ -100,6 +100,8 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 bar!.phone = phone
                 bar!.price = price
                 
+                bar!.image = UIImageView()
+                
                 UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
                     bar!.image?.image = image
                 }) {

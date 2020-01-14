@@ -14,8 +14,8 @@ target 'BarFly Reformat' do
    pod 'Firebase/Messaging'
    pod 'NotificationBannerSwift', '~> 3.0.0'
    pod 'YPImagePicker'
-   pod 'SwiftyDropbox'	
-
+   pod 'NVActivityIndicatorView'
+   
    use_frameworks!
   # Pods for BarFly Reformat
 

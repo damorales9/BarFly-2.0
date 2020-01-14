@@ -12,6 +12,7 @@ import Photos
 import FirebaseStorage
 import FirebaseFirestore
 import FirebaseUI
+import NVActivityIndicatorView
 
 class ProfileVC: UIViewController, UIScrollViewDelegate {
         
@@ -42,8 +43,8 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var fieldView: UIView!
     
-    var profileSpinner = UIActivityIndicatorView(style: .whiteLarge)
-    var barChoiceSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    var profileSpinner: NVActivityIndicatorView?
+    var barChoiceSpinner: NVActivityIndicatorView?
 
     var scrollView: UIScrollView?
     var profileImage: UIImageView?
@@ -140,12 +141,9 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
             
         }
         
-        profileSpinner.translatesAutoresizingMaskIntoConstraints = false
-        profileSpinner.startAnimating()
-        profileImage?.addSubview(profileSpinner)
-
-        profileSpinner.centerXAnchor.constraint(equalTo: profileImage!.centerXAnchor).isActive = true
-        profileSpinner.centerYAnchor.constraint(equalTo: profileImage!.centerYAnchor).isActive = true
+        profileSpinner = NVActivityIndicatorView(frame: CGRect(x: (profileImage?.frame.width)! / 2 - 30, y: (profileImage?.frame.height)! / 2 - 30, width: 60, height: 60), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
+        profileSpinner!.startAnimating()
+        profileImage?.addSubview(profileSpinner!)
         
         self.pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControl.Event.valueChanged)
         
@@ -211,8 +209,8 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                 
                 if AppDelegate.user?.profileURL != "" {
                     self.profileImage!.getImage(ref: user.profileURL!, placeholder: placeholder!, maxMB: 40) {
-                        self.profileSpinner.stopAnimating()
-                        self.profileSpinner.isHidden = true
+                        self.profileSpinner!.stopAnimating()
+                        self.profileSpinner!.isHidden = true
                         self.configurePageControl()
                         
                         for i in 0..<AppDelegate.user!.galleryURLs.count {
@@ -225,8 +223,8 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                     }
                 } else {
                     self.profileImage?.image = placeholder
-                    self.profileSpinner.stopAnimating()
-                    self.profileSpinner.isHidden = true
+                    self.profileSpinner!.stopAnimating()
+                    self.profileSpinner!.isHidden = true
                     self.configurePageControl()
                 }
                 
@@ -290,16 +288,13 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                         } else {
                             let imageURL = document?.get("imageURL") as! String
                             
-                            self.barChoiceSpinner.translatesAutoresizingMaskIntoConstraints = false
-                            self.barChoiceSpinner.startAnimating()
-                            self.barChoice?.addSubview(self.barChoiceSpinner)
+                            self.barChoiceSpinner = NVActivityIndicatorView(frame: CGRect(x: self.barChoice.frame.width / 2 - 15, y: self.barChoice.frame.width / 2 - 15, width: 30, height: 30), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
+                            self.barChoiceSpinner!.startAnimating()
+                            self.barChoice?.addSubview(self.barChoiceSpinner!)
 
-                            self.barChoiceSpinner.centerXAnchor.constraint(equalTo: self.barChoice!.centerXAnchor).isActive = true
-                            self.barChoiceSpinner.centerYAnchor.constraint(equalTo: self.barChoice!.centerYAnchor).isActive = true
-                            
                             self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 6) {
-                                self.barChoiceSpinner.stopAnimating()
-                                self.barChoiceSpinner.isHidden = true
+                                self.barChoiceSpinner!.stopAnimating()
+                                self.barChoiceSpinner!.isHidden = true
                             }
                                 
                         }

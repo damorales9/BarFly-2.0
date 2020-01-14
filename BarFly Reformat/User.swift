@@ -28,6 +28,7 @@ struct User {
     var messagingID: String?
     var profileImage: UIImage?
     var galleryImages: [UIImage]?
+
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
         
