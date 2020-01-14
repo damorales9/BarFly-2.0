@@ -357,7 +357,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             placeholder = UIImage(named: "profile")
         }
         //calloutView.image.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
-        calloutView.image = barAnnotation.image
+        calloutView.image.image = barAnnotation.image?.image
         //calloutView.image.image = UIImage(named: barAnnotation.imageName!)
         calloutView.amntPeople.text = "10"
         calloutView.amntPeople.layer.cornerRadius = 10
@@ -1207,7 +1207,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 bar.price = price
                 
                 UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar.image?.image = image
+                    bar.image = UIImageView(image: image)
                 }) {
                     print("no image")
                 }

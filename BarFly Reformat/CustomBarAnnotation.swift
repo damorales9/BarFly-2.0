@@ -103,7 +103,7 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 bar!.image = UIImageView()
                 
                 UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar!.image?.image = image
+                    bar!.image = UIImageView(image: image)
                 }) {
                     print("no image")
                 }
