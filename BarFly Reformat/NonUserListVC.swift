@@ -412,13 +412,9 @@ extension UIImageView {
         }
     }
     
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
     func dnldImage(from url: URL, completion: @escaping (UIImage) -> Void, error: @escaping () -> Void) {
         print("Download Started for image at \(url.absoluteString)")
-        getData(from: url) { data, response, err in
+        UIImageView.getData(from: url) { data, response, err in
             guard let data = data, err == nil else {
                 error()
                 return
