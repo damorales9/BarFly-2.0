@@ -22,6 +22,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         BarDetailsVC.delegate = self
         self.performSegue(withIdentifier: "showBarList", sender: self.navigationController)
     }
+    
+    var nonUser: User?
+    
     @IBOutlet var barDetails: UIView!
     @IBOutlet var myNavBar: UINavigationBar!
     @IBOutlet var myMapView: MKMapView!
@@ -1265,6 +1268,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
         return FirstViewController.currentAnnotation
     }
-
+    
+    
+    @IBAction func viewFriendsBtnClicked(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let listVC = storyBoard.instantiateViewController(withIdentifier: "friendsGoingList") as! FriendsGoingListVC
+        listVC.isFollowers = false
+        listVC.nonUser = AppDelegate.user
+        listVC.bar = barDetailsTitle.text
+        self.navigationController?.pushViewController(listVC, animated:true)
+    }
+    
 
 }
