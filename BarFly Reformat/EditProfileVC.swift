@@ -277,7 +277,6 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                             self.tabBarController?.tabBar.alpha = 1
 
                                             User.updateUser(user: AppDelegate.user!)
-                                            (self.delegate as! ProfileVC).paintIfLoggedIn()
                                             self.navigationController?.popViewController(animated: true)
                                         }
                                     })
