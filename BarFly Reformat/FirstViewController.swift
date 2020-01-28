@@ -300,6 +300,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         checkBtn.layer.borderWidth = 4
         checkBtn.layer.borderColor = UIColor.black.cgColor
         
+        
         confirmChangeBar = false
         
         if view.annotation is MKUserLocation
@@ -422,6 +423,22 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         barImageBckg.layer.cornerRadius = 10
         
+        //set the star for favorites
+        User.getUser(uid: AppDelegate.user!.uid!) { (user) in
+            let str = ((user?.favorites.contains(barAnnotation.title))! ? "star.fill" : "star")
+            print("THE STAR STRING IS \(str)")
+            if #available(iOS 13.0, *) {
+                let star = UIBarButtonItem(image: UIImage(systemName: str), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            } else {
+                // Fallback on earlier versions
+                let star = UIBarButtonItem(image: UIImage(named: str), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            }
+        
+            
+        }
+        
         if (barAnnotation.url == "nil"){
             linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
@@ -460,6 +477,18 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             self.barDetails.layoutIfNeeded()
         }
         */
+    }
+    
+    @objc func toggleFavorite() {
+        
+        if((AppDelegate.user?.favorites.contains(self.barDetailsTitle.text))!) {
+                AppDelegate.user?.favorites.remove(at: (AppDelegate.user?.favorites.firstIndex(of: self.barDetailsTitle.text))!)
+            } else {
+                AppDelegate.user?.favorites.append(self.barDetailsTitle.text)
+            }
+        
+            User.updateUser(user: AppDelegate.user)
+        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {

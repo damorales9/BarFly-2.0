@@ -203,7 +203,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func enableDisableLogin() {
-        if((email.text?.isValidEmail())! && password.text!.count >= 6) {
+        if(email.text!.count > 0 && password.text!.count >= 6) {
             print("enabled button")
             login.isEnabled = true
         } else {
@@ -243,44 +243,80 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     static func login(email: String, password: String, completion: @escaping () -> Void, errorFunc: @escaping (Error?) -> Void) {
         
-        print("I AT LEAST MAKE IT THIS FAR")
-        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
-            
-            if error != nil {
-                errorFunc(error)
-            } else {
-                
-                print("MADE IT HERE")
+        var validUsername = false
+        var UID = ""
         
-                let uid = Auth.auth().currentUser!.uid
-                print("UID is \(uid)")
+        let db = Firestore.firestore()
+        db.collection(USER_DATABASE).whereField("username", isEqualTo: email)
+          .getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if(querySnapshot?.documents.count != 0) {
+                    print("there was a matching username")
+                    validUsername = true
+                    UID = querySnapshot?.documents[0].get("uid") as! String
+                } else {
+                    print("there was no matching username")
+                }
                 
-                User.getUser(uid: uid, setFunction: {(user: User?) -> Void in
+                
+                print("I AT LEAST MAKE IT THIS FAR")
+                Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
                     
-                    print("SETTING THIS SHIT YO")
-                    
-                    UserDefaults.standard.set(email, forKey: "email")
-                    UserDefaults.standard.set(password, forKey: "password")
-                    
-                    AppDelegate.user = user!
-                    AppDelegate.loggedIn = true
-                    
-                    
-                    InstanceID.instanceID().instanceID { (result, error) in
-                          if let error = error {
-                            print("Error fetching remote instance ID: \(error)")
-                          } else if let result = result {
-                            print("Remote instance ID token: \(result.token)")
-                            AppDelegate.user?.messagingID = "\(result.token)"
-                            User.updateUser(user: AppDelegate.user!)
-                          }
+                    if error != nil {
+                        
+                        print("trying to log in with username")
+                        
+                        if(validUsername) {
+                            print("valid username!")
+                            User.getUser(uid: UID) { (user) in
+                                login(email: (user?.email)!, password: password, completion: completion, errorFunc: errorFunc)
+                            }
+                        } else {
+                            print("not a valid username")
+                            errorFunc(error)
+                        }
+                        
+                    } else {
+                        
+                        print("MADE IT HERE")
+                
+                        let uid = Auth.auth().currentUser!.uid
+                        print("UID is \(uid)")
+                        
+                        User.getUser(uid: uid, setFunction: {(user: User?) -> Void in
+                            
+                            print("SETTING THIS SHIT YO")
+                            
+                            UserDefaults.standard.set(email, forKey: "email")
+                            UserDefaults.standard.set(password, forKey: "password")
+                            
+                            AppDelegate.user = user!
+                            AppDelegate.loggedIn = true
+                            
+                            
+                            InstanceID.instanceID().instanceID { (result, error) in
+                                  if let error = error {
+                                    print("Error fetching remote instance ID: \(error)")
+                                  } else if let result = result {
+                                    print("Remote instance ID token: \(result.token)")
+                                    AppDelegate.user?.messagingID = "\(result.token)"
+                                    User.updateUser(user: AppDelegate.user!)
+                                  }
+                            }
+                            
+                            completion()
+                        })
                     }
                     
-                    completion()
                 })
+                
+                
             }
-            
-        })
+        }
+        
+        
         
 
     }
