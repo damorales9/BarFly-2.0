@@ -482,13 +482,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @objc func toggleFavorite() {
         
         if((AppDelegate.user?.favorites.contains(self.barDetailsTitle.text))!) {
-                AppDelegate.user?.favorites.remove(at: (AppDelegate.user?.favorites.firstIndex(of: self.barDetailsTitle.text))!)
-            } else {
-                AppDelegate.user?.favorites.append(self.barDetailsTitle.text)
-            }
-        
-            User.updateUser(user: AppDelegate.user)
+            AppDelegate.user?.favorites.remove(at: (AppDelegate.user?.favorites.firstIndex(of: self.barDetailsTitle.text))!)
+        } else {
+            AppDelegate.user?.favorites.append(self.barDetailsTitle.text)
         }
+        
+        User.updateUser(user: AppDelegate.user)
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
