@@ -495,8 +495,26 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         if((AppDelegate.user?.favorites.contains(self.barDetailsTitle.text))!) {
             AppDelegate.user?.favorites.remove(at: (AppDelegate.user?.favorites.firstIndex(of: self.barDetailsTitle.text))!)
+            
+            if #available(iOS 13.0, *) {
+                let star = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            } else {
+                // Fallback on earlier versions
+                let star = UIBarButtonItem(image: UIImage(named: "str"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            }
         } else {
             AppDelegate.user?.favorites.append(self.barDetailsTitle.text)
+            
+            if #available(iOS 13.0, *) {
+                let star = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            } else {
+                // Fallback on earlier versions
+                let star = UIBarButtonItem(image: UIImage(named: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+            }
         }
         
         User.updateUser(user: AppDelegate.user)
