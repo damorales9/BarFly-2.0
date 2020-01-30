@@ -30,11 +30,11 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
         
-        noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-        noDataLabel!.text          = "No friends you lonely piece of shit"
-        noDataLabel!.textColor     = UIColor.barflyblue
-        noDataLabel!.textAlignment = .center
-        noDataLabel!.font = UIFont(name: "Roboto-Thin", size: 20)
+        //noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        //noDataLabel!.text          = "No friends you lonely piece of shit"
+       // noDataLabel!.textColor     = UIColor.barflyblue
+        //noDataLabel!.textAlignment = .center
+        //noDataLabel!.font = UIFont(name: "Roboto-Thin", size: 20)
         
         //setup search bar
         resultSearchController = ({
@@ -66,6 +66,7 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                     self.tableView.reloadData()
                 }
             }
+            //self.tableView.reloadData()
         }
         
         tableView.reloadData()
@@ -96,73 +97,35 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         
         var x = 0
         
-        if isFollowers! {
             
-            for i in (nonUser?.followers)!  {
+        for i in (friendsGoingList)  {
+            User.getUser(uid: i.uid!) { (user) in
                 
-                User.getUser(uid: i!) { (user) in
-                    
-                    if let user = user, let username = user.username {
-                
-                        if(username.lowercased().contains(self.resultSearchController.searchBar.text!.lowercased())) {
-                            
-                            var dup = false
-                            for j in self.filteredTableData {
-                                if j.username == username {
-                                    dup = true
-                                }
-                            }
-                                    
-                            if !dup {
-                                self.filteredTableData.append(user)
-                                self.tableView.reloadData()
-                                x+=1
-                            }
-                            
-                        }
-                    }
-                }
-                
-                if(x >= 20) {
-                    break
-                }
-            }
-        
-        } else {
+                if let user = user, let username = user.username {
             
-            for i in (nonUser?.friends)!  {
-                User.getUser(uid: i!) { (user) in
-                    
-                    if let user = user, let username = user.username {
-                
-                        if(username.lowercased().contains(self.resultSearchController.searchBar.text!.lowercased())) {
-                            
-                            var dup = false
-                            for j in self.filteredTableData {
-                                if j.username == username {
-                                    dup = true
-                                }
+                    if(username.lowercased().contains(self.resultSearchController.searchBar.text!.lowercased())) {
+                        
+                        var dup = false
+                        for j in self.filteredTableData {
+                            if j.username == username {
+                                dup = true
                             }
-                                    
-                            if !dup {
-                                self.filteredTableData.append(user)
-                                self.tableView.reloadData()
-                                x+=1
-                            }
-                            
                         }
+                                
+                        if !dup {
+                            self.filteredTableData.append(user)
+                            self.tableView.reloadData()
+                            x+=1
+                        }
+                        
                     }
-                }
-                
-                if(x >= 20) {
-                    break
                 }
             }
             
-            
-            
+            if(x >= 20) {
+                break
+            }
         }
-        
         
         self.tableView.reloadData()
     }
@@ -170,46 +133,9 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
             if !resultSearchController.isActive {
-                
-                if isFollowers! {
-                    if let user = nonUser {
-                        if user.followers.count < 20 {
-                            return user.followers.count
-                        } else {
-                            return 20
-                        }
-                    } else {
-                        return 0
-                    }
-                } else {
-                    if((friendsGoingList.count) == 0) {
-                        
-                        let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-                        noDataLabel.text          = "No requests you lonely piece of shit"
-                        noDataLabel.textColor     = UIColor.barflyblue
-                        noDataLabel.textAlignment = .center
-                        noDataLabel.font = UIFont(name: "Roboto-Thin", size: 20)
-                        tableView.backgroundView  = noDataLabel
-                        tableView.separatorStyle  = .none
-                        return 0
-                    }
-                    else{
-                        tableView.backgroundView = nil
-                    }
-                    if let user = nonUser {
-                        if user.friends.count < 20 {
-                            return user.friends.count
-                        } else {
-                            return 20
-                        }
-                    } else {
-                        return 0
-                    }
-                }
-            } else {
-                if((AppDelegate.user?.friends.count)! == 0) {
+                if(friendsGoingList.count == 0){
                     let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-                    noDataLabel.text          = "No requests you lonely piece of shit"
+                    noDataLabel.text          = "No friends you lonely piece of shit"
                     noDataLabel.textColor     = UIColor.barflyblue
                     noDataLabel.textAlignment = .center
                     noDataLabel.font = UIFont(name: "Roboto-Thin", size: 20)
@@ -217,8 +143,36 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                     tableView.separatorStyle  = .none
                     return 0
                 }
+                else {
+                    if (friendsGoingList.count < 20){
+                        tableView.backgroundView = nil
+                        return friendsGoingList.count
+                    }
+                    else{
+                        return 20
+                    }
+                }
+            } else {
+                
+                if(filteredTableData.count == 0) {
+                    let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+                    noDataLabel.text          = "No friends you lonely piece of shit"
+                    noDataLabel.textColor     = UIColor.barflyblue
+                    noDataLabel.textAlignment = .center
+                    noDataLabel.font = UIFont(name: "Roboto-Thin", size: 20)
+                    tableView.backgroundView  = noDataLabel
+                    tableView.separatorStyle  = .none
+                    return 0
+                }
+                
                 else{
-                    return filteredTableData.count
+                    if(filteredTableData.count < 20){
+                        tableView.backgroundView = nil
+                        return filteredTableData.count
+                    }
+                    else{
+                        return 20
+                    }
                 }
             }
     }
@@ -264,82 +218,42 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         else {
             
             if let user = nonUser {
+                    
+                User.getUser(uid: friendsGoingList[indexPath.row].uid!) { (u) in
+                        
+                        if let u = u {
+                            if (u.bar == self.bar){
+                                cell.textLabel?.text = u.username
+                                cell.detailTextLabel?.text = u.name
+                                
+                                cell.imageView?.clipsToBounds = true
+                                cell.imageView?.layer.cornerRadius = 24
+                                cell.imageView?.layer.borderWidth = 1
+                                cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
+                                cell.imageView?.contentMode = .scaleToFill
+                                
+                                var placeholder: UIImage?
+                                if #available(iOS 13.0, *) {
+                                    placeholder = UIImage(systemName: "person.circle")
+                                } else {
+                                    // Fallback on earlier versions
+                                    placeholder = UIImage(named: "profile")
+                                }
+
+                                if (u.profileURL != "") {
+                                    
+                                    cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
+                                    
+                                } else {
+                                    cell.imageView?.image = placeholder
+                                }
+                                
+                                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+                            }
+                            
+                        }
+                    }
                 
-                if(isFollowers!) {
-                    
-                    User.getUser(uid: user.followers[indexPath.row]!) { (u) in
-                        
-                        if let u = u {
-                            if (u.bar == self.bar){
-                                cell.textLabel?.text = u.username
-                                cell.detailTextLabel?.text = u.name
-                                
-                                cell.imageView?.clipsToBounds = true
-                                cell.imageView?.layer.cornerRadius = 24
-                                cell.imageView?.layer.borderWidth = 1
-                                cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
-                                cell.imageView?.contentMode = .scaleToFill
-                                
-                                var placeholder: UIImage?
-                                if #available(iOS 13.0, *) {
-                                    placeholder = UIImage(systemName: "person.circle")
-                                } else {
-                                    // Fallback on earlier versions
-                                    placeholder = UIImage(named: "profile")
-                                }
-
-                                if (u.profileURL != "") {
-
-                                    cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
-
-
-                                } else {
-                                    cell.imageView?.image = placeholder
-                                }
-                                
-                                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-                            }
-                        }
-                    }
-                            
-                    
-                } else {
-                    
-                    User.getUser(uid: user.friends[indexPath.row]!) { (u) in
-                        
-                        if let u = u {
-                            if (u.bar == self.bar){
-                                cell.textLabel?.text = u.username
-                                cell.detailTextLabel?.text = u.name
-                                
-                                cell.imageView?.clipsToBounds = true
-                                cell.imageView?.layer.cornerRadius = 24
-                                cell.imageView?.layer.borderWidth = 1
-                                cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
-                                cell.imageView?.contentMode = .scaleToFill
-                                
-                                var placeholder: UIImage?
-                                if #available(iOS 13.0, *) {
-                                    placeholder = UIImage(systemName: "person.circle")
-                                } else {
-                                    // Fallback on earlier versions
-                                    placeholder = UIImage(named: "profile")
-                                }
-
-                                if (u.profileURL != "") {
-                                    
-                                    cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
-                                    
-                                } else {
-                                    cell.imageView?.image = placeholder
-                                }
-                                
-                                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-                            }
-                            
-                        }
-                    }
-                }
                 
             }
         
@@ -351,56 +265,41 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         if(resultSearchController.isActive) {
             
             if(filteredTableData[indexPath.row].uid == AppDelegate.user?.uid) {
+                self.resultSearchController.dismiss(animated: true)
+                self.navigationController?.popToRootViewController(animated: true)
                 
             } else {
             
-                self.resultSearchController.dismiss(animated: true)
-                self.navigationController?.popToRootViewController(animated: true)
+                User.getUser(uid: (filteredTableData[indexPath.row]).uid!) { (user) in
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.pushViewController(userVC, animated:true)
+                }
                 
             }
             
         } else {
+                
+            if(friendsGoingList[indexPath.row].uid == AppDelegate.user?.uid) {
+                    
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.popToRootViewController(animated: true)
+                    
+                } else {
+                
+                    User.getUser(uid: (friendsGoingList[indexPath.row]).uid!) { (user) in
+                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                            userVC.nonUser = user!
+                            self.resultSearchController.dismiss(animated: true)
+                            self.navigationController?.pushViewController(userVC, animated:true)
+                        }
+                    
+                }
+                
             
-            if isFollowers! {
-                
-                if(nonUser?.followers[indexPath.row] == AppDelegate.user?.uid) {
-                    
-                    self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.popToRootViewController(animated: true)
-                    
-                } else {
-                
-                    User.getUser(uid: (nonUser?.followers[indexPath.row])!) { (user) in
-                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                        let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-                        userVC.nonUser = user!
-                        self.resultSearchController.dismiss(animated: true)
-                        self.navigationController?.pushViewController(userVC, animated:true)
-                    }
-                    
-                }
-                
-                
-            } else {
-                
-                if(nonUser?.friends[indexPath.row] == AppDelegate.user?.uid) {
-                    
-                    self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.popToRootViewController(animated: true)
-                    
-                } else {
-                
-                    User.getUser(uid: (nonUser?.friends[indexPath.row])!) { (user) in
-                        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                        let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-                        userVC.nonUser = user!
-                        self.resultSearchController.dismiss(animated: true)
-                        self.navigationController?.pushViewController(userVC, animated:true)
-                    }
-                    
-                }
-                
-            }
             
             
         }
