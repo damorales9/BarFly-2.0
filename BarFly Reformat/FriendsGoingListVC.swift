@@ -21,12 +21,20 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
     
     var bar: String?
     
+    var noDataLabel: UILabel?
+    
     var nonUser: User?
     var resultSearchController = UISearchController()
     
     override func viewDidLoad() {
         
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+        
+        noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        noDataLabel!.text          = "No friends you lonely piece of shit"
+        noDataLabel!.textColor     = UIColor.barflyblue
+        noDataLabel!.textAlignment = .center
+        noDataLabel!.font = UIFont(name: "Roboto-Thin", size: 20)
         
         //setup search bar
         resultSearchController = ({
@@ -53,12 +61,12 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         for friend in AppDelegate.user!.friends{
             User.getUser(uid: friend!) { (user) in
                 if (user?.bar == self.bar){
+                    print(user)
                     self.friendsGoingList.append(user!)
+                    self.tableView.reloadData()
                 }
             }
         }
-        
-        print(friendsGoingList)
         
         tableView.reloadData()
         
@@ -174,7 +182,7 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                         return 0
                     }
                 } else {
-                    if((AppDelegate.user?.friends.count)! == 0) {
+                    if((friendsGoingList.count) == 0) {
                         
                         let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
                         noDataLabel.text          = "No requests you lonely piece of shit"
@@ -184,6 +192,9 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                         tableView.backgroundView  = noDataLabel
                         tableView.separatorStyle  = .none
                         return 0
+                    }
+                    else{
+                        tableView.backgroundView = nil
                     }
                     if let user = nonUser {
                         if user.friends.count < 20 {
