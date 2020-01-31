@@ -58,17 +58,6 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
             return controller
         })()
         
-        for friend in AppDelegate.user!.friends{
-            User.getUser(uid: friend!) { (user) in
-                if (user?.bar == self.bar){
-                    print(user)
-                    self.friendsGoingList.append(user!)
-                    self.tableView.reloadData()
-                }
-            }
-            //self.tableView.reloadData()
-        }
-        
         tableView.reloadData()
         
     }
@@ -217,51 +206,52 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         }
         else {
             
-            if let user = nonUser {
+            
                     
-                User.getUser(uid: friendsGoingList[indexPath.row].uid!) { (u) in
-                        
-                        if let u = u {
-                            if (u.bar == self.bar){
-                                cell.textLabel?.text = u.username
-                                cell.detailTextLabel?.text = u.name
-                                
-                                cell.imageView?.clipsToBounds = true
-                                cell.imageView?.layer.cornerRadius = 24
-                                cell.imageView?.layer.borderWidth = 1
-                                cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
-                                cell.imageView?.contentMode = .scaleToFill
-                                
-                                var placeholder: UIImage?
-                                if #available(iOS 13.0, *) {
-                                    placeholder = UIImage(systemName: "person.circle")
-                                } else {
-                                    // Fallback on earlier versions
-                                    placeholder = UIImage(named: "profile")
-                                }
+            User.getUser(uid: friendsGoingList[indexPath.row].uid!) { (u) in
+                    
+                    if let u = u {
+                        if (u.bar == self.bar){
+                            cell.textLabel?.text = u.username
+                            cell.detailTextLabel?.text = u.name
+                            
+                            cell.imageView?.clipsToBounds = true
+                            cell.imageView?.layer.cornerRadius = 24
+                            cell.imageView?.layer.borderWidth = 1
+                            cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
+                            cell.imageView?.contentMode = .scaleToFill
+                            
+                            var placeholder: UIImage?
+                            if #available(iOS 13.0, *) {
+                                placeholder = UIImage(systemName: "person.circle")
+                            } else {
+                                // Fallback on earlier versions
+                                placeholder = UIImage(named: "profile")
+                            }
 
-                                if (u.profileURL != "") {
-                                    
-                                    cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
-                                    
-                                } else {
-                                    cell.imageView?.image = placeholder
-                                }
+                            if (u.profileURL != "") {
                                 
-                                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
+                                cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
+                                
+                            } else {
+                                cell.imageView?.image = placeholder
                             }
                             
+                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                         }
+                        
                     }
+                }
+            
                 
-                
-            }
+            
         
             return cell
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         if(resultSearchController.isActive) {
             
             if(filteredTableData[indexPath.row].uid == AppDelegate.user?.uid) {
@@ -271,37 +261,42 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
             } else {
             
                 User.getUser(uid: (filteredTableData[indexPath.row]).uid!) { (user) in
+                    self.tabBarController?.selectedIndex = 0;
                     let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                     let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
                     userVC.nonUser = user!
                     self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.pushViewController(userVC, animated:true)
+                    //self.navigationController?.pushViewController(userVC, animated:true)
+                    self.tabBarController?.navigationController?.present(userVC, animated: true, completion: {
+
+                    })
                 }
                 
             }
             
         } else {
+            print(friendsGoingList)
                 
             if(friendsGoingList[indexPath.row].uid == AppDelegate.user?.uid) {
+                self.tabBarController?.selectedIndex = 1
+                self.resultSearchController.dismiss(animated: true)
+                self.navigationController?.popToRootViewController(animated: true)
                     
+            } else {
+                
+                User.getUser(uid: (friendsGoingList[indexPath.row]).uid!) { (user) in
+                    self.tabBarController?.selectedIndex = 0;
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
                     self.resultSearchController.dismiss(animated: true)
-                    self.navigationController?.popToRootViewController(animated: true)
-                    
-                } else {
-                
-                    User.getUser(uid: (friendsGoingList[indexPath.row]).uid!) { (user) in
-                            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                            let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
-                            userVC.nonUser = user!
-                            self.resultSearchController.dismiss(animated: true)
-                            self.navigationController?.pushViewController(userVC, animated:true)
-                        }
-                    
+                    self.tabBarController?.navigationController?.present(userVC, animated: true, completion: {
+
+                    })
+                    //self.tabBarController?.navigationController?.pushViewController(userVC, animated:true)
                 }
-                
-            
-            
-            
+                    
+            }
         }
     }
 }

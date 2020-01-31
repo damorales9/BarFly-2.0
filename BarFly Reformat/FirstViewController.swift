@@ -82,6 +82,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var timer = Timer()
     var barTimer = BarTimer()
     
+    var friendsGoingList = [User]()
+    
     
     
     public static var allAnnotations = [MKAnnotation]()
@@ -312,6 +314,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let barAnnotation = view.annotation as! CustomBarAnnotation
         let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCallout
+        
+        friendsGoingList.removeAll()
+        for friend in AppDelegate.user!.friends{
+            User.getUser(uid: friend!) { (user) in
+                if (user?.bar == barAnnotation.title!){
+                    self.friendsGoingList.append(user!)
+                }
+            }
+            //self.tableView.reloadData()
+        }
         
         let db = Firestore.firestore()
         print(barAnnotation.title)
@@ -1302,6 +1314,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let listVC = storyBoard.instantiateViewController(withIdentifier: "friendsGoingList") as! FriendsGoingListVC
         listVC.isFollowers = false
+        listVC.friendsGoingList = self.friendsGoingList
         listVC.nonUser = AppDelegate.user
         listVC.bar = barDetailsTitle.text
         self.navigationController?.pushViewController(listVC, animated:true)
