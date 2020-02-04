@@ -30,12 +30,6 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
         
-        //noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-        //noDataLabel!.text          = "No friends you lonely piece of shit"
-       // noDataLabel!.textColor     = UIColor.barflyblue
-        //noDataLabel!.textAlignment = .center
-        //noDataLabel!.font = UIFont(name: "Roboto-Thin", size: 20)
-        
         //setup search bar
         resultSearchController = ({
             
@@ -259,7 +253,6 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                 self.navigationController?.popToRootViewController(animated: true)
                 
             } else {
-            
                 User.getUser(uid: (filteredTableData[indexPath.row]).uid!) { (user) in
                     self.tabBarController?.selectedIndex = 0;
                     let storyBoard = UIStoryboard(name: "Main", bundle:nil)
@@ -271,19 +264,28 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
 
                     })
                 }
+                /*
+                User.getUser(uid: (filteredTableData[indexPath.row]).uid!, setFunction: {(user: User?) -> Void in
+                    print(user?.name)
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.pushViewController(userVC, animated:true)
+                })
+                */
                 
             }
             
         } else {
-            print(friendsGoingList)
-                
             if(friendsGoingList[indexPath.row].uid == AppDelegate.user?.uid) {
                 self.tabBarController?.selectedIndex = 1
                 self.resultSearchController.dismiss(animated: true)
                 self.navigationController?.popToRootViewController(animated: true)
                     
-            } else {
-                
+            }
+            
+            else {
                 User.getUser(uid: (friendsGoingList[indexPath.row]).uid!) { (user) in
                     self.tabBarController?.selectedIndex = 0;
                     let storyBoard = UIStoryboard(name: "Main", bundle:nil)
@@ -295,6 +297,17 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                     })
                     //self.tabBarController?.navigationController?.pushViewController(userVC, animated:true)
                 }
+                
+                /*
+                User.getUserInfo(uid: (friendsGoingList[indexPath.row]).uid!, setFunction: {(user: User?) -> Void in
+                    print(user?.name)
+                    let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                    let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
+                    userVC.nonUser = user!
+                    self.resultSearchController.dismiss(animated: true)
+                    self.navigationController?.pushViewController(userVC, animated:true)
+                })
+                */
                     
             }
         }

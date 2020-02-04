@@ -91,6 +91,68 @@ struct User {
                 
         }
     }
+    
+    static func getUserInfo(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
+            
+            var user: User?
+            
+            let firestore = Firestore.firestore()
+            let userRef = firestore.collection("User Info")
+            let docRef = userRef.document("\(uid)")
+            docRef.getDocument { (document, error) in
+                    
+                if(error == nil) {
+        
+                    let name = ((document!.get("name")) as! String)
+                    let username = ((document!.get("username")) as! String)
+                    let bar = ((document!.get("bar")) as! String)
+                    let timestamp = ((document!.get("timestamp")) ?? 0) as! NSNumber
+                    let admin = ((document!.get("admin")) as! Bool)
+                    let friends = ((document!.get("friends")) as? [String] ?? [String]())
+                    let requests = ((document!.get("requests")) as? [String] ?? [String]())
+                    let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
+                    let followers = ((document!.get("followers")) as? [String] ?? [String]())
+                    let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
+                    let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
+                    let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
+                    let email = ((document!.get("email")) as? String  ?? "")
+                    let msgID = ((document!.get("messagingID")) as? String ?? "")
+                    
+                    user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID)
+                    
+    //                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
+    //                    user?.profileImage = image
+    //
+    //                    var x = 0
+    //                    for i in user!.galleryURLs {
+    //
+    //                        UIImageView.downloadImage(from: URL(string: i!)!, completion: { (image) in
+    //                            user?.galleryImages?.append(image)
+    //                            x+=1
+    //
+    //                            if x == user!.galleryURLs.count {
+    //                                setFunction(user)
+    //                            }
+    //                        }) {
+    //                            print("this image twas fucked")
+    //                            x+=1
+    //
+    //                            if x == user!.galleryURLs.count {
+    //                                setFunction(user)
+    //                            }
+    //                        }
+    //                    }
+    //                }) {
+    //                    setFunction(user)
+    //                }
+    //
+                    setFunction(user)
+                   
+                    
+                }
+                    
+            }
+        }
         
     
     static func updateUser(user: User?) {
