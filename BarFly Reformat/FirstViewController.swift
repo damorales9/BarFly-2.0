@@ -398,7 +398,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         mapView.setCenter((view.annotation?.coordinate)!, animated: true)
         
         barDetailsTitle.text = barAnnotation.title!
-        barDetailsTitle.layer.cornerRadius = 15
+//        barDetailsTitle.layer.cornerRadius = 15
         //barDetailsImage.getImage(ref: barAnnotation.imageName!, placeholder: placeholder!, maxMB: 6)
         barDetailsImage.image = barAnnotation.image!.image
         barDetailsImage.layer.cornerRadius = 10
@@ -413,13 +413,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         viewFriendsBtn.layer.cornerRadius = 10
         viewFriendsBtn.layer.borderWidth = 4
         viewFriendsBtn.layer.borderColor = UIColor.black.cgColor
-        streetLbl.text = barAnnotation.street!
-        cityLbl.text = barAnnotation.city!
-        stateLbl.text = barAnnotation.state!
-        countryLbl.text = barAnnotation.country!
-        zipcodeLbl.text = barAnnotation.zipcode!
-        phoneLbl.text = barAnnotation.phone!
-        priceLbl.text = barAnnotation.price!
+//        streetLbl.text = barAnnotation.street!
+//        cityLbl.text = barAnnotation.city!
+//        stateLbl.text = barAnnotation.state!
+//        countryLbl.text = barAnnotation.country!
+//        zipcodeLbl.text = barAnnotation.zipcode!
+//        phoneLbl.text = barAnnotation.phone!
+//        priceLbl.text = barAnnotation.price!
         
         imGoingBtn.passedData = barAnnotation
         imGoingBtn.passedAnnotation = view
@@ -427,7 +427,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         imGoingBtn.addTarget(self, action: #selector(amntPeoplebtnAction(sender: )), for: .touchUpInside)
         
         imGoingView.layer.cornerRadius = 10
-        viewFriendsView.layer.cornerRadius = 10
+//        viewFriendsView.layer.cornerRadius = 10
         
         guestView.layer.borderWidth = 3
         guestView.layer.borderColor = color.cgColor
@@ -451,31 +451,31 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             
         }
         
-        if (barAnnotation.url == "nil"){
-            linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
-                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
-            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
-
-            // .Normal
-            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
-                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
-            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
-        }
-        else{
-            linkBtn.link = barAnnotation.url
-        
-            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
-                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
-            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
-
-            // .Normal
-            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
-                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
-            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
-        }
-        
-        linkBtn.addTarget(self, action: #selector(openLink(sender:)), for: .touchUpInside)
+//        if (barAnnotation.url == "nil"){
+//            linkBtn.link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+//            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
+//                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
+//            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
+//
+//            // .Normal
+//            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.title!).com",
+//                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
+//            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
+//        }
+//        else{
+//            linkBtn.link = barAnnotation.url
+//
+//            let mySelectedAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
+//                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
+//            linkBtn.setAttributedTitle(mySelectedAttributedTitle, for: .selected)
+//
+//            // .Normal
+//            let myNormalAttributedTitle = NSAttributedString(string: "\(barAnnotation.url!)",
+//                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.blue])
+//            linkBtn.setAttributedTitle(myNormalAttributedTitle, for: .normal)
+//        }
+//
+//        linkBtn.addTarget(self, action: #selector(openLink(sender:)), for: .touchUpInside)
         
         UIView.animate(withDuration: 0.5) {
             FirstViewController.centerConstraint.constant = -300
