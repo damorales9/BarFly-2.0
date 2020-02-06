@@ -56,6 +56,29 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
         
     }
     
+    /*
+    override func viewDidAppear(_ animated: Bool) {
+            getTimestampData()
+        }
+        
+    func getTimestampData() {
+        friendsGoingList.removeAll()
+//        self.feedView.reloadData()
+        
+        User.getUser(uid: AppDelegate.user!.uid!) { (user) in
+            
+            for i in user!.friends {
+                User.getUser(uid: i!) { (user) in
+                    if (user?.bar == self.bar!) {
+                        self.friendsGoingList.append(user!)
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    */
+    
     func getName() -> String {
     
         if let user = nonUser, let name = user.username {
@@ -292,10 +315,14 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                     let userVC = storyBoard.instantiateViewController(withIdentifier: "nonUserProfileVC") as! NonUserProfileVC
                     userVC.nonUser = user!
                     self.resultSearchController.dismiss(animated: true)
-                    self.tabBarController?.navigationController?.present(userVC, animated: true, completion: {
+                    /*
+                    self.navigationController?.present(userVC, animated: true, completion: {
 
                     })
-                    //self.tabBarController?.navigationController?.pushViewController(userVC, animated:true)
+                    */
+                    //self.tabBarController?.navigationController?.show(userVC, sender: Any?.self)
+                    self.navigationController?.pushViewController(userVC, animated: true)
+                    //self.tabBarController?.navigationController?.popViewController(animated: true)
                 }
                 
                 /*
@@ -308,6 +335,7 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                     self.navigationController?.pushViewController(userVC, animated:true)
                 })
                 */
+                
                     
             }
         }
