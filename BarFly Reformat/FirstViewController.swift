@@ -114,6 +114,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+    self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Roboto-Light", size: 20)!,
+                                                                    NSAttributedString.Key.foregroundColor : UIColor.barflyblue]
+        
         myMapView.register(CustomMarker.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         self.barDetails.layer.cornerRadius = 20
         self.barDetails.layer.borderWidth = 4

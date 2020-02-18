@@ -19,6 +19,8 @@ class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Roboto-Light", size: 20)!]
+        
         findAndUpdate()
         
     }

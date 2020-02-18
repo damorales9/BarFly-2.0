@@ -11,6 +11,20 @@ import FirebaseFirestore
 
 struct User {
     
+    static var LOOKING = "looking for someone"
+    static var SINGLE = "single"
+    static var RELATIONSHIP = "in a relationship"
+    static var FRIENDS = "just out with friends"
+    static var SEEING_SOMEONE = "seeing someone"
+    static var COMPLICATED = "complicated"
+    static var JEALOUS = "trying to make them jealous"
+    static var NIL = "eating ice cream in their pjs"
+    static var SEXILED = "probably gonna get sexiled"
+    static var CLAM = "free clammin It"
+    static var POPPIN = "poppin bottles"
+    static var JESUS = "calling jesus on the porcelin telephone"
+    
+    
     var uid:String?
     var name:String?
     var username: String?
@@ -28,6 +42,7 @@ struct User {
     var messagingID: String?
     var profileImage: UIImage?
     var galleryImages: [UIImage]?
+    var status: String?
 
     
     static func getUser(uid: String, setFunction: @escaping (_ user: User?) -> Void) {
@@ -55,8 +70,9 @@ struct User {
                 let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
                 let email = ((document!.get("email")) as? String  ?? "")
                 let msgID = ((document!.get("messagingID")) as? String ?? "")
+                let status = ((document!.get("status")) as? String ?? User.NIL)
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
                 
 //                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
 //                    user?.profileImage = image
@@ -117,8 +133,9 @@ struct User {
                     let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
                     let email = ((document!.get("email")) as? String  ?? "")
                     let msgID = ((document!.get("messagingID")) as? String ?? "")
+                    let status =  ((document!.get("status")) as? String ?? User.NIL)
                     
-                    user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID)
+                    user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
                     
     //                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
     //                    user?.profileImage = image
@@ -174,7 +191,8 @@ struct User {
                 "favorites": user.favorites,
                 "timestamp": user.timestamp ??  0,
                 "requests":user.requests,
-                "messagingID":user.messagingID ?? ""
+                "messagingID":user.messagingID ?? "",
+                "status" : user.status ??  User.NIL
             ]
 
             Firestore.firestore().collection(LoginVC.USER_DATABASE).document(user.uid!).setData(docData) {err in

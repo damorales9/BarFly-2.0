@@ -352,7 +352,8 @@ class CreateVC: UIViewController, UITextFieldDelegate {
                            "profileURL": user.profileURL ?? "",
                            "email": user.email!,
                            "friends": user.friends,
-                           "requests":user.requests
+                           "requests":user.requests,
+                           "status": user.status ?? User.NIL
                        ]
                     print(docData)
                        

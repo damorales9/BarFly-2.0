@@ -14,7 +14,22 @@ import FirebaseAuth
 import YPImagePicker
 import NVActivityIndicatorView
 
-class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
+class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
+    
+    var statuses =  [
+            User.NIL,
+            User.LOOKING,
+            User.JEALOUS,
+            User.COMPLICATED,
+            User.FRIENDS,
+            User.RELATIONSHIP,
+            User.SEEING_SOMEONE,
+            User.SEXILED,
+            User.POPPIN,
+            User.CLAM,
+            User.JESUS
+    ]
+    
     
     var delegate: UIViewController?
     
@@ -35,7 +50,9 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     var indicator: NVActivityIndicatorView?
     
     
-
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    @IBOutlet weak var status: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var username: UITextField!
@@ -63,6 +80,15 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     var navbar: UINavigationBar?
     
     override func viewDidLoad() {
+        
+        status.delegate = self
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        
+        status.layer.cornerRadius = 5
+        status.layer.borderWidth = 0
+        status.layer.borderColor = UIColor.barflyblue.cgColor
         
         name.layer.cornerRadius = 5
         name.layer.borderWidth = 0
@@ -177,6 +203,13 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             }
         }
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+                   target: self,
+                   action: #selector(EditProfileVC.dismissKeyboardAndPicker))
+
+               tap.cancelsTouchesInView = false
+               view.addGestureRecognizer(tap)
+        
         
         
         galleryView.delegate = self
@@ -194,6 +227,7 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             self.username.text = user?.username
             self.email.text =  user?.email
             self.password.text = UserDefaults.standard.string(forKey: "password")
+            self.status.text = user?.status
         }
     }
     
@@ -205,6 +239,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             print("she wasnt rdy")
         }
         
+    }
+
+    @objc func dismissKeyboardAndPicker()
+    {
+        view.endEditing(true)
+        pickerView.isHidden = true
     }
     
     func saveProfile() {
@@ -231,6 +271,7 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                                 AppDelegate.user?.username = username
                                 AppDelegate.user?.name = self.name.text
                                 AppDelegate.user?.email = email
+                                AppDelegate.user?.status = self.status.text ?? ""
                                 
                                 self.savingProgress.text = "Saving your password..."
 
@@ -525,5 +566,32 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.barflyblue ]
         UINavigationBar.appearance().tintColor = .barflyblue
         UINavigationBar.appearance().backgroundColor = .black
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return statuses.count
+     }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return statuses[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        status.text = statuses[row]
+        self.pickerView.isHidden = true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        
+        print("I AM THE DELEGATE WHOW")
+        
+        pickerView.isHidden = false
+        return false
     }
 }

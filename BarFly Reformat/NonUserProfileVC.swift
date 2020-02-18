@@ -513,6 +513,54 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
         
     }
     
+    func getStatusMessage() -> String {
+        if let user = nonUser, let name = user.name, let bar = user.bar, let status = user.status {
+            return "\(name) is \(status) at \(bar == LoginVC.NO_BAR ? "home" : bar ). \(getSass())"
+        } else {
+            return "ERROR"
+        }
+    }
+    
+    func getSass() -> String {
+        
+        if let user = nonUser, let name = user.name, let bar = user.bar {
+            if user.bar == LoginVC.NO_BAR {
+                let number = Int.random(in: 0 ..< 5)
+                switch number {
+                case 0: return "Great tactic, \(name). That'll show that slut from marketing."
+                case 1: return "K."
+                case 2: return "Probably gonna say they had a great night but we know they didn't."
+                case 3: return "If society says your weird if you bring your flashcards to \(bar), then just don't study."
+                default: return "Go out for once you peice of sh*t."
+                }
+            } else {
+                if user.status == User.CLAM {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Great tactic, \(name). I hope that works out for you."
+                    case 1: return "Why not make it the full package? #freethenip"
+                    case 2: return "Bold, \(name). Bold."
+                    case 3: return "Hope the bathroom lines aren't too long."
+                    default: return "I'm jsut gonna say it. Thas nasty yo."
+                    }
+                } else if (user.status == User.COMPLICATED) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Great tactic, \(name). Nothing resolves conflict like drinking heavily."
+                    case 1: return "Let's be real, that basically just means they're taken."
+                    case 2: return "I feel like I shouldn't have added this as a status."
+                    case 3: return "Nobody cares about your problems, \(name)"
+                    default: return "K."
+                    }
+                } else {
+                    return "ERROR"
+                }
+            }
+        } else {
+            return "ERROR"
+        }
+    }
+    
     func getRequestMessage() -> String {
         
         let number = Int.random(in: 0 ..< 10)
@@ -523,8 +571,8 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
         case 2: return "Don't get your panties knackered, Jessica"
         case 3: return "Focus on your career some other night"
         case 4: return "Go out for once you peice of sh*t"
-        case 5: return "TBD0"
-        case 6: return "TBD1"
+        case 5: return "This was probably just a sex bot"
+        case 6: return "Wake up George! Time to lose your re-virginity"
         case 7: return "TBD2"
         case 8: return "TBD3"
         default:
