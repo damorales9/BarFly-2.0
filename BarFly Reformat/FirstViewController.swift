@@ -45,6 +45,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var locationBtn: UIBarButtonItem!
     @IBOutlet var refreshBtn: UIBarButtonItem!
     @IBOutlet var barImageBckg: UIView!
+    @IBOutlet var barTaskBarView: UIView!
     
     @IBOutlet var exitImGoing: UIView!
     @IBOutlet var checkImGoing: UIView!
@@ -126,7 +127,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         checkBtnWidth = NSLayoutConstraint(item: checkImGoing!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         checkImGoing.addConstraint(checkBtnWidth)
         
-        goingBtnConstraint = NSLayoutConstraint(item: imGoingView!, attribute: .trailing, relatedBy: .equal, toItem: barDetails, attribute: .trailing, multiplier: 1, constant: -50)
+        goingBtnConstraint = NSLayoutConstraint(item: imGoingView!, attribute: .trailing, relatedBy: .equal, toItem: barDetails, attribute: .trailing, multiplier: 1, constant: -25)
         barDetails.addConstraint(goingBtnConstraint)
         
         // Do any additional setup after loading the view.
@@ -291,6 +292,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         getUserBarChoice(barName: (view.annotation?.title!)!)
+        
+        barTaskBarView.layer.cornerRadius = 10
         
         exitImGoing.layer.cornerRadius = 10
         cancelBtn.layer.cornerRadius = 10
@@ -902,7 +905,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                         self.imGoingBtn.backgroundColor = UIColor.red
                         self.imGoingView.backgroundColor = UIColor.red
                         self.cancelBtnWidth.constant = 0
-                        self.goingBtnConstraint.constant = -50
+                        self.goingBtnConstraint.constant = -25
                         self.checkBtnWidth.constant = 0
                         self.barDetails.layoutIfNeeded()
                         self.view.layoutIfNeeded()
@@ -922,7 +925,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                         self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
                         self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
                         self.cancelBtnWidth.constant = 0
-                        self.goingBtnConstraint.constant = -50
+                        self.goingBtnConstraint.constant = -25
                         self.checkBtnWidth.constant = 0
                         self.barDetails.layoutIfNeeded()
                         self.view.layoutIfNeeded()
@@ -964,7 +967,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                         self.imGoingBtn.backgroundColor = UIColor.red
                         self.imGoingView.backgroundColor = UIColor.red
                         self.cancelBtnWidth.constant = 0
-                        self.goingBtnConstraint.constant = -50
+                        self.goingBtnConstraint.constant = -25
                         self.checkBtnWidth.constant = 0
                         self.barDetails.layoutIfNeeded()
                         self.view.layoutIfNeeded()
@@ -1029,7 +1032,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                             self.imGoingBtn.backgroundColor = UIColor.barflyblue
                         self.imGoingView.backgroundColor = UIColor.barflyblue
                             self.cancelBtnWidth.constant = 0
-                            self.goingBtnConstraint.constant = -50
+                            self.goingBtnConstraint.constant = -25
                             self.checkBtnWidth.constant = 0
                             self.barDetails.layoutIfNeeded()
                             self.view.layoutIfNeeded()
@@ -1044,7 +1047,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                             self.imGoingBtn.backgroundColor = UIColor.red
                             self.imGoingView.backgroundColor = UIColor.red
                             self.cancelBtnWidth.constant = 0
-                            self.goingBtnConstraint.constant = -50
+                            self.goingBtnConstraint.constant = -25
                             self.checkBtnWidth.constant = 0
                             self.barDetails.layoutIfNeeded()
                             self.view.layoutIfNeeded()
@@ -1061,7 +1064,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                         self.imGoingBtn.backgroundColor = UIColor.gray
                         self.imGoingView.backgroundColor = UIColor.gray
                         self.cancelBtnWidth.constant = 0
-                        self.goingBtnConstraint.constant = -50
+                        self.goingBtnConstraint.constant = -25
                         self.checkBtnWidth.constant = 0
                         self.barDetails.layoutIfNeeded()
                         self.view.layoutIfNeeded()

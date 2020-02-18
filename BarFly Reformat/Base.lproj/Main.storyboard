@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -262,7 +262,7 @@
                                         </constraints>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n4x-wR-s3j">
-                                        <rect key="frame" x="345" y="358" width="22.666666666666686" height="50"/>
+                                        <rect key="frame" x="325" y="358" width="22.666666666666686" height="50"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RfY-jG-Nq7" customClass="CheckClicked" customModule="BarFly_Reformat" customModuleProvider="target">
                                                 <rect key="frame" x="2" y="2" width="18.666666666666668" height="46"/>
@@ -316,7 +316,7 @@
                                     <constraint firstItem="10m-F7-BYi" firstAttribute="centerX" secondItem="tgw-4i-dFW" secondAttribute="centerX" id="kt4-pA-Nhe"/>
                                     <constraint firstItem="X2l-QR-wmX" firstAttribute="leading" secondItem="afg-wR-jtr" secondAttribute="leading" id="lLb-G2-8mC"/>
                                     <constraint firstItem="NjH-gV-sfd" firstAttribute="leading" secondItem="fVl-Nb-hRQ" secondAttribute="leading" id="n1m-Bn-0qi"/>
-                                    <constraint firstItem="hZm-iR-DgT" firstAttribute="leading" secondItem="n4x-wR-s3j" secondAttribute="trailing" id="nLR-rW-scS"/>
+                                    <constraint firstItem="hZm-iR-DgT" firstAttribute="leading" secondItem="n4x-wR-s3j" secondAttribute="trailing" constant="20" id="nLR-rW-scS"/>
                                     <constraint firstItem="afg-wR-jtr" firstAttribute="top" secondItem="NjH-gV-sfd" secondAttribute="bottom" constant="10" id="nes-Jg-36e"/>
                                     <constraint firstItem="NjH-gV-sfd" firstAttribute="top" secondItem="fVl-Nb-hRQ" secondAttribute="bottom" constant="10" id="or9-1F-xGd"/>
                                     <constraint firstItem="NjH-gV-sfd" firstAttribute="centerX" secondItem="tgw-4i-dFW" secondAttribute="centerX" id="uA3-Hh-xa6"/>
@@ -362,6 +362,7 @@
                         <outlet property="barDetailsImage" destination="sIl-Ty-dpJ" id="GaH-8o-pCR"/>
                         <outlet property="barDetailsTitle" destination="19g-vo-cNQ" id="43x-YI-laY"/>
                         <outlet property="barImageBckg" destination="fVl-Nb-hRQ" id="Zn0-Fu-I5f"/>
+                        <outlet property="barTaskBarView" destination="NjH-gV-sfd" id="o2K-bl-VUU"/>
                         <outlet property="cancelBtn" destination="ahu-Dt-tpf" id="mzn-NV-EJl"/>
                         <outlet property="checkBtn" destination="RfY-jG-Nq7" id="SZ1-UM-QMR"/>
                         <outlet property="checkImGoing" destination="n4x-wR-s3j" id="4Nn-dH-qSd"/>
@@ -1402,7 +1403,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="BIU-XA-BjM">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="882"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="882"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8b-fR-vCd">
                                 <rect key="frame" x="50" y="571" width="314" height="60"/>
@@ -1739,7 +1740,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-SS-5Nn">
-                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
+                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempting to log you in..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-80-nrF">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
@@ -2680,7 +2681,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="a5b-7k-Isl">
-                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
+                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging out" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7n-FR-f9r">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
