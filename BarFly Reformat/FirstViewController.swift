@@ -16,7 +16,8 @@ import FirebaseStorage
 import FirebaseAuth
 import SafariServices
 
-class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
+    
 
     @IBAction func segue(_ sender: Any) {
         BarDetailsVC.delegate = self
@@ -47,6 +48,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var barImageBckg: UIView!
     @IBOutlet var barTaskBarView: UIView!
     
+    @IBOutlet weak var feedView: UIView!
     @IBOutlet var exitImGoing: UIView!
     @IBOutlet var checkImGoing: UIView!
     
@@ -63,11 +65,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var phoneLbl: UILabel!
     @IBOutlet var priceLbl: UILabel!
     
+    @IBOutlet weak var feedContainer: UIView!
     
     var checkBtnWidth: NSLayoutConstraint!
     var goingBtnConstraint: NSLayoutConstraint!
     var cancelBtnWidth: NSLayoutConstraint!
     
+    @IBOutlet weak var tableView: UITableView?
     
     static var currentAnnotation: MKAnnotation!
     static var annotations = [MKAnnotation]()
@@ -191,7 +195,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         FirstViewController.annotations = myMapView.annotations
         
-       
     
     }
     
@@ -393,6 +396,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.title.layer.cornerRadius = 10
         calloutView.layer.cornerRadius = 20
         calloutView.view.layer.cornerRadius = 20
+//        calloutView.messages = getMSGS()
+//        self.tableView?.reloadData()
         let gesture = BarTapGesture(target: self, action: #selector(barTapped))
         gesture.bar = barAnnotation
         calloutView.amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
@@ -1344,6 +1349,21 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         listVC.nonUser = AppDelegate.user
         listVC.bar = barDetailsTitle.text
         self.navigationController?.pushViewController(listVC, animated:true)
+    }
+    
+    
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
     
 

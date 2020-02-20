@@ -245,9 +245,9 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                         self.followView.backgroundColor = .red
                         
                         if(user.bar == "nil" || user.blocked.contains(currentUser?.uid!)) {
-                            self.barChoiceLbl.text = "\(user.name!) has not made a bar selection for tonight"
+                            self.barChoiceLbl.text = self.getStatusMessage()
                         } else {
-                            self.barChoiceLbl.text = "\(user.name!) is going to \(user.bar!)!"
+                            self.barChoiceLbl.text = self.getStatusMessage()
                             
                             
                            
