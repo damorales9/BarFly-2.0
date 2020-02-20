@@ -12,6 +12,8 @@
 		0E018E842370E80E000122B7 /* AmountPeopleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E018E832370E80E000122B7 /* AmountPeopleButton.swift */; };
 		0E154086237E19A400E52414 /* BarDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E154085237E19A400E52414 /* BarDetailsVC.swift */; };
 		0E154088237ECCA400E52414 /* BarDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E154087237ECCA400E52414 /* BarDetails.swift */; };
+		0E3E7F6023FF0E1C00C3D60B /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E7F5F23FF0E1C00C3D60B /* Post.swift */; };
+		0E3E7F6423FF1D7600C3D60B /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E7F6323FF1D7600C3D60B /* PostCell.swift */; };
 		0E5137EF236BCE47008C00AB /* overlay.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E5137EE236BCE47008C00AB /* overlay.json */; };
 		0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */; };
 		0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */; };
@@ -70,6 +72,8 @@
 		0E018E832370E80E000122B7 /* AmountPeopleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountPeopleButton.swift; sourceTree = "<group>"; };
 		0E154085237E19A400E52414 /* BarDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarDetailsVC.swift; sourceTree = "<group>"; };
 		0E154087237ECCA400E52414 /* BarDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarDetails.swift; sourceTree = "<group>"; };
+		0E3E7F5F23FF0E1C00C3D60B /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0E3E7F6323FF1D7600C3D60B /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		0E5137EE236BCE47008C00AB /* overlay.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = overlay.json; sourceTree = "<group>"; };
 		0E5137F2236C5A68008C00AB /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		0E5137F4236C6A19008C00AB /* CustomBarAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarAnnotation.swift; sourceTree = "<group>"; };
@@ -208,6 +212,8 @@
 				6F122F68238949EC00ACD9A1 /* GalleryViewCell.swift */,
 				6F94729923918044003A470B /* LogOutVC.swift */,
 				6F94729B23918320003A470B /* GeneralSettingsVC.swift */,
+				0E3E7F5F23FF0E1C00C3D60B /* Post.swift */,
+				0E3E7F6323FF1D7600C3D60B /* PostCell.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -380,6 +386,7 @@
 			files = (
 				0EAE7E3723842D68001C767D /* CheckClicked.swift in Sources */,
 				6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */,
+				0E3E7F6423FF1D7600C3D60B /* PostCell.swift in Sources */,
 				6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */,
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
@@ -413,6 +420,7 @@
 				0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */,
 				0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */,
 				6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */,
+				0E3E7F6023FF0E1C00C3D60B /* Post.swift in Sources */,
 				0E154088237ECCA400E52414 /* BarDetails.swift in Sources */,
 				0E154086237E19A400E52414 /* BarDetailsVC.swift in Sources */,
 			);

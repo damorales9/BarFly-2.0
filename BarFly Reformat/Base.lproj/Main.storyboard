@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -298,20 +298,91 @@
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAB-Tv-iGR">
                                                 <rect key="frame" x="0.0" y="0.0" width="398" height="293"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="HT5-Y2-95W">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postCell" id="HT5-Y2-95W" customClass="PostCell" customModule="BarFly_Reformat" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="398" height="80"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HT5-Y2-95W" id="eWN-ZH-MGf">
                                                             <rect key="frame" x="0.0" y="0.0" width="398" height="80"/>
                                                             <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="15" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLx-rt-ejz">
+                                                                    <rect key="frame" x="6" y="4" width="332" height="72"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="344" id="bZq-IO-bb1"/>
+                                                                    </constraints>
+                                                                    <string key="text">I thought not. It's not a story the Jedi would tell you. It's a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life... He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful... the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. It's ironic he could save others from death, but not himself.</string>
+                                                                    <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="13"/>
+                                                                    <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-an-amx">
+                                                                    <rect key="frame" x="351" y="0.0" width="30" height="30"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="30" id="7fZ-26-wOf"/>
+                                                                        <constraint firstAttribute="height" constant="30" id="g4t-sh-oMP"/>
+                                                                    </constraints>
+                                                                    <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <state key="normal" image="up"/>
+                                                                    <connections>
+                                                                        <action selector="likeBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="snO-fA-I0Y"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="500" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zT4-mx-fvh">
+                                                                    <rect key="frame" x="349" y="30" width="34" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="34" id="2Zi-fa-PMm"/>
+                                                                        <constraint firstAttribute="height" constant="20" id="nt0-Q3-06C"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="17"/>
+                                                                    <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIs-V5-Bxl">
+                                                                    <rect key="frame" x="351" y="50" width="30" height="30"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="30" id="8HC-wk-iNX"/>
+                                                                        <constraint firstAttribute="width" constant="30" id="nab-Ia-dgB"/>
+                                                                    </constraints>
+                                                                    <state key="normal" image="down"/>
+                                                                    <connections>
+                                                                        <action selector="dislikeBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="mWQ-Lw-Lcr"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="XIs-V5-Bxl" firstAttribute="top" secondItem="zT4-mx-fvh" secondAttribute="bottom" id="2zu-UD-AfG"/>
+                                                                <constraint firstAttribute="bottom" secondItem="XIs-V5-Bxl" secondAttribute="bottom" id="40J-qb-Rwv"/>
+                                                                <constraint firstAttribute="trailing" secondItem="PqK-an-amx" secondAttribute="trailing" constant="17" id="6I4-rv-EKc"/>
+                                                                <constraint firstItem="PqK-an-amx" firstAttribute="leading" secondItem="pLx-rt-ejz" secondAttribute="trailing" constant="13" id="Dm5-eG-m6Q"/>
+                                                                <constraint firstItem="XIs-V5-Bxl" firstAttribute="top" secondItem="zT4-mx-fvh" secondAttribute="bottom" id="I2P-Un-H2X"/>
+                                                                <constraint firstItem="XIs-V5-Bxl" firstAttribute="leading" secondItem="pLx-rt-ejz" secondAttribute="trailing" constant="13" id="Nbh-NZ-x4t"/>
+                                                                <constraint firstItem="zT4-mx-fvh" firstAttribute="top" secondItem="PqK-an-amx" secondAttribute="bottom" id="Srm-7V-6Tj"/>
+                                                                <constraint firstItem="pLx-rt-ejz" firstAttribute="leading" secondItem="eWN-ZH-MGf" secondAttribute="leading" constant="6" id="UdN-VC-cRx"/>
+                                                                <constraint firstItem="PqK-an-amx" firstAttribute="top" secondItem="eWN-ZH-MGf" secondAttribute="top" id="YZO-Gc-jeX"/>
+                                                                <constraint firstAttribute="trailing" secondItem="XIs-V5-Bxl" secondAttribute="trailing" constant="17" id="Zd8-SN-OB7"/>
+                                                                <constraint firstItem="zT4-mx-fvh" firstAttribute="leading" secondItem="pLx-rt-ejz" secondAttribute="trailing" constant="11" id="al7-AP-ZWf"/>
+                                                                <constraint firstItem="pLx-rt-ejz" firstAttribute="top" secondItem="eWN-ZH-MGf" secondAttribute="top" constant="4" id="dTP-QJ-Dmc"/>
+                                                                <constraint firstAttribute="trailing" secondItem="zT4-mx-fvh" secondAttribute="trailing" constant="15" id="dqg-Ml-xXk"/>
+                                                                <constraint firstAttribute="bottom" secondItem="pLx-rt-ejz" secondAttribute="bottom" constant="4" id="g2H-PY-B6i"/>
+                                                                <constraint firstItem="zT4-mx-fvh" firstAttribute="top" secondItem="PqK-an-amx" secondAttribute="bottom" id="h7n-mM-9xF"/>
+                                                                <constraint firstAttribute="trailing" secondItem="pLx-rt-ejz" secondAttribute="trailing" constant="60" id="tIU-Ic-ll5"/>
+                                                            </constraints>
                                                         </tableViewCellContentView>
+                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <connections>
+                                                            <outlet property="amntLikes" destination="zT4-mx-fvh" id="uhz-Nk-CqS"/>
+                                                            <outlet property="dislikeBtn" destination="XIs-V5-Bxl" id="L2J-hj-boP"/>
+                                                            <outlet property="likeBtn" destination="PqK-an-amx" id="Boh-Lv-zkL"/>
+                                                            <outlet property="messageText" destination="pLx-rt-ejz" id="VxX-Ph-xwj"/>
+                                                        </connections>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="mAB-Tv-iGR" firstAttribute="centerY" secondItem="r99-FP-8bJ" secondAttribute="centerY" id="036-J5-8oc"/>
                                             <constraint firstItem="mAB-Tv-iGR" firstAttribute="top" secondItem="r99-FP-8bJ" secondAttribute="top" id="Dpu-aK-vLV"/>
@@ -761,7 +832,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="KkH-Vf-NW6">
-                                            <rect key="frame" x="23" y="15" width="18" height="18"/>
+                                            <rect key="frame" x="22.666666666666664" y="15.333333333333334" width="18.666666666666668" height="17.666666666666668"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2222,7 +2293,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="uje-Q4-jyp">
-                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -2715,7 +2786,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="VbO-nI-bCs">
-                                            <rect key="frame" x="23" y="21" width="18" height="18"/>
+                                            <rect key="frame" x="22.666666666666664" y="21.333333333333329" width="18.666666666666668" height="17.666666666666668"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2821,7 +2892,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="Lya-PW-kbO">
-                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>

@@ -192,7 +192,6 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
             cell.textLabel?.text = filteredTableData[indexPath.row].username
             cell.detailTextLabel?.text = filteredTableData[indexPath.row].name
             
-            
             cell.imageView?.clipsToBounds = true
             cell.imageView?.layer.cornerRadius = 24
             cell.imageView?.layer.borderWidth = 1

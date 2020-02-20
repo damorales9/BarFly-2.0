@@ -65,6 +65,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet var phoneLbl: UILabel!
     @IBOutlet var priceLbl: UILabel!
     
+    public var currentBarName: String!
+    
     @IBOutlet weak var feedContainer: UIView!
     
     var checkBtnWidth: NSLayoutConstraint!
@@ -88,6 +90,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var barTimer = BarTimer()
     
     var friendsGoingList = [User]()
+    
+    var allPosts = [Post]()
+    
+    /*
+    @IBOutlet var messageText: UILabel!
+    @IBOutlet var amntLikesPost: UILabel!
+    @IBOutlet var likeBtn: UIButton!
+    @IBOutlet var dislikeBtn: UIButton!
+    */
+    
     
     
     
@@ -160,6 +172,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         print(FirstViewController.allAnnotations)
         
+        
         //barDetailsTop = NSLayoutConstraint(item: barDetails as Any, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -85)
         //view.addConstraint(barDetailsTop!)
         
@@ -194,6 +207,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
         
         FirstViewController.annotations = myMapView.annotations
+        
+        tableView?.delegate=self
+        tableView?.dataSource=self
         
     
     }
@@ -326,6 +342,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCallout
         
+        currentBarName = ""
+        currentBarName = barAnnotation.title
+        
         friendsGoingList.removeAll()
         for friend in AppDelegate.user!.friends{
             User.getUser(uid: friend!) { (user) in
@@ -403,6 +422,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         calloutView.amntPeople.text = "\(barAnnotation.amntPeople ?? 2) "
         
         barAnnotation.view = calloutView
+        
+        allPosts.removeAll()
+        getPosts(barName: "\(barAnnotation.title!)") { (success) in
+            if (success){
+                self.tableView?.reloadData()
+            }
+        }
+        
+        print(allPosts)
         
         calloutView.view.addGestureRecognizer(gesture)
         
@@ -608,6 +636,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             */
         
         }
+        allPosts.removeAll()
     }
     
     @objc func barTapped(sender: BarTapGesture) {
@@ -1355,16 +1384,223 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+        if(allPosts.count == 0){
+            let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "No Posts"
+            noDataLabel.textColor     = UIColor.barflyblue
+            noDataLabel.textAlignment = .center
+            noDataLabel.font = UIFont(name: "Roboto-Thin", size: 20)
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+            return 0
+        }
+        else {
+            if (allPosts.count < 20){
+                tableView.backgroundView = nil
+                return allPosts.count
+            }
+            else{
+                return 20
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! PostCell
+        
+        cell.messageText.text = allPosts[indexPath.row].message
+        if let likes = allPosts[indexPath.row].likes
+        {
+            cell.amntLikes.text = "\(likes)"
+        }
+        
+        cell.likeBtn.amountPeople = allPosts[indexPath.row].likes
+        cell.dislikeBtn.amountPeople = allPosts[indexPath.row].likes
+        
+        cell.likeBtn.title = currentBarName
+        cell.dislikeBtn.title = currentBarName
+        
+        cell.likeBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
+        cell.dislikeBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
+        
+        
+        return cell
+        
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
+    
+    func getPosts(barName: String, completion: @escaping (_ success: Bool) -> Void){
+        print(barName)
+        let basicQuery = Firestore.firestore().collection("Bar Feeds").document("\(barName)").collection("feed").limit(to: 50)
+        basicQuery.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Oh no! Got an error! \(error.localizedDescription)")
+                return
+            }
+            guard let snapshot = snapshot else { return }
+            let allPost = snapshot.documents
+            for postDocument in allPost {
+                
+                let post = Post()
+                let message = postDocument.data()["message"] as? String
+                let likes = postDocument.data()["likes"] as? Int
+                
+                post.message = message
+                post.likes = likes
+                
+                self.allPosts.append(post)
+                
+                //completion(true)
+            }
+            completion(true)
+        }
+        
+    }
+    
+    @IBAction func likeBtnClicked(_ sender: CheckClicked) {
+        var newAmount = 0
+        var subtractOne = 0
+        var oldBarSubtract = 0
+        let db = Firestore.firestore()
+        //print("\(sender.passedData!.title ?? "nil")")
+        let sfReference = db.collection("Bars").document("\(sender.title!)")
+        let ui = db.collection("User Info").document("\(Auth.auth().currentUser!.uid)")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            let uiDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+                try uiDocument = transaction.getDocument(ui)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let oldAmount = sfDocument.data()?["amountPeople"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from oldAmount \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            guard let barChoice = uiDocument.data()?["bar"] as? String else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve barchoice from barChoice \(uiDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            newAmount = oldAmount + 1
+            if (barChoice == "nil"){
+                transaction.updateData(["bar": sender.title!, "timestamp": NSDate().timeIntervalSince1970], forDocument: ui)
+                transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(newAmount)"
+                    //barAnnotation.amntPeople = newAmount
+                    sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(newAmount)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("Remove Choice", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.red
+                        self.imGoingView.backgroundColor = UIColor.red
+                        self.cancelBtnWidth.constant = 0
+                        self.goingBtnConstraint.constant = -25
+                        self.checkBtnWidth.constant = 0
+                        self.barDetails.layoutIfNeeded()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+                
+            }
+            else if (barChoice == sender.title!){
+                subtractOne = oldAmount - 1
+                transaction.updateData(["bar": "nil"], forDocument: ui)
+                transaction.updateData(["amountPeople": subtractOne], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(subtractOne)"
+                    sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(subtractOne)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("I'm Going!", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                        self.imGoingView.backgroundColor = UIColor(red:0.71, green:1.00, blue:0.99, alpha:1.0)
+                        self.cancelBtnWidth.constant = 0
+                        self.goingBtnConstraint.constant = -25
+                        self.checkBtnWidth.constant = 0
+                        self.barDetails.layoutIfNeeded()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+            else {
+                let newReference = db.collection("Bars").document(barChoice)
+                let newDocument: DocumentSnapshot
+                do {
+                    try newDocument = transaction.getDocument(newReference)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                guard let oldBarAmount = newDocument.data()?["amountPeople"] as? Int else{
+                    let error = NSError(
+                        domain: "AppErrorDomain",
+                        code: -1,
+                        userInfo: [
+                            NSLocalizedDescriptionKey: "Unable to retrieve population from oldBarAmount \(sfDocument)"
+                        ]
+                    )
+                    errorPointer?.pointee = error
+                    return nil
+                }
+                oldBarSubtract = oldBarAmount - 1
+                transaction.updateData(["amountPeople": oldBarSubtract], forDocument: newReference)
+                transaction.updateData(["bar": sender.title!, "timestamp": NSDate().timeIntervalSince1970], forDocument: ui)
+                transaction.updateData(["amountPeople": newAmount], forDocument: sfReference)
+                DispatchQueue.main.async {
+                    self.amntPeople.text = "\(newAmount)"
+                    self.refreshAnnotation(title: barChoice)
+            
+                    //barAnnotation.amntPeople = newAmount
+                    sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(newAmount)"
+                    UIView.animate(withDuration: 0.5) {
+                        self.imGoingBtn.setTitle("Remove Choice", for: UIControl.State.normal)
+                        self.imGoingBtn.backgroundColor = UIColor.red
+                        self.imGoingView.backgroundColor = UIColor.red
+                        self.cancelBtnWidth.constant = 0
+                        self.goingBtnConstraint.constant = -25
+                        self.checkBtnWidth.constant = 0
+                        self.barDetails.layoutIfNeeded()
+                        self.view.layoutIfNeeded()
+                    }
+                }
+                
+                
+            }
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+            }
+        }
+        
+    }
+    
+    @IBAction func dislikeBtnClicked(_ sender: CheckClicked) {
+    }
+    
     
 
 }
