@@ -1392,7 +1392,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         if(allPosts.count == 0){
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "No Posts"
-            noDataLabel.textColor     = UIColor.barflyblue
+            noDataLabel.textColor     = UIColor.black
             noDataLabel.textAlignment = .center
             noDataLabel.font = UIFont(name: "Roboto-Thin", size: 20)
             tableView.backgroundView  = noDataLabel

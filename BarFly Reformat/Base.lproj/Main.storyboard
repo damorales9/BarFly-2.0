@@ -313,7 +313,7 @@
                                                                         <constraint firstAttribute="width" constant="344" id="bZq-IO-bb1"/>
                                                                     </constraints>
                                                                     <string key="text">I thought not. It's not a story the Jedi would tell you. It's a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life... He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful... the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. It's ironic he could save others from death, but not himself.</string>
-                                                                    <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="13"/>
+                                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="13"/>
                                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -335,7 +335,7 @@
                                                                         <constraint firstAttribute="width" constant="34" id="2Zi-fa-PMm"/>
                                                                         <constraint firstAttribute="height" constant="20" id="nt0-Q3-06C"/>
                                                                     </constraints>
-                                                                    <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="17"/>
+                                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="17"/>
                                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -397,6 +397,12 @@
                                         <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4g4-gE-glx">
+                                        <rect key="frame" x="364" y="416" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" image="plus30"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -839,7 +845,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="KkH-Vf-NW6">
-                                            <rect key="frame" x="23" y="15" width="18" height="18"/>
+                                            <rect key="frame" x="22.666666666666664" y="15.333333333333334" width="18.666666666666668" height="17.666666666666668"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2300,7 +2306,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="uje-Q4-jyp">
-                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -2793,7 +2799,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="VbO-nI-bCs">
-                                            <rect key="frame" x="23" y="21" width="18" height="18"/>
+                                            <rect key="frame" x="22.666666666666664" y="21.333333333333329" width="18.666666666666668" height="17.666666666666668"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2899,7 +2905,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="Lya-PW-kbO">
-                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -2941,6 +2947,7 @@
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
         <image name="person.fill" catalog="system" width="64" height="60"/>
         <image name="phone.fill.arrow.right" catalog="system" width="56" height="64"/>
+        <image name="plus30" width="30" height="30"/>
         <image name="profile" width="24" height="24"/>
         <image name="questionmark" catalog="system" width="48" height="64"/>
         <image name="star.fill" catalog="system" width="64" height="58"/>
