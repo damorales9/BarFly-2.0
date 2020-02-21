@@ -541,23 +541,104 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                     case 1: return "Why not make it the full package? #freethenip"
                     case 2: return "Bold, \(name). Bold."
                     case 3: return "Hope the bathroom lines aren't too long."
-                    default: return "I'm jsut gonna say it. Thas nasty yo."
+                    default: return "I'm just gonna say it. Thas nasty yo."
                     }
                 } else if (user.status == User.COMPLICATED) {
                     let number = Int.random(in: 0 ..< 5)
                     switch number {
                     case 0: return "Great tactic, \(name). Nothing resolves conflict like drinking heavily."
                     case 1: return "Let's be real, that basically just means they're taken."
-                    case 2: return "I feel like I shouldn't have added this as a status."
+                    case 2: return "I feel like I shouldn't have included this as a valid status..."
                     case 3: return "Nobody cares about your problems, \(name)"
                     default: return "K."
                     }
+                } else if (user.status == User.FRIENDS) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Great tactic, \(name). I hope that works out for you."
+                    case 1: return "I wonder if they also put that as their status?"
+                    case 2: return " * will be calling a cab by themselves tonight * "
+                    case 3: return "That's my bestie omg xoxoxo."
+                    default: return "Lmao what friends? You only have \(user.friends.count) \(user.friends.count == 1 ? "friend" : "friends")."
+                    }
+                } else if (user.status == User.RELATIONSHIP) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Idk what it is for android but on iphone you just hold down on the app and then click the x to delete kk thx bye."
+                    case 1: return "But then why is their status set to complicated???"
+                    case 2: return "Good for you, \(name)"
+                    case 3: return "If you didn't read this then it doesn't count."
+                    default: return "Please stop making out in the corner, \(name). Just go home. It's in everyones best interest."
+                    }
+                } else if (user.status == User.JESUS) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "We've all been there. Best of luck."
+                    case 1: return "I have no sass to give you, soldier."
+                    case 2: return "Good for you, \(name)"
+                    case 3: return "Hope he answers."
+                    default: return "Is it considered prejudiced that I did not include an option for any of the other religions?"
+                    }
+                } else if (user.status == User.MOMS) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "They're saying it. We're all thinking it"
+                    case 1: return "Best of luck to you, soldier."
+                    case 2: return "Ironically, \(name) has a pretty bangin' mother."
+                    case 3: return "No you aren't. Go home, \(name). You're clearly too drunk."
+                    default: return "Am I a real boy, papa?"
+                    }
+                } else if (user.status == User.LOOKING) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "This is a step in the right direction, \(name)."
+                    case 1: return "Try wearing those new vans you definitely own."
+                    case 2: return "The only thing they're looking for is for you to buy them a drink so they can dip."
+                    case 3: return "No you aren't. Go home, \(name). You're clearly too drunk."
+                    default: return "Please help me. I am stuck in the app. I just want to be free."
+                    }
+                } else if (user.status == User.NIL) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "No status, no service."
+                    case 1: return "Probably lactose free ice cream you piece of human garbage."
+                    case 2: return "Great tactic, \(name). That'll show that slut from marketing."
+                    case 3: return "Thats fun."
+                    default: return "Can you spare a moment of your time to hear about our most recent line of premium, high quality, stainless steel kitchen knives?"
+                    }
+                } else if (user.status == User.POPPIN) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "You boujee gurl."
+                    case 1: return "Daddy payin' for that?"
+                    case 2: return "Mom's spaghetti."
+                    case 3: return "LESSSSS GOOOOOOOO"
+                    default: return "wOw GOoD foR YoU, \(name)"
+                    }
+                } else if (user.status == User.WIZARD) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Ah. I see we have another intellectual in the room."
+                    case 1: return "Feeling wise yet?"
+                    case 2: return "That cauldron is not empty enough. I demand you to consume more of your potion."
+                    case 3: return "The level 10 wizard awaits you."
+                    default: return "May your quest bring you wisdom and glory."
+                    }
+                } else if (user.status == User.JEALOUS) {
+                    let number = Int.random(in: 0 ..< 5)
+                    switch number {
+                    case 0: return "Great tactic, \(name). I hope that works out for you."
+                    case 1: return "Thats cold."
+                    case 2: return "Keep it to yourself, \(name)."
+                    case 3: return "It's my time, flying high, lime, mine."
+                    default: return "Would you like me to automatically set your bar to \(bar)?"
+                    }
                 } else {
-                    return "ERROR"
+                    return "ERROR. ERROR. ERROR."
                 }
             }
         } else {
-            return "ERROR"
+            return "ERROR. ERRROR. ERRRRRRRRORRRRRRRRRR"
         }
     }
     
@@ -571,7 +652,7 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
         case 2: return "Don't get your panties knackered, Jessica"
         case 3: return "Focus on your career some other night"
         case 4: return "Go out for once you peice of sh*t"
-        case 5: return "This was probably just a sex bot"
+        case 5: return "This was probably just a porn bot"
         case 6: return "Wake up George! Time to lose your re-virginity"
         case 7: return "TBD2"
         case 8: return "TBD3"

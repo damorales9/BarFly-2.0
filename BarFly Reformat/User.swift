@@ -15,7 +15,6 @@ struct User {
     static var SINGLE = "single"
     static var RELATIONSHIP = "in a relationship"
     static var FRIENDS = "just out with friends"
-    static var SEEING_SOMEONE = "seeing someone"
     static var COMPLICATED = "complicated"
     static var JEALOUS = "trying to make them jealous"
     static var NIL = "eating ice cream in their pjs"
@@ -23,6 +22,11 @@ struct User {
     static var CLAM = "free clammin It"
     static var POPPIN = "poppin bottles"
     static var JESUS = "calling jesus on the porcelin telephone"
+    static var MOMS = "looking for single moms"
+    static var WIZARD = "playing wizard staff"
+    static var DRINKING = "drinking"
+
+
     
     
     var uid:String?

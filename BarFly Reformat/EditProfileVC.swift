@@ -23,11 +23,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             User.COMPLICATED,
             User.FRIENDS,
             User.RELATIONSHIP,
-            User.SEEING_SOMEONE,
             User.SEXILED,
             User.POPPIN,
             User.CLAM,
-            User.JESUS
+            User.JESUS,
+            User.MOMS,
+            User.WIZARD
     ]
     
     
