@@ -294,10 +294,10 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r99-FP-8bJ">
-                                        <rect key="frame" x="8" y="416" width="398" height="293"/>
+                                        <rect key="frame" x="8" y="443" width="398" height="266"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAB-Tv-iGR">
-                                                <rect key="frame" x="0.0" y="0.0" width="398" height="293"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="398" height="266"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postCell" id="HT5-Y2-95W" customClass="PostCell" customModule="BarFly_Reformat" customModuleProvider="target">
@@ -390,6 +390,13 @@
                                             <constraint firstItem="mAB-Tv-iGR" firstAttribute="centerX" secondItem="r99-FP-8bJ" secondAttribute="centerX" id="sew-wZ-iJn"/>
                                         </constraints>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fubu YikYak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uW9-c9-muU">
+                                        <rect key="frame" x="157" y="419" width="100" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                        <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -398,7 +405,7 @@
                                     <constraint firstAttribute="trailing" secondItem="r99-FP-8bJ" secondAttribute="trailing" constant="8" id="6zg-Wc-pNt"/>
                                     <constraint firstItem="10m-F7-BYi" firstAttribute="bottom" secondItem="fVl-Nb-hRQ" secondAttribute="top" constant="-15" id="9ZZ-M9-wp5"/>
                                     <constraint firstItem="HAQ-vd-NXc" firstAttribute="trailing" secondItem="fVl-Nb-hRQ" secondAttribute="trailing" id="AAh-A6-kw4"/>
-                                    <constraint firstItem="r99-FP-8bJ" firstAttribute="top" secondItem="X2l-QR-wmX" secondAttribute="bottom" constant="8" id="E52-9F-krt"/>
+                                    <constraint firstItem="r99-FP-8bJ" firstAttribute="top" secondItem="X2l-QR-wmX" secondAttribute="bottom" constant="35" id="E52-9F-krt"/>
                                     <constraint firstItem="fVl-Nb-hRQ" firstAttribute="centerX" secondItem="tgw-4i-dFW" secondAttribute="centerX" id="EDS-pE-wlz"/>
                                     <constraint firstItem="HAQ-vd-NXc" firstAttribute="centerY" secondItem="10m-F7-BYi" secondAttribute="centerY" id="L8d-c6-WzC"/>
                                     <constraint firstItem="10m-F7-BYi" firstAttribute="top" secondItem="tgw-4i-dFW" secondAttribute="top" constant="10" id="Mg2-9g-7vw"/>
