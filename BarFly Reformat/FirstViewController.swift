@@ -189,6 +189,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         showAllAnnotations(self)
         addCustomOverlay()
         
+        self.feedContainer.layer.cornerRadius = 15
+        self.tableView?.layer.cornerRadius = 15
+        self.tableView?.layer.borderWidth = 5
+        self.tableView!.layer.borderColor = UIColor.black.cgColor
+        
         //scheduledTimerWithTimeInterval()
         
         if let coor = myMapView.userLocation.location?.coordinate{
@@ -1425,6 +1430,10 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         cell.likeBtn.addTarget(self, action: #selector(self.likeBtnClicked(_:)), for: .touchUpInside)
         cell.dislikeBtn.addTarget(self, action: #selector(self.dislikeBtnClicked(_:)), for: .touchUpInside)
+        
+        cell.layer.cornerRadius = 5
+        cell.layer.borderWidth = 2
+        cell.layer.borderColor = UIColor.black.cgColor
         
         
         return cell

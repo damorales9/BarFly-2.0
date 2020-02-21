@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qRX-mD-MK8">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -293,12 +293,12 @@
                                             <action selector="viewFriendsBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="XGN-eN-XF4"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r99-FP-8bJ">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r99-FP-8bJ">
                                         <rect key="frame" x="8" y="443" width="398" height="266"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAB-Tv-iGR">
                                                 <rect key="frame" x="0.0" y="0.0" width="398" height="266"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postCell" id="HT5-Y2-95W" customClass="PostCell" customModule="BarFly_Reformat" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="398" height="80"/>
@@ -314,7 +314,7 @@
                                                                     </constraints>
                                                                     <string key="text">I thought not. It's not a story the Jedi would tell you. It's a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life... He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful... the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. It's ironic he could save others from death, but not himself.</string>
                                                                     <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="13"/>
-                                                                    <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-an-amx" customClass="CheckClicked" customModule="BarFly_Reformat" customModuleProvider="target">
@@ -324,7 +324,7 @@
                                                                         <constraint firstAttribute="height" constant="30" id="g4t-sh-oMP"/>
                                                                     </constraints>
                                                                     <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                    <state key="normal" image="up"/>
+                                                                    <state key="normal" image="up30"/>
                                                                     <connections>
                                                                         <action selector="likeBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="snO-fA-I0Y"/>
                                                                     </connections>
@@ -336,7 +336,7 @@
                                                                         <constraint firstAttribute="height" constant="20" id="nt0-Q3-06C"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto Thin" pointSize="17"/>
-                                                                    <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIs-V5-Bxl" customClass="CheckClicked" customModule="BarFly_Reformat" customModuleProvider="target">
@@ -345,13 +345,13 @@
                                                                         <constraint firstAttribute="height" constant="30" id="8HC-wk-iNX"/>
                                                                         <constraint firstAttribute="width" constant="30" id="nab-Ia-dgB"/>
                                                                     </constraints>
-                                                                    <state key="normal" image="down"/>
+                                                                    <state key="normal" image="down30"/>
                                                                     <connections>
                                                                         <action selector="dislikeBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="mWQ-Lw-Lcr"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstItem="XIs-V5-Bxl" firstAttribute="top" secondItem="zT4-mx-fvh" secondAttribute="bottom" id="2zu-UD-AfG"/>
                                                                 <constraint firstAttribute="bottom" secondItem="XIs-V5-Bxl" secondAttribute="bottom" id="40J-qb-Rwv"/>
@@ -371,7 +371,7 @@
                                                                 <constraint firstAttribute="trailing" secondItem="pLx-rt-ejz" secondAttribute="trailing" constant="60" id="tIU-Ic-ll5"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         <connections>
                                                             <outlet property="amntLikes" destination="zT4-mx-fvh" id="uhz-Nk-CqS"/>
                                                             <outlet property="dislikeBtn" destination="XIs-V5-Bxl" id="L2J-hj-boP"/>
@@ -2927,6 +2927,7 @@
         <image name="camera.fill" catalog="system" width="64" height="48"/>
         <image name="checkmark" catalog="system" width="64" height="56"/>
         <image name="down" width="30" height="30"/>
+        <image name="down30" width="30" height="30"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="link.circle.fill" catalog="system" width="64" height="60"/>
         <image name="list.dash" catalog="system" width="64" height="42"/>
@@ -2944,6 +2945,7 @@
         <image name="questionmark" catalog="system" width="48" height="64"/>
         <image name="star.fill" catalog="system" width="64" height="58"/>
         <image name="up" width="30" height="30"/>
+        <image name="up30" width="30" height="30"/>
         <image name="xmark" catalog="system" width="64" height="56"/>
         <image name="xmark.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
