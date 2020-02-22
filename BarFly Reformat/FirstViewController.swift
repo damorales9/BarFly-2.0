@@ -539,31 +539,40 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     @objc func toggleFavorite() {
         
-        if((AppDelegate.user?.favorites.contains(self.barDetailsTitle.text))!) {
-            AppDelegate.user?.favorites.remove(at: (AppDelegate.user?.favorites.firstIndex(of: self.barDetailsTitle.text))!)
-            
-            if #available(iOS 13.0, *) {
-                let star = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: Selector("toggleFavorite"))
-                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
-            } else {
-                // Fallback on earlier versions
-                let star = UIBarButtonItem(image: UIImage(named: "str"), style: .plain, target: self, action: Selector("toggleFavorite"))
-                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
-            }
-        } else {
-            AppDelegate.user?.favorites.append(self.barDetailsTitle.text)
-            
-            if #available(iOS 13.0, *) {
-                let star = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
-                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
-            } else {
-                // Fallback on earlier versions
-                let star = UIBarButtonItem(image: UIImage(named: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
-                self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
-            }
-        }
+        if let user = AppDelegate.user, let title = self.barDetailsTitle.text {
         
-        User.updateUser(user: AppDelegate.user)
+            if((user.favorites.contains(title))) {
+                AppDelegate.user?.favorites.remove(at: (user.favorites.firstIndex(of: title)!))
+                
+                if #available(iOS 13.0, *) {
+                    let star = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                    self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+                } else {
+                    // Fallback on earlier versions
+                    let star = UIBarButtonItem(image: UIImage(named: "str"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                    self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+                }
+                
+                AppDelegate.showBanner(title: "Removed \(title) from favorites", image: self.barDetailsImage.image)
+            } else {
+                AppDelegate.user?.favorites.append(title)
+                
+                if #available(iOS 13.0, *) {
+                    let star = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                    self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+                } else {
+                    // Fallback on earlier versions
+                    let star = UIBarButtonItem(image: UIImage(named: "star.fill"), style: .plain, target: self, action: Selector("toggleFavorite"))
+                    self.navigationItem.setLeftBarButtonItems([self.locationBtn, star], animated: false)
+                }
+                
+                AppDelegate.showBanner(title: "Added \(title) to favorites", image: self.barDetailsImage.image)
+
+            }
+            
+            User.updateUser(user: AppDelegate.user)
+
+        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
@@ -581,6 +590,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     self.view.layoutIfNeeded()
             
             }
+            
+            self.navigationItem.setLeftBarButtonItems([self.locationBtn], animated: false)
+            
             
             let barAnnotation = view.annotation as! CustomBarAnnotation
             //let views = Bundle.main.loadNibNamed("CustomCallout", owner: nil, options: nil)

@@ -53,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
+        if(!AppDelegate.loggedIn) {
+            return;
+        }
         
         let image = UIImageView(image: UIImage(named: "logo"))
         let banner = FloatingNotificationBanner(title: notification.request.content.title, subtitle: notification.request.content.body, leftView: image, rightView: nil, style: .info, colors: BarflyBannerColors())
@@ -103,6 +106,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    static func showBanner(title: String, image: UIImage?) {
+        var imageView = UIImageView()
+        if let image = image {
+            imageView = UIImageView(image: image)
+        } else {
+            imageView = UIImageView(image: UIImage(named: "logo"))
+        }
+        let banner = FloatingNotificationBanner(title: title, subtitle: "", leftView: imageView, rightView: nil, style: .info, colors: BarflyBannerColors())
+        banner.titleLabel?.font = UIFont(name: "Roboto-Light", size: 16)
+        banner.titleLabel?.textColor = .black
+        banner.subtitleLabel!.font = UIFont(name: "Roboto-Light", size: 13)
+        banner.subtitleLabel!.textColor = .black
+        banner.onTap = {
+            if AppDelegate.loggedIn {
+                //TODO
+            }
+        }
+        banner.show()
     }
 
 

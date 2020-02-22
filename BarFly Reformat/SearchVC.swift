@@ -60,6 +60,10 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
     
     override func viewDidAppear(_ animated: Bool) {
         getTimestampData()
+        
+        tableView.reloadData()
+        feedView.reloadData()
+        favoritesView.reloadData()
     }
     
     func getTimestampData() {
