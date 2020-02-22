@@ -1714,6 +1714,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let post = Post()
         post.message = message!
         post.likes = 0
+        post.uid = ref!.documentID
         
         self.allPosts.insert(post, at: 0)
         
