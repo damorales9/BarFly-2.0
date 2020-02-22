@@ -93,7 +93,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aT2-xR-J9k">
-                                                <rect key="frame" x="0.0" y="6.9999999999999982" width="98.666666666666671" height="17"/>
+                                                <rect key="frame" x="0.0" y="6.9999999999999982" width="98.666666666666671" height="26.666666666666664"/>
                                                 <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </imageView>
                                         </subviews>
@@ -402,6 +402,9 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" image="plus30"/>
+                                        <connections>
+                                            <action selector="addPostBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="psq-Fq-oBS"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -437,20 +440,20 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kTD-oz-Aqw">
-                                <rect key="frame" x="20" y="34" width="374" height="298"/>
+                                <rect key="frame" x="20" y="92" width="374" height="298"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yO-BC-mgd">
-                                        <rect key="frame" x="321" y="9" width="44" height="32"/>
+                                        <rect key="frame" x="326" y="9" width="35" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
-                                        <state key="normal" title="POST"/>
+                                        <state key="normal" title="Post"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Post" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZvO-xM-fae">
                                         <rect key="frame" x="148" y="14" width="78" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
-                                        <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GbD-Mh-GKp">
@@ -470,13 +473,13 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter Text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="qjP-2f-KfU">
                                         <rect key="frame" x="7" y="54" width="359" height="236"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -513,6 +516,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addPostBtn" destination="4g4-gE-glx" id="1Nv-Tv-psh"/>
                         <outlet property="amntPeople" destination="D75-2e-zdX" id="oXO-wX-bgW"/>
                         <outlet property="barDetails" destination="tgw-4i-dFW" id="lko-JV-67r"/>
                         <outlet property="barDetailsImage" destination="sIl-Ty-dpJ" id="GaH-8o-pCR"/>
@@ -520,6 +524,7 @@
                         <outlet property="barImageBckg" destination="fVl-Nb-hRQ" id="Zn0-Fu-I5f"/>
                         <outlet property="barTaskBarView" destination="NjH-gV-sfd" id="o2K-bl-VUU"/>
                         <outlet property="cancelBtn" destination="ahu-Dt-tpf" id="mzn-NV-EJl"/>
+                        <outlet property="cancelPostBtn" destination="GbD-Mh-GKp" id="1wC-p8-Zp8"/>
                         <outlet property="checkBtn" destination="RfY-jG-Nq7" id="SZ1-UM-QMR"/>
                         <outlet property="checkImGoing" destination="n4x-wR-s3j" id="4Nn-dH-qSd"/>
                         <outlet property="dragButton" destination="10m-F7-BYi" id="GqU-c6-mIK"/>
@@ -531,6 +536,9 @@
                         <outlet property="imGoingView" destination="X2l-QR-wmX" id="aZr-sp-oQL"/>
                         <outlet property="locationBtn" destination="rMl-Cx-azB" id="M2Q-y9-h5g"/>
                         <outlet property="myMapView" destination="Yjs-px-UtM" id="9Sp-iw-ckn"/>
+                        <outlet property="newPost" destination="kTD-oz-Aqw" id="Ovw-kE-eQL"/>
+                        <outlet property="postBtn" destination="9yO-BC-mgd" id="SoM-JK-if9"/>
+                        <outlet property="postTxtView" destination="qjP-2f-KfU" id="WV7-ye-GR0"/>
                         <outlet property="refreshBtn" destination="Qv1-Cr-qmm" id="zog-wt-FhI"/>
                         <outlet property="tableView" destination="mAB-Tv-iGR" id="lIy-HE-hPB"/>
                         <outlet property="viewFriendsBtn" destination="afg-wR-jtr" id="us8-Qq-n1P"/>
@@ -887,7 +895,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="KkH-Vf-NW6">
-                                            <rect key="frame" x="22.666666666666664" y="15.333333333333334" width="18.666666666666668" height="17.666666666666668"/>
+                                            <rect key="frame" x="23" y="15" width="18" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2348,7 +2356,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="uje-Q4-jyp">
-                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -2841,7 +2849,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="VbO-nI-bCs">
-                                            <rect key="frame" x="22.666666666666664" y="21.333333333333329" width="18.666666666666668" height="17.666666666666668"/>
+                                            <rect key="frame" x="23" y="21" width="18" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -2947,7 +2955,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="Lya-PW-kbO">
-                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>

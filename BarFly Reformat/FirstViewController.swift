@@ -16,7 +16,7 @@ import FirebaseStorage
 import FirebaseAuth
 import SafariServices
 
-class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     
 
     @IBAction func segue(_ sender: Any) {
@@ -54,6 +54,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     @IBOutlet var checkBtn: CheckClicked!
     @IBOutlet var cancelBtn: CheckClicked!
+    
+    @IBOutlet var addPostBtn: UIButton!
+    
     
     var confirmChangeBar = false
     
@@ -93,6 +96,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     var allPosts = [Post]()
     
+    @IBOutlet var newPost: UIView!
+    
+    @IBOutlet var postBtn: UIButton!
+    @IBOutlet var cancelPostBtn: UIButton!
+    
+    @IBOutlet var postTxtView: UITextView!
+    
+    
+    
     /*
     @IBOutlet var messageText: UILabel!
     @IBOutlet var amntLikesPost: UILabel!
@@ -131,8 +143,23 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.postTxtView.delegate = self
         
-    self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Roboto-Light", size: 20)!,
+        self.postTxtView.text = "Enter Text"
+        self.postTxtView.textColor = UIColor.lightGray
+        
+        self.newPost.layer.borderWidth = 5
+        self.newPost.layer.borderColor = UIColor.black.cgColor
+        self.newPost.layer.cornerRadius = 10
+        //self.newPost.isHidden = true
+        
+        UIView.animate(withDuration: 0, animations: {
+            self.newPost.alpha = 0
+        }) { _ in
+            self.newPost.removeFromSuperview()
+        }
+        
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Roboto-Light", size: 20)!,
                                                                     NSAttributedString.Key.foregroundColor : UIColor.barflyblue]
         
         myMapView.register(CustomMarker.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -1631,6 +1658,31 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
     }
     
+    @IBAction func addPostBtnClicked(_ sender: Any) {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(blurEffectView)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            self.view.addSubview(self.newPost)
+            self.newPost.alpha = 1;
+        })
+    }
     
+    func textViewDidBeginEditing(_ postTxtView: UITextView) {
+        if postTxtView.textColor == UIColor.lightGray {
+            postTxtView.text = nil
+            postTxtView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ postTxtView: UITextView) {
+        if postTxtView.text.isEmpty {
+            postTxtView.text = "Enter Text"
+            postTxtView.textColor = UIColor.lightGray
+        }
+    }
 
+    
 }
