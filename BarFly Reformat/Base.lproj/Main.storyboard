@@ -69,7 +69,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgw-4i-dFW" customClass="BarDetailsView" customModule="BarFly_Reformat" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="8" width="414" height="800"/>
+                                <rect key="frame" x="0.0" y="723" width="414" height="85"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10m-F7-BYi">
                                         <rect key="frame" x="182" y="10" width="50" height="8"/>
@@ -93,7 +93,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aT2-xR-J9k">
-                                                <rect key="frame" x="0.0" y="6.9999999999999982" width="98.666666666666671" height="26.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="6.9999999999999982" width="98.666666666666671" height="17"/>
                                                 <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </imageView>
                                         </subviews>
@@ -293,10 +293,10 @@
                                             <action selector="viewFriendsBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="XGN-eN-XF4"/>
                                         </connections>
                                     </button>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r99-FP-8bJ">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r99-FP-8bJ">
                                         <rect key="frame" x="8" y="443" width="398" height="266"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAB-Tv-iGR">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAB-Tv-iGR">
                                                 <rect key="frame" x="0.0" y="0.0" width="398" height="266"/>
                                                 <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <prototypes>
@@ -436,10 +436,52 @@
                                     <constraint firstItem="NjH-gV-sfd" firstAttribute="centerX" secondItem="tgw-4i-dFW" secondAttribute="centerX" id="uA3-Hh-xa6"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kTD-oz-Aqw">
+                                <rect key="frame" x="20" y="34" width="374" height="298"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yO-BC-mgd">
+                                        <rect key="frame" x="321" y="9" width="44" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="POST"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Post" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZvO-xM-fae">
+                                        <rect key="frame" x="148" y="14" width="78" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                        <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GbD-Mh-GKp">
+                                        <rect key="frame" x="7" y="10" width="53" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="Cancel"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQD-OK-Wec">
+                                        <rect key="frame" x="0.0" y="44" width="374" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter Text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="qjP-2f-KfU">
+                                        <rect key="frame" x="7" y="54" width="359" height="236"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="tgw-4i-dFW" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="bottom" constant="-800" id="5Br-5c-oJz"/>
+                            <constraint firstItem="tgw-4i-dFW" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="bottom" constant="-85" id="5Br-5c-oJz"/>
                             <constraint firstItem="Yjs-px-UtM" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="KAE-9v-N0S"/>
                             <constraint firstItem="tgw-4i-dFW" firstAttribute="bottom" secondItem="tsR-hK-woN" secondAttribute="bottom" id="SGO-9Q-Xtp"/>
                             <constraint firstItem="Yjs-px-UtM" firstAttribute="centerY" secondItem="tsR-hK-woN" secondAttribute="centerY" id="X01-YI-3eo"/>
