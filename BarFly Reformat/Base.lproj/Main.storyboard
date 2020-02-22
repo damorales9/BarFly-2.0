@@ -448,6 +448,9 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
                                         <state key="normal" title="Post"/>
+                                        <connections>
+                                            <action selector="postBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="U8O-Sq-H35"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Post" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZvO-xM-fae">
                                         <rect key="frame" x="148" y="14" width="78" height="22"/>
@@ -461,6 +464,9 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
                                         <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="OLb-Nn-XJp"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQD-OK-Wec">
                                         <rect key="frame" x="0.0" y="44" width="374" height="2"/>

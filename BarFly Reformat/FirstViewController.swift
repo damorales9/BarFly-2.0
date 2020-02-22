@@ -1505,7 +1505,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 post.likes = likes
                 post.uid = uid
                 
-                self.allPosts.append(post)
+                //self.allPosts.append(post)
+                self.allPosts.insert(post, at: 0)
                 
                 //completion(true)
             }
@@ -1658,9 +1659,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
     }
     
+    var blurEffect: UIBlurEffect!
+    var blurEffectView: UIVisualEffectView!
+    
     @IBAction func addPostBtnClicked(_ sender: Any) {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = self.view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(blurEffectView)
@@ -1684,5 +1688,59 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
     }
 
+    @IBAction func postBtnClicked(_ sender: Any) {
+        var message: String!
+        if postTxtView.text.isEmpty || postTxtView.text == "Enter Text" {
+            let alert = UIAlertController(title: "Error", message: "Post can not be empty.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            message = postTxtView.text
+        }
+        let db = Firestore.firestore()
+        var ref: DocumentReference? = nil
+        ref = db.collection("Bar Feeds").document("\(currentBarName!)").collection("feed").addDocument(data: [
+            "message" : "\(message!)",
+            "likes" : 0
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+        
+        let post = Post()
+        post.message = message!
+        post.likes = 0
+        
+        self.allPosts.insert(post, at: 0)
+        
+        self.tableView?.reloadData()
+        
+        postTxtView.text = "Enter Text"
+            postTxtView.textColor = UIColor.lightGray
+            
+        UIView.animate(withDuration: 0.2, animations: {
+            self.newPost.alpha = 0
+        }) { _ in
+            self.newPost.removeFromSuperview()
+        }
+        self.blurEffectView.removeFromSuperview()
+        
+        
+    }
     
+    @IBAction func cancelBtnClicked(_ sender: Any) {
+        postTxtView.text = "Enter Text"
+        postTxtView.textColor = UIColor.lightGray
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.newPost.alpha = 0
+        }) { _ in
+            self.newPost.removeFromSuperview()
+        }
+        self.blurEffectView.removeFromSuperview()
+    }
 }
