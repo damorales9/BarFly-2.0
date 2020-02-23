@@ -1353,11 +1353,10 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 bar.phone = phone
                 bar.price = price
                 
-                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar.image = UIImageView(image: image)
-                }) {
-                    print("no image")
-                }
+                bar.image = UIImageView()
+                
+                bar.image!.kf.setImage(with: URL(string: imageURL!))
+
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)

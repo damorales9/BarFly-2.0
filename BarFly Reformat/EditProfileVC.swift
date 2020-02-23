@@ -31,7 +31,6 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             User.WIZARD
     ]
     
-    
     var delegate: UIViewController?
     
     var config = YPImagePickerConfiguration()
@@ -159,10 +158,11 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         
         if AppDelegate.user?.profileURL != "" {
 
-            self.profileImage.getImage(ref: AppDelegate.user!.profileURL!, placeholder: placeholder!, maxMB: 40) {
+            self.profileImage.kf.setImage(with: URL(string: AppDelegate.user!.profileURL!)) {result in
                 self.profileSpinner!.stopAnimating()
                 self.profileSpinner!.isHidden = true
             }
+
         } else {
             self.profileImage.image = placeholder
             self.profileSpinner!.stopAnimating()
@@ -184,11 +184,12 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                 
                 print("im here image url is \(i!)")
                 
-                UIImageView.downloadImage(from: URL(string: i!)!, completion: { (image) in
-                    self.galleryImages.append(image)
+                let tmp = UIImageView()
+                tmp.kf.setImage(with: URL(string: i!)) {result in
+                    self.galleryImages.append(tmp.image!)
                     self.galleryView.reloadData()
                     
-                    print("image is \(image)")
+                    print("image is \(tmp.image)")
                     
                     x+=1
                     if(x == AppDelegate.user!.galleryURLs.count) {
@@ -197,8 +198,6 @@ class EditProfileVC: UIViewController, UICollectionViewDelegate, UICollectionVie
                         self.gallerySpinner!.stopAnimating()
                         self.gallerySpinner!.isHidden = true
                     }
-                }) {
-                    
                 }
                 
             }

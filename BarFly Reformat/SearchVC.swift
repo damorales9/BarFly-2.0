@@ -204,16 +204,10 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                 }
 
                 if (filteredTableData[indexPath.row].profileURL != "") {
-
-                    cell.imageView?.getImage(ref: filteredTableData[indexPath.row].profileURL!, placeholder: placeholder!, maxMB: 40)
-
-
+                    cell.imageView!.kf.setImage(with: URL(string: filteredTableData[indexPath.row].profileURL!), placeholder: placeholder, options: [.scaleFactor(50)])
                 } else {
                     cell.imageView?.image = placeholder
                 }
-                
-                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-                
                 
                 return cell
             }
@@ -304,14 +298,14 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
             CustomBarAnnotation.getBar(name: AppDelegate.user!.favorites[indexPath.row]!) { (bar) in
                 
                 var placeholder: UIImage?
+                                                 
                 if #available(iOS 13.0, *) {
-                    placeholder = UIImage(systemName: "circle")
+                    placeholder = UIImage(systemName: "questionmark")
                 } else {
-                    // Fallback on earlier versions
-                    placeholder = UIImage(named: "pin")
+                    placeholder = UIImage(named: "first")
                 }
 
-                cell.imageView?.getImage(ref: bar!.imageName!, placeholder: placeholder!, maxMB: 40)
+                cell.imageView.kf.setImage(with: URL(string: bar!.imageName!), placeholder: placeholder)
                 
                 cell.nameLbl.text = bar?.title
                 cell.guestsLbl.text = "\(bar!.amntPeople ?? 0)"
@@ -375,16 +369,16 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
     }
 }
 
-extension UIImage {
-    func resizeImageWithBounds(bounds: CGSize) -> UIImage {
-        let horizontalRatio = bounds.width/size.width
-        let verticalRatio = bounds.height/size.height
-        let ratio = max(horizontalRatio, verticalRatio)
-        let newSize = CGSize(width: size.width * ratio, height: size.height * ratio)
-        UIGraphicsBeginImageContextWithOptions(newSize, true, 0)
-        draw(in: CGRect(origin: CGPoint.zero, size: newSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage!
-    }
-}
+//extension UIImage {
+////    func resizeImageWithBounds(bounds: CGSize) -> UIImage {
+////        let horizontalRatio = bounds.width/size.width
+////        let verticalRatio = bounds.height/size.height
+////        let ratio = max(horizontalRatio, verticalRatio)
+////        let newSize = CGSize(width: size.width * ratio, height: size.height * ratio)
+////        UIGraphicsBeginImageContextWithOptions(newSize, true, 0)
+////        draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+////        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+////        UIGraphicsEndImageContext()
+////        return newImage!
+////    }
+//}

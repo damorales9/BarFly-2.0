@@ -15,7 +15,8 @@ target 'BarFly Reformat' do
    pod 'NotificationBannerSwift', '~> 3.0.0'
    pod 'YPImagePicker'
    pod 'NVActivityIndicatorView'
-   
+   pod 'Kingfisher', '~> 5.13' 
+
    use_frameworks!
   # Pods for BarFly Reformat
 

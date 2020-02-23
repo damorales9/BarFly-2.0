@@ -142,17 +142,10 @@ class BarDetailsVC: UITableViewController, UISearchResultsUpdating {
             }
 
             if (filteredTableData[indexPath.row].imageName != "nil") {
-                
-
-                cell.imageView?.getImage(ref: filteredTableData[indexPath.row].imageName!, placeholder: placeholder!, maxMB: 6)
-
-
+                cell.imageView!.kf.setImage(with: URL(string: filteredTableData[indexPath.row].imageName!), placeholder: placeholder, options: [.scaleFactor(50)])
             } else {
                 cell.imageView?.image = placeholder
             }
-            
-            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-            
             
             return cell
         }

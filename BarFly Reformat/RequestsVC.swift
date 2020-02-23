@@ -73,8 +73,7 @@ class RequestsVC: UITableViewController {
 
             if (user?.profileURL != "") {
 
-                cell.profileImage?.getImage(ref: user!.profileURL!, placeholder: placeholder!, maxMB: 40)
-
+                cell.profileImage!.kf.setImage(with: URL(string: user!.profileURL!))
 
             } else {
                 cell.profileImage?.image = placeholder

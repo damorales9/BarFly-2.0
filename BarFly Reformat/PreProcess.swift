@@ -64,62 +64,58 @@ class PreProcess: UIViewController {
                 
                 bar.image = UIImageView()
                 
-                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar.image = UIImageView(image: image)
+                bar.image!.kf.setImage(with: URL(string: imageURL!)) { result in
                     x = x + 1
                     if (x == allBars.count){
                         print("ATTEMPTING TO LOGIN")
-                                    self.label.text = "Logging you in..."
-                                           if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
-                                               UIView.animate(withDuration: 0.3) {
-                                                   self.progressView.progress = 0.75
-                                                   self.view.layoutIfNeeded()
-                                               }
-                                               LoginVC.login(email: email, password: password, completion: {
-                                                   UIView.animate(withDuration: 0.3) {
-                                                       self.progressView.progress = 1
-                                                       self.view.layoutIfNeeded()
-                                                   }
-                                                   print("LOGGED IN")
-                                                self.progressView.progress = 0
-                        //                           self.navigationController?.popViewController(animated: true)
-                                                   let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                                                   let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-                                                   self.navigationController?.pushViewController(tabVC, animated:true)
-                                           
-                                               }) { (error) in
-                                                   UIView.animate(withDuration: 0.3) {
-                                                       self.progressView.progress = 1
-                                                       self.view.layoutIfNeeded()
-                                                   }
-                                                   print("NEEDS LOGIN")
-                                                    
-                                                self.progressView.progress = 0
-                        //                           self.navigationController?.popViewController(animated: true)
-                                                   let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                                                   let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
-                                                   self.navigationController?.pushViewController(loginVC, animated:true)
-                                               }
-                                           } else {
-                                               UIView.animate(withDuration: 0.3) {
-                                                   self.progressView.progress = 1
-                                                   self.view.layoutIfNeeded()
-                                               }
-                                               print("needs login")
-                                            
-                                            self.progressView.progress = 0
+                        self.label.text = "Logging you in..."
+                        if let email = UserDefaults.standard.string(forKey: "email"), let password = UserDefaults.standard.string(forKey: "password") {
+                           UIView.animate(withDuration: 0.3) {
+                               self.progressView.progress = 0.75
+                               self.view.layoutIfNeeded()
+                           }
+                           LoginVC.login(email: email, password: password, completion: {
+                               UIView.animate(withDuration: 0.3) {
+                                   self.progressView.progress = 1
+                                   self.view.layoutIfNeeded()
+                               }
+                               print("LOGGED IN")
+                            self.progressView.progress = 0
+    //                           self.navigationController?.popViewController(animated: true)
+                               let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                               let tabVC = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+                               self.navigationController?.pushViewController(tabVC, animated:true)
+                       
+                           }) { (error) in
+                               UIView.animate(withDuration: 0.3) {
+                                   self.progressView.progress = 1
+                                   self.view.layoutIfNeeded()
+                               }
+                               print("NEEDS LOGIN")
+                                
+                            self.progressView.progress = 0
+    //                           self.navigationController?.popViewController(animated: true)
+                               let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                               let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
+                               self.navigationController?.pushViewController(loginVC, animated:true)
+                           }
+                       } else {
+                           UIView.animate(withDuration: 0.3) {
+                               self.progressView.progress = 1
+                               self.view.layoutIfNeeded()
+                           }
+                           print("needs login")
+                        
+                        self.progressView.progress = 0
 
-                        //                       self.navigationController?.popViewController(animated: true)
-                                               let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-                                               let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
-                                               self.navigationController?.pushViewController(loginVC, animated:true)
-                                           }
+    //                       self.navigationController?.popViewController(animated: true)
+                           let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                           let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginVC
+                           self.navigationController?.pushViewController(loginVC, animated:true)
+                       }
                     }
-                    
-                    //bar.image!.image = image
-                }) {
-                    print("no image")
-                }
+               }
+
                 //print(bar.imageName as Any)
                 //print(bar)
                 FirstViewController.allBars.append(bar)

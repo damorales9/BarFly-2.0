@@ -197,32 +197,24 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
             cell.imageView?.layer.borderWidth = 1
             cell.imageView?.layer.borderColor = UIColor.barflyblue.cgColor
             cell.imageView?.contentMode = .scaleToFill
-            
+
             var placeholder: UIImage?
             if #available(iOS 13.0, *) {
-                placeholder = UIImage(systemName: "person.circle")
+                placeholder = UIImage(systemName: "questionmark")
             } else {
                 // Fallback on earlier versions
-                placeholder = UIImage(named: "profile")
+                placeholder = UIImage(named: "first")
             }
-
+            
             if (filteredTableData[indexPath.row].profileURL != "") {
-
-                cell.imageView?.getImage(ref: filteredTableData[indexPath.row].profileURL!, placeholder: placeholder!, maxMB: 40)
-
-
+                cell.imageView!.kf.setImage(with: URL(string: filteredTableData[indexPath.row].profileURL!), placeholder:  placeholder, options: [.scaleFactor(50)])
             } else {
                 cell.imageView?.image = placeholder
             }
             
-            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
-            
-            
             return cell
         }
         else {
-            
-            
                     
             User.getUser(uid: friendsGoingList[indexPath.row].uid!) { (u) in
                     
@@ -246,14 +238,10 @@ class FriendsGoingListVC: UITableViewController, UISearchResultsUpdating {
                             }
 
                             if (u.profileURL != "") {
-                                
-                                cell.imageView?.getImage(ref: u.profileURL!, placeholder: placeholder!, maxMB: 40)
-                                
+                                cell.imageView!.kf.setImage(with: URL(string: u.profileURL!), placeholder: placeholder, options: [.scaleFactor(50)])
                             } else {
                                 cell.imageView?.image = placeholder
                             }
-                            
-                            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                         }
                         
                     }

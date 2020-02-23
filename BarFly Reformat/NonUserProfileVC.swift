@@ -11,6 +11,7 @@ import UIKit
 import FirebaseStorage
 import FirebaseFirestore
 import FirebaseUI
+import Kingfisher
 
 class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
     
@@ -216,19 +217,26 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                     
                     if user.profileURL != "" {
                         
-                        self.profileImage!.getImage(ref: user.profileURL!, placeholder: placeholder!, maxMB: 40) {
+                        if let url = URL(string: user.profileURL!) {
+                            self.profileImage!.kf.setImage(with: url) { result in
+                                self.profileSpinner.stopAnimating()
+                                self.profileSpinner.isHidden = true
+                                self.configurePageControl()
+                                
+                                for i in 0..<self.nonUser!.galleryURLs.count {
+                                    
+                                    if let gURL = URL(string: user.galleryURLs[i]!) {
+                                        self.galleryImages[i].kf.setImage(with: gURL) {result in
+                                            self.configurePageControl()
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            self.profileImage?.image = placeholder
                             self.profileSpinner.stopAnimating()
                             self.profileSpinner.isHidden = true
                             self.configurePageControl()
-                            
-                            for i in 0..<self.nonUser!.galleryURLs.count {
-                                
-                                self.galleryImages[i].getImage(ref: user.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
-                                    self.configurePageControl()
-                                }
-                                
-                            }
-                            
                         }
                     } else {
                         self.profileImage?.image = placeholder
@@ -276,12 +284,16 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
                                     self.barChoiceSpinner.centerXAnchor.constraint(equalTo: self.barChoice!.centerXAnchor).isActive = true
                                     self.barChoiceSpinner.centerYAnchor.constraint(equalTo: self.barChoice!.centerYAnchor).isActive = true
                                     
-                                    
-                                    self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 40) {
-                                        self.barChoiceSpinner.stopAnimating()
-                                        self.barChoiceSpinner.isHidden = true
+                                    if let url = URL(string: imageURL) {
+                                        self.barChoice!.kf.setImage(with: url) { result in
+                                            self.barChoiceSpinner.stopAnimating()
+                                            self.barChoiceSpinner.isHidden = true
+                                        }
+                                    } else {
+                                       self.barChoice!.image = placeholder
+                                       self.barChoiceSpinner.stopAnimating()
+                                       self.barChoiceSpinner.isHidden = true
                                     }
-                                        
                                 }
                             }
                         }
@@ -718,4 +730,9 @@ class NonUserProfileVC: UIViewController, UIScrollViewDelegate {
 
 extension UIColor {
     static let barflyblue = UIColor(red: 0.71, green: 1.00, blue: 0.99, alpha: 1.0)
+}
+
+extension UIImageView {
+    static let processor = DownsamplingImageProcessor(size: CGSize(width: 50, height: 50))
+        |> RoundCornerImageProcessor(cornerRadius: 12.5)
 }

@@ -113,14 +113,11 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
 
             if (filteredSearchResults[indexPath.row]?.profileURL != "") {
 
-                cell.imageView?.getImage(ref: (filteredSearchResults[indexPath.row]?.profileURL!)!, placeholder: placeholder!, maxMB: 40)
-
+                cell.imageView!.kf.setImage(with: URL(string: (filteredSearchResults[indexPath.row]?.profileURL!)!), placeholder: placeholder, options: [.scaleFactor(50)])
 
             } else {
                 cell.imageView?.image = placeholder
             }
-            
-            cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
             
         } else {
             
@@ -144,14 +141,10 @@ class BlockVC: UITableViewController, UISearchResultsUpdating {
                 }
 
                 if (user?.profileURL != "") {
-
-                    cell.imageView?.getImage(ref: (user?.profileURL!)!, placeholder: placeholder!, maxMB: 40)
-
+                    cell.imageView!.kf.setImage(with: URL(string: user!.profileURL!), placeholder: placeholder, options: [.scaleFactor(50)])
                 } else {
                     cell.imageView?.image = placeholder
                 }
-                
-                cell.imageView?.image = cell.imageView?.image!.resizeImageWithBounds(bounds: CGSize(width: 50, height: 50))
                 
             }
             

@@ -102,11 +102,16 @@ class CustomBarAnnotation: NSObject, MKAnnotation {
                 
                 bar!.image = UIImageView()
                 
-                UIImageView.downloadImage(from: URL(string: imageURL!)!, completion: { (image) in
-                    bar!.image = UIImageView(image: image)
-                }) {
-                    print("no image")
+                var placeholder: UIImage?
+                if #available(iOS 13.0, *) {
+                    placeholder = UIImage(systemName: "person.circle")
+                } else {
+                    // Fallback on earlier versions
+                    placeholder = UIImage(named: "profile")
                 }
+                
+                bar?.image!.kf.setImage(with: URL(string: imageURL!), placeholder: placeholder, options: [.scaleFactor(50)])
+              
                 
                 setFunction(&bar)
                 

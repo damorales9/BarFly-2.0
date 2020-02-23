@@ -202,23 +202,20 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                     // Fallback on earlier versions
                     placeholder = UIImage(named: "profile")
                 }
-                    
-                SDImageCache.shared.clearMemory()
-                SDImageCache.shared.clearDisk()
-    
-                
+                                    
                 if AppDelegate.user?.profileURL != "" {
-                    self.profileImage!.getImage(ref: user.profileURL!, placeholder: placeholder!, maxMB: 40) {
+                    self.profileImage!.kf.setImage(with: URL(string: user.profileURL!), placeholder: placeholder) { result in
                         self.profileSpinner!.stopAnimating()
                         self.profileSpinner!.isHidden = true
                         self.configurePageControl()
                         
                         for i in 0..<AppDelegate.user!.galleryURLs.count {
                             
-                            self.galleryImages[i].getImage(ref: AppDelegate.user!.galleryURLs[i]!, placeholder: placeholder!, maxMB: 40) {
+                            let gUrl = URL(string: AppDelegate.user!.galleryURLs[i]!)
+                            
+                            self.galleryImages[i].kf.setImage(with: gUrl) { result in
                                 self.configurePageControl()
                             }
-                            
                         }
                     }
                 } else {
@@ -291,12 +288,11 @@ class ProfileVC: UIViewController, UIScrollViewDelegate {
                             self.barChoiceSpinner = NVActivityIndicatorView(frame: CGRect(x: self.barChoice.frame.width / 2 - 15, y: self.barChoice.frame.width / 2 - 15, width: 30, height: 30), type: .circleStrokeSpin, color: .barflyblue, padding: 0)
                             self.barChoiceSpinner!.startAnimating()
                             self.barChoice?.addSubview(self.barChoiceSpinner!)
-
-                            self.barChoice.getImage(ref: imageURL, placeholder: placeholder!, maxMB: 6) {
+ 
+                            self.barChoice!.kf.setImage(with: URL(string: imageURL), placeholder: placeholder) { result in
                                 self.barChoiceSpinner!.stopAnimating()
                                 self.barChoiceSpinner!.isHidden = true
                             }
-                                
                         }
                     }
                 }
