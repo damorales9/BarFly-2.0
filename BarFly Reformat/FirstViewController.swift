@@ -1449,6 +1449,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
     }
     
+    var liked: Bool!
+    var disliked: Bool!
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! PostCell
         
@@ -1456,6 +1459,23 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         if let likes = allPosts[indexPath.row].likes
         {
             cell.amntLikes.text = "\(likes)"
+        }
+        
+        liked = false
+        disliked = false
+        
+        for s in allPosts[indexPath.row].likedBy {
+            if (s == AppDelegate.user?.uid){
+                cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
+                cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
+            }
+        }
+        
+        for p in allPosts[indexPath.row].dislikedBy {
+            if (p == AppDelegate.user?.uid) {
+                cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+                cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+            }
         }
         
         cell.likeBtn.amountPeople = allPosts[indexPath.row].likes
@@ -1467,8 +1487,55 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         cell.likeBtn.uid = allPosts[indexPath.row].uid
         cell.dislikeBtn.uid = allPosts[indexPath.row].uid
         
+        cell.likeBtn.cell = cell
+        cell.dislikeBtn.cell = cell
+        
         cell.likeBtn.addTarget(self, action: #selector(self.likeBtnClicked(_:)), for: .touchUpInside)
         cell.dislikeBtn.addTarget(self, action: #selector(self.dislikeBtnClicked(_:)), for: .touchUpInside)
+        
+        globalLiked.removeAll()
+        globalDisliked.removeAll()
+        
+//        getPost(post: allPosts[indexPath.row]) { (success) in
+//            if (success){
+//                for s in self.globalLiked {
+//                    if (s == AppDelegate.user?.uid){
+//                        self.liked = true
+//                        self.disliked = false
+//                    }
+//                }
+//
+//                for p in self.globalDisliked {
+//                    if (p == AppDelegate.user?.uid){
+//                        self.disliked = true
+//                        self.liked = false
+//                    }
+//                }
+//
+//                print("liked ", self.liked)
+//                print("disliked ", self.disliked)
+//                print("-------------------------")
+//
+//                if (self.liked == true){
+//                    DispatchQueue.main.async {
+//                        cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
+//                        cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
+//                    }
+//                }
+//                else if (self.disliked == true){
+//                    DispatchQueue.main.async {
+//                        cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+//                        cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+//                    }
+//                }
+//                else {
+//                    DispatchQueue.main.async {
+//                        cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+//                        cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
+//                    }
+//                }
+//            }
+//        }
         
         cell.layer.cornerRadius = 5
         cell.layer.borderWidth = 2
@@ -1482,6 +1549,28 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+    
+    public var globalLiked = [String]()
+    public var globalDisliked = [String]()
+    
+    func getPost(post: Post, completion: @escaping (_ success: Bool) -> Void){
+        globalDisliked.removeAll()
+        globalLiked.removeAll()
+        
+        let db = Firestore.firestore()
+        let docRef = db.collection("Bar Feeds").document("\(currentBarName!)").collection("feed").document("\(post.uid!)")
+        
+        docRef.getDocument(source: .cache) { (document, error) in
+            if(error == nil) {
+                let likedArray = ((document!.get("likedBy")) as! [String])
+                let dislikedArray = ((document!.get("dislikedBy")) as! [String])
+                
+                self.globalLiked = likedArray
+                self.globalDisliked = dislikedArray
+            }
+            completion(true)
+        }
     }
     
     func getPosts(barName: String, completion: @escaping (_ success: Bool) -> Void){
@@ -1500,10 +1589,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 let message = postDocument.data()["message"] as? String
                 let likes = postDocument.data()["likes"] as? Int
                 let uid = postDocument.documentID
+                let likedBy = postDocument.data()["likedBy"] as? [String]
+                let dislikedBy = postDocument.data()["dislikedBy"] as? [String]
                 
                 post.message = message
                 post.likes = likes
                 post.uid = uid
+                post.likedBy = likedBy!
+                post.dislikedBy = dislikedBy!
                 
                 //self.allPosts.append(post)
                 self.allPosts.insert(post, at: 0)
@@ -1542,39 +1635,68 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             }
             newAmount = oldAmount + 1
             
+            guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from likedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            guard let dislikedBy = sfDocument.data()?["dislikedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from dislikedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            for s in likedBy {
+                if (s == AppDelegate.user?.uid){
+                    return nil
+                }
+            }
+            
+            var dislikedArray = [String]()
+            dislikedArray = dislikedBy
+            
+            for i in 0 ..< dislikedArray.count {
+                if (dislikedArray[i] == AppDelegate.user?.uid) {
+                    dislikedArray.remove(at: i)
+                }
+            }
+            
+            var likedArray = [String]()
+            likedArray = likedBy
+            likedArray.append(AppDelegate.user!.uid!)
+            transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+            transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
             transaction.updateData(["likes": newAmount], forDocument: sfReference)
             
             for p in self.allPosts{
                 if p.uid == sender.uid {
                     p.likes = newAmount
+                    p.likedBy.append(AppDelegate.user!.uid!)
+                    if p.dislikedBy.contains(AppDelegate.user!.uid!){
+                        let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
+                        p.dislikedBy.remove(at: index!)
+                    }
                 }
             }
             
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
+                sender.cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
+                sender.cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
             }
-            /*
-            DispatchQueue.main.async {
-                self.amntPeople.text = "\(newAmount)"
-                self.refreshAnnotation(title: barChoice)
-        
-                //barAnnotation.amntPeople = newAmount
-                sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(newAmount)"
-                UIView.animate(withDuration: 0.5) {
-                    self.imGoingBtn.setTitle("Remove Choice", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor.red
-                    self.imGoingView.backgroundColor = UIColor.red
-                    self.cancelBtnWidth.constant = 0
-                    self.goingBtnConstraint.constant = -25
-                    self.checkBtnWidth.constant = 0
-                    self.barDetails.layoutIfNeeded()
-                    self.view.layoutIfNeeded()
-                }
-                
-            }
-            */
-                
-                
             
             return nil
         }) { (object, error) in
@@ -1614,40 +1736,77 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             }
             newAmount = oldAmount - 1
             
+            guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from likedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            guard let dislikedBy = sfDocument.data()?["dislikedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from dislikedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            for s in dislikedBy {
+                if (s == AppDelegate.user?.uid){
+                    return nil
+                }
+            }
+            
+            var dislikedArray = [String]()
+            dislikedArray = dislikedBy
+            
+            var likedArray = [String]()
+            likedArray = likedBy
+            
+            for i in 0 ..< likedArray.count {
+                if (likedArray[i] == AppDelegate.user?.uid) {
+                    likedArray.remove(at: i)
+                }
+            }
+            
+            dislikedArray.append(AppDelegate.user!.uid!)
+            
+            transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+            transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
             transaction.updateData(["likes": newAmount], forDocument: sfReference)
             
             for p in self.allPosts{
                 if p.uid == sender.uid {
                     p.likes = newAmount
+                    p.dislikedBy.append(AppDelegate.user!.uid!)
+                    if p.likedBy.contains(AppDelegate.user!.uid!){
+                        let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
+                        p.likedBy.remove(at: index!)
+                    }
                 }
             }
             
             DispatchQueue.main.async {
+                sender.cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+                sender.cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
                 self.tableView?.reloadData()
             }
-            /*
-            DispatchQueue.main.async {
-                self.amntPeople.text = "\(newAmount)"
-                self.refreshAnnotation(title: barChoice)
-        
-                //barAnnotation.amntPeople = newAmount
-                sender.amntBtnPassed.passedCallout!.amntPeople.text = "\(newAmount)"
-                UIView.animate(withDuration: 0.5) {
-                    self.imGoingBtn.setTitle("Remove Choice", for: UIControl.State.normal)
-                    self.imGoingBtn.backgroundColor = UIColor.red
-                    self.imGoingView.backgroundColor = UIColor.red
-                    self.cancelBtnWidth.constant = 0
-                    self.goingBtnConstraint.constant = -25
-                    self.checkBtnWidth.constant = 0
-                    self.barDetails.layoutIfNeeded()
-                    self.view.layoutIfNeeded()
-                }
-                
-            }
-            */
-                
-                
             
+//            DispatchQueue.main.async {
+//                self.tableView?.reloadData()
+//                sender.cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+//                sender.cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+//            }
+                
             return nil
         }) { (object, error) in
             if let error = error {

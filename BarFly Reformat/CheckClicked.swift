@@ -14,6 +14,7 @@ class CheckClicked: UIButton {
     var title: String!
     var amntBtnPassed: AmountPeopleButton!
     var uid: String!
+    var cell: PostCell!
 
     /*
     // Only override draw() if you perform custom drawing.

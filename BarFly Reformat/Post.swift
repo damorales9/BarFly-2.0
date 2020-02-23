@@ -12,5 +12,7 @@ class Post {
     var message: String?
     var likes: Int?
     var uid: String?
+    var likedBy = [String]()
+    var dislikedBy = [String]()
     
 }
