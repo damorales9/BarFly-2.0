@@ -1464,6 +1464,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         liked = false
         disliked = false
         
+        cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+        cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
+        
         for s in allPosts[indexPath.row].likedBy {
             if (s == AppDelegate.user?.uid){
                 cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
@@ -1633,7 +1636,15 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 errorPointer?.pointee = error
                 return nil
             }
-            newAmount = oldAmount + 1
+            
+            DispatchQueue.main.async {
+                if(sender.cell.dislikeBtn.currentImage == UIImage(named: "graydown30")){
+                    newAmount = oldAmount + 2
+                }
+                else{
+                    newAmount = oldAmount + 1
+                }
+            }
             
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
                 let error = NSError(
@@ -1659,14 +1670,38 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 return nil
             }
             
-            for s in likedBy {
-                if (s == AppDelegate.user?.uid){
-                    return nil
-                }
-            }
+            var likedArray = [String]()
+            likedArray = likedBy
             
             var dislikedArray = [String]()
             dislikedArray = dislikedBy
+            
+            for s in likedBy {
+                if (s == AppDelegate.user?.uid){
+                    if likedArray.contains(AppDelegate.user!.uid!){
+                        let index = likedArray.firstIndex(of: AppDelegate.user!.uid!)
+                        likedArray.remove(at: index!)
+                    }
+                    transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+                    transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+                    transaction.updateData(["likes": oldAmount-1], forDocument: sfReference)
+                    
+                    for p in self.allPosts{
+                        if p.uid == sender.uid {
+                            p.likes = oldAmount-1
+                            if p.likedBy.contains(AppDelegate.user!.uid!){
+                                let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
+                                p.likedBy.remove(at: index!)
+                            }
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView?.reloadData()
+                    }
+                    return nil
+                }
+            }
             
             for i in 0 ..< dislikedArray.count {
                 if (dislikedArray[i] == AppDelegate.user?.uid) {
@@ -1674,8 +1709,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 }
             }
             
-            var likedArray = [String]()
-            likedArray = likedBy
             likedArray.append(AppDelegate.user!.uid!)
             transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
             transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
@@ -1734,7 +1767,16 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 errorPointer?.pointee = error
                 return nil
             }
-            newAmount = oldAmount - 1
+            
+            DispatchQueue.main.async {
+                if(sender.cell.likeBtn.currentImage == UIImage(named: "grayup30")){
+                    newAmount = oldAmount - 2
+                }
+                else{
+                    newAmount = oldAmount - 1
+                }
+            }
+            
             
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
                 let error = NSError(
@@ -1760,17 +1802,37 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 return nil
             }
             
-            for s in dislikedBy {
-                if (s == AppDelegate.user?.uid){
-                    return nil
-                }
-            }
-            
             var dislikedArray = [String]()
             dislikedArray = dislikedBy
             
             var likedArray = [String]()
             likedArray = likedBy
+            
+            for s in dislikedBy {
+                if (s == AppDelegate.user?.uid){
+                    if dislikedArray.contains(AppDelegate.user!.uid!){
+                        let index = dislikedArray.firstIndex(of: AppDelegate.user!.uid!)
+                        dislikedArray.remove(at: index!)
+                    }
+                    transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+                    transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+                    transaction.updateData(["likes": oldAmount+1], forDocument: sfReference)
+                    
+                    for p in self.allPosts{
+                        if p.uid == sender.uid {
+                            p.likes = oldAmount+1
+                            if p.dislikedBy.contains(AppDelegate.user!.uid!){
+                                let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
+                                p.dislikedBy.remove(at: index!)
+                            }
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView?.reloadData()
+                    }
+                }
+                return nil
+            }
             
             for i in 0 ..< likedArray.count {
                 if (likedArray[i] == AppDelegate.user?.uid) {
@@ -1861,7 +1923,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         var ref: DocumentReference? = nil
         ref = db.collection("Bar Feeds").document("\(currentBarName!)").collection("feed").addDocument(data: [
             "message" : "\(message!)",
-            "likes" : 0
+            "likes" : 0,
+            "likedBy" : [String](),
+            "dislikedBy" : [String]()
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
