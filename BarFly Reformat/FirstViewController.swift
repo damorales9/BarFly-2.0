@@ -1624,6 +1624,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 return nil
             }
             
+            /*
             guard let oldAmount = sfDocument.data()?["likes"] as? Int else {
                 let error = NSError(
                     domain: "AppErrorDomain",
@@ -1644,6 +1645,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     newAmount = oldAmount + 1
                 }
             }
+            */
             
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
                 let error = NSError(
@@ -1683,11 +1685,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     }
                     transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
                     transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
-                    transaction.updateData(["likes": oldAmount-1], forDocument: sfReference)
+                    transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
                     
                     for p in self.allPosts{
                         if p.uid == sender.uid {
-                            p.likes = oldAmount-1
+                            p.likes = likedArray.count - dislikedArray.count
                             if p.likedBy.contains(AppDelegate.user!.uid!){
                                 let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
                                 p.likedBy.remove(at: index!)
@@ -1711,11 +1713,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             likedArray.append(AppDelegate.user!.uid!)
             transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
             transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
-            transaction.updateData(["likes": newAmount], forDocument: sfReference)
+            transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
             
             for p in self.allPosts{
                 if p.uid == sender.uid {
-                    p.likes = newAmount
+                    p.likes = likedArray.count - dislikedArray.count
                     p.likedBy.append(AppDelegate.user!.uid!)
                     if p.dislikedBy.contains(AppDelegate.user!.uid!){
                         let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
@@ -1755,6 +1757,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 return nil
             }
             
+            /*
             guard let oldAmount = sfDocument.data()?["likes"] as? Int else {
                 let error = NSError(
                     domain: "AppErrorDomain",
@@ -1775,6 +1778,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     newAmount = oldAmount - 1
                 }
             }
+            */
             
             
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
@@ -1815,11 +1819,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     }
                     transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
                     transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
-                    transaction.updateData(["likes": oldAmount+1], forDocument: sfReference)
+                    transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
                     
                     for p in self.allPosts{
                         if p.uid == sender.uid {
-                            p.likes = oldAmount+1
+                            p.likes = likedArray.count - dislikedArray.count
                             if p.dislikedBy.contains(AppDelegate.user!.uid!){
                                 let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
                                 p.dislikedBy.remove(at: index!)
@@ -1843,11 +1847,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             
             transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
             transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
-            transaction.updateData(["likes": newAmount], forDocument: sfReference)
+            transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
             
             for p in self.allPosts{
                 if p.uid == sender.uid {
-                    p.likes = newAmount
+                    p.likes = likedArray.count - dislikedArray.count
                     p.dislikedBy.append(AppDelegate.user!.uid!)
                     if p.likedBy.contains(AppDelegate.user!.uid!){
                         let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
