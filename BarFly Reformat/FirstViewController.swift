@@ -1624,29 +1624,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 return nil
             }
             
-            /*
-            guard let oldAmount = sfDocument.data()?["likes"] as? Int else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve population from oldAmount \(sfDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            
-            DispatchQueue.main.async {
-                if(sender.cell.dislikeBtn.currentImage == UIImage(named: "graydown30")){
-                    newAmount = oldAmount + 2
-                }
-                else{
-                    newAmount = oldAmount + 1
-                }
-            }
-            */
-            
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
                 let error = NSError(
                     domain: "AppErrorDomain",
@@ -1756,30 +1733,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 errorPointer?.pointee = fetchError
                 return nil
             }
-            
-            /*
-            guard let oldAmount = sfDocument.data()?["likes"] as? Int else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve population from oldAmount \(sfDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            
-            DispatchQueue.main.async {
-                if(sender.cell.likeBtn.currentImage == UIImage(named: "grayup30")){
-                    newAmount = oldAmount - 2
-                }
-                else{
-                    newAmount = oldAmount - 1
-                }
-            }
-            */
-            
             
             guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
                 let error = NSError(
