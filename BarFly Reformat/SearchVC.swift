@@ -115,12 +115,13 @@ class SearchVC: UITableViewController, UISearchResultsUpdating, UICollectionView
                     let requests = [String]()
                     let favorites = [String]()
                     let followers = [String]()
+                    let pregames = [String]()
                     let galleryURLs = [String]()
                     let blocked = [String]()
                     
                     if (username.contains(self.resultSearchController.searchBar.text!.lowercased())) {
                         print("adding \(username)")
-                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs)
+                        let u = User(uid: document?.documentID, name: name, username: username, bar: bar, friends: friends, followers: followers, blocked: blocked, requests: requests, pregames: pregames, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs)
                         
                         var dup = false
                         for i in self.filteredTableData {

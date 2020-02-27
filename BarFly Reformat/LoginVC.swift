@@ -28,7 +28,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     public static let END_REQUESTS = "end"
     public static let FIRST_FRIEND = "001"
     public static let USER_DATABASE = "User Info"
-    
+    public static let PREGAME_DATABASE = "Pregames"
+
    /*
     * ----------------------------------
     * Non-UI Variables

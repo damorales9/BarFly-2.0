@@ -44,8 +44,13 @@
 		6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A861236E544D005E55A6 /* SocialVC.swift */; };
 		6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79A863236E6D74005E55A6 /* SearchVC.swift */; };
 		6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */; };
+		6F93BC442406F23D00DD054F /* PregameAcceptedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */; };
+		6F93BC462406F26B00DD054F /* PregameDeclinedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */; };
 		6F94729A23918044003A470B /* LogOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729923918044003A470B /* LogOutVC.swift */; };
 		6F94729C23918320003A470B /* GeneralSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729B23918320003A470B /* GeneralSettingsVC.swift */; };
+		6FC0091324044A3B005A7DBB /* Pregame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091224044A3B005A7DBB /* Pregame.swift */; };
+		6FC0091524044EC6005A7DBB /* PregameRequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091424044EC6005A7DBB /* PregameRequestsVC.swift */; };
+		6FC0091724045031005A7DBB /* PregameRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091624045031005A7DBB /* PregameRequestCell.swift */; };
 		6FC9A058237C8D5C00CDD8C4 /* RequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */; };
 		6FC9A05A237C9C7700CDD8C4 /* RequestCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */; };
 		6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */; };
@@ -110,8 +115,13 @@
 		6F79A861236E544D005E55A6 /* SocialVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialVC.swift; sourceTree = "<group>"; };
 		6F79A863236E6D74005E55A6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileVC.swift; sourceTree = "<group>"; };
+		6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameAcceptedCell.swift; sourceTree = "<group>"; };
+		6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameDeclinedCell.swift; sourceTree = "<group>"; };
 		6F94729923918044003A470B /* LogOutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutVC.swift; sourceTree = "<group>"; };
 		6F94729B23918320003A470B /* GeneralSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsVC.swift; sourceTree = "<group>"; };
+		6FC0091224044A3B005A7DBB /* Pregame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pregame.swift; sourceTree = "<group>"; };
+		6FC0091424044EC6005A7DBB /* PregameRequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameRequestsVC.swift; sourceTree = "<group>"; };
+		6FC0091624045031005A7DBB /* PregameRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameRequestCell.swift; sourceTree = "<group>"; };
 		6FC9A057237C8D5C00CDD8C4 /* RequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsVC.swift; sourceTree = "<group>"; };
 		6FC9A059237C9C7700CDD8C4 /* RequestCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCellView.swift; sourceTree = "<group>"; };
 		6FD54FFA237DA07500BFA2A3 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -217,6 +227,11 @@
 				0E3E7F5F23FF0E1C00C3D60B /* Post.swift */,
 				0E3E7F6323FF1D7600C3D60B /* PostCell.swift */,
 				0E3E7F6524044EC000C3D60B /* PostVC.swift */,
+				6FC0091224044A3B005A7DBB /* Pregame.swift */,
+				6FC0091424044EC6005A7DBB /* PregameRequestsVC.swift */,
+				6FC0091624045031005A7DBB /* PregameRequestCell.swift */,
+				6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */,
+				6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -388,6 +403,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EAE7E3723842D68001C767D /* CheckClicked.swift in Sources */,
+				6F93BC462406F26B00DD054F /* PregameDeclinedCell.swift in Sources */,
+				6FC0091324044A3B005A7DBB /* Pregame.swift in Sources */,
 				6F79A862236E544D005E55A6 /* SocialVC.swift in Sources */,
 				0E3E7F6423FF1D7600C3D60B /* PostCell.swift in Sources */,
 				6F27C1A62383155200B2078F /* NonUserListVC.swift in Sources */,
@@ -407,6 +424,7 @@
 				6FD54FFB237DA07500BFA2A3 /* SettingsVC.swift in Sources */,
 				0EC363DF236B230C00116650 /* ProfileVC.swift in Sources */,
 				6F4C2FDD2386EFB8001A885B /* BlockVC.swift in Sources */,
+				6F93BC442406F23D00DD054F /* PregameAcceptedCell.swift in Sources */,
 				0EC363DB236B230C00116650 /* AppDelegate.swift in Sources */,
 				0EE64709237B1236007DA55B /* URLButton.swift in Sources */,
 				6F075500237F454900765317 /* PreProcess.swift in Sources */,
@@ -416,11 +434,13 @@
 				6FC9A05A237C9C7700CDD8C4 /* RequestCellView.swift in Sources */,
 				6FE48DD2236C79A000487E27 /* TabBarController.swift in Sources */,
 				0E018E842370E80E000122B7 /* AmountPeopleButton.swift in Sources */,
+				6FC0091524044EC6005A7DBB /* PregameRequestsVC.swift in Sources */,
 				6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */,
 				6FE48DD4236CCA7600487E27 /* ImagePicker.swift in Sources */,
 				0E018E822370E29C000122B7 /* BarTimer.swift in Sources */,
 				6F0754FE237ECD5400765317 /* EditProfileVC.swift in Sources */,
 				6FE48DD0236BBD6800487E27 /* CreateVC.swift in Sources */,
+				6FC0091724045031005A7DBB /* PregameRequestCell.swift in Sources */,
 				0ECCC40F236E632000D7757D /* BarTapGesture.swift in Sources */,
 				0E5137F3236C5A68008C00AB /* CustomPointAnnotation.swift in Sources */,
 				6FE48D98236B3A8700487E27 /* LoginVC.swift in Sources */,

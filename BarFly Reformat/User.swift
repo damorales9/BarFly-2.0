@@ -40,6 +40,7 @@ struct User {
     var followers: [String?]
     var blocked: [String?]
     var requests: [String?]
+    var pregames: [String?]
     var favorites: [String?]
     var profileURL: String?
     var galleryURLs: [String?]
@@ -69,6 +70,7 @@ struct User {
                 let requests = ((document!.get("requests")) as? [String] ?? [String]())
                 let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
                 let followers = ((document!.get("followers")) as? [String] ?? [String]())
+                let pregames = ((document!.get("pregames")) as? [String] ?? [String]())
                 let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
                 let profileURL  = ((document!.get("profileURL")) as? String  ?? "")
                 let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
@@ -76,7 +78,7 @@ struct User {
                 let msgID = ((document!.get("messagingID")) as? String ?? "")
                 let status = ((document!.get("status")) as? String ?? User.NIL)
                 
-                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
+                user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, pregames: pregames, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
                 
 //                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
 //                    user?.profileImage = image
@@ -130,6 +132,7 @@ struct User {
                     let admin = ((document!.get("admin")) as! Bool)
                     let friends = ((document!.get("friends")) as? [String] ?? [String]())
                     let requests = ((document!.get("requests")) as? [String] ?? [String]())
+                    let pregames = ((document!.get("pregames")) as? [String] ?? [String]())
                     let favorites = ((document!.get("favorites")) as? [String] ?? [String]())
                     let followers = ((document!.get("followers")) as? [String] ?? [String]())
                     let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
@@ -139,7 +142,7 @@ struct User {
                     let msgID = ((document!.get("messagingID")) as? String ?? "")
                     let status =  ((document!.get("status")) as? String ?? User.NIL)
                     
-                    user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
+                    user = User(uid: uid, name: name, username: username, bar: bar, timestamp: timestamp, admin: admin, email: email, friends: friends, followers: followers, blocked: blocked, requests: requests, pregames: pregames, favorites: favorites, profileURL: profileURL, galleryURLs: galleryURLs, messagingID: msgID, status: status)
                     
     //                UIImageView.downloadImage(from: URL(string: user!.profileURL!)!, completion: { (image) in
     //                    user?.profileImage = image
@@ -195,6 +198,7 @@ struct User {
                 "favorites": user.favorites,
                 "timestamp": user.timestamp ??  0,
                 "requests":user.requests,
+                "pregames":user.pregames,
                 "messagingID":user.messagingID ?? "",
                 "status" : user.status ??  User.NIL
             ]
