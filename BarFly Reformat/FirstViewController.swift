@@ -94,7 +94,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     var friendsGoingList = [User]()
     
-    var allPosts = [Post]()
+    public static var allPosts = [Post]()
     
     @IBOutlet var newPost: UIView!
     
@@ -455,14 +455,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         barAnnotation.view = calloutView
         
-        allPosts.removeAll()
+        FirstViewController.allPosts.removeAll()
         getPosts(barName: "\(barAnnotation.title!)") { (success) in
             if (success){
                 self.tableView?.reloadData()
             }
         }
         
-        print(allPosts)
+        print(FirstViewController.allPosts)
         
         calloutView.view.addGestureRecognizer(gesture)
         
@@ -680,7 +680,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             */
         
         }
-        allPosts.removeAll()
+        FirstViewController.allPosts.removeAll()
     }
     
     @objc func barTapped(sender: BarTapGesture) {
@@ -1427,7 +1427,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(allPosts.count == 0){
+        if(FirstViewController.allPosts.count == 0){
             let noDataLabel: UILabel  = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "No Posts"
             noDataLabel.textColor     = UIColor.black
@@ -1438,9 +1438,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             return 0
         }
         else {
-            if (allPosts.count < 20){
+            if (FirstViewController.allPosts.count < 20){
                 tableView.backgroundView = nil
-                return allPosts.count
+                return FirstViewController.allPosts.count
             }
             else{
                 return 20
@@ -1454,8 +1454,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! PostCell
         
-        cell.messageText.text = allPosts[indexPath.row].message
-        if let likes = allPosts[indexPath.row].likes
+        cell.messageText.text = FirstViewController.allPosts[indexPath.row].message
+        if let likes = FirstViewController.allPosts[indexPath.row].likes
         {
             cell.amntLikes.text = "\(likes)"
         }
@@ -1466,28 +1466,28 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
         cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
         
-        for s in allPosts[indexPath.row].likedBy {
+        for s in FirstViewController.allPosts[indexPath.row].likedBy {
             if (s == AppDelegate.user?.uid){
                 cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
                 cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
             }
         }
         
-        for p in allPosts[indexPath.row].dislikedBy {
+        for p in FirstViewController.allPosts[indexPath.row].dislikedBy {
             if (p == AppDelegate.user?.uid) {
                 cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
                 cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
             }
         }
         
-        cell.likeBtn.amountPeople = allPosts[indexPath.row].likes
-        cell.dislikeBtn.amountPeople = allPosts[indexPath.row].likes
+        cell.likeBtn.amountPeople = FirstViewController.allPosts[indexPath.row].likes
+        cell.dislikeBtn.amountPeople = FirstViewController.allPosts[indexPath.row].likes
         
         cell.likeBtn.title = currentBarName
         cell.dislikeBtn.title = currentBarName
         
-        cell.likeBtn.uid = allPosts[indexPath.row].uid
-        cell.dislikeBtn.uid = allPosts[indexPath.row].uid
+        cell.likeBtn.uid = FirstViewController.allPosts[indexPath.row].uid
+        cell.dislikeBtn.uid = FirstViewController.allPosts[indexPath.row].uid
         
         cell.likeBtn.cell = cell
         cell.dislikeBtn.cell = cell
@@ -1497,47 +1497,6 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         globalLiked.removeAll()
         globalDisliked.removeAll()
-        
-//        getPost(post: allPosts[indexPath.row]) { (success) in
-//            if (success){
-//                for s in self.globalLiked {
-//                    if (s == AppDelegate.user?.uid){
-//                        self.liked = true
-//                        self.disliked = false
-//                    }
-//                }
-//
-//                for p in self.globalDisliked {
-//                    if (p == AppDelegate.user?.uid){
-//                        self.disliked = true
-//                        self.liked = false
-//                    }
-//                }
-//
-//                print("liked ", self.liked)
-//                print("disliked ", self.disliked)
-//                print("-------------------------")
-//
-//                if (self.liked == true){
-//                    DispatchQueue.main.async {
-//                        cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
-//                        cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
-//                    }
-//                }
-//                else if (self.disliked == true){
-//                    DispatchQueue.main.async {
-//                        cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
-//                        cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
-//                    }
-//                }
-//                else {
-//                    DispatchQueue.main.async {
-//                        cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
-//                        cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
-//                    }
-//                }
-//            }
-//        }
         
         cell.layer.cornerRadius = 5
         cell.layer.borderWidth = 2
@@ -1550,7 +1509,30 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let postVC = storyBoard.instantiateViewController(withIdentifier: "postVC") as! PostVC
+        postVC.currentBar = currentBarName
+        postVC.currentPost = FirstViewController.allPosts[indexPath.row]
+        let cell = tableView.cellForRow(at: indexPath) as! PostCell
+        var colorUp: String!
+        var colorDown: String!
+        if (cell.likeBtn.currentImage == UIImage(named: "grayup30")){
+            colorUp = "grayup30"
+        }
+        else if (cell.likeBtn.currentImage == UIImage(named: "up30")){
+            colorUp = "up30"
+        }
         
+        if (cell.dislikeBtn.currentImage == UIImage(named: "graydown30")){
+            colorDown = "graydown30"
+        }
+        else if (cell.dislikeBtn.currentImage == UIImage(named: "down30")){
+            colorDown = "down30"
+        }
+        
+        postVC.colorUp = colorUp
+        postVC.colorDown = colorDown
+        self.navigationController?.pushViewController(postVC, animated:true)
     }
     
     public var globalLiked = [String]()
@@ -1601,7 +1583,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 post.dislikedBy = dislikedBy!
                 
                 //self.allPosts.append(post)
-                self.allPosts.insert(post, at: 0)
+                FirstViewController.allPosts.insert(post, at: 0)
                 
                 //completion(true)
             }
@@ -1664,7 +1646,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
                     transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
                     
-                    for p in self.allPosts{
+                    for p in FirstViewController.allPosts{
                         if p.uid == sender.uid {
                             p.likes = likedArray.count - dislikedArray.count
                             if p.likedBy.contains(AppDelegate.user!.uid!){
@@ -1692,7 +1674,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
             transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
             
-            for p in self.allPosts{
+            for p in FirstViewController.allPosts{
                 if p.uid == sender.uid {
                     p.likes = likedArray.count - dislikedArray.count
                     p.likedBy.append(AppDelegate.user!.uid!)
@@ -1774,7 +1756,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
                     transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
                     
-                    for p in self.allPosts{
+                    for p in FirstViewController.allPosts{
                         if p.uid == sender.uid {
                             p.likes = likedArray.count - dislikedArray.count
                             if p.dislikedBy.contains(AppDelegate.user!.uid!){
@@ -1802,7 +1784,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
             transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
             
-            for p in self.allPosts{
+            for p in FirstViewController.allPosts{
                 if p.uid == sender.uid {
                     p.likes = likedArray.count - dislikedArray.count
                     p.dislikedBy.append(AppDelegate.user!.uid!)
@@ -1895,7 +1877,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         post.likes = 0
         post.uid = ref!.documentID
         
-        self.allPosts.insert(post, at: 0)
+        FirstViewController.allPosts.insert(post, at: 0)
         
         self.tableView?.reloadData()
         

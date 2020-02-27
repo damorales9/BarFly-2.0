@@ -15,5 +15,11 @@ class PostCell: UITableViewCell {
     @IBOutlet var dislikeBtn: CheckClicked!
     @IBOutlet var amntLikes: UILabel!
     
+    @IBOutlet var commentMsg: UILabel!
+    @IBOutlet var commentMsgLike: CheckClicked!
+    @IBOutlet var commentMsgDislike: CheckClicked!
+    @IBOutlet var commentLikes: UILabel!
+    
+    
 
 }
