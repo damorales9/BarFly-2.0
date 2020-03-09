@@ -646,6 +646,9 @@
                                         <rect key="frame" x="364" y="4" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="plus30"/>
+                                        <connections>
+                                            <action selector="addCommentBtnClicked:" destination="6pp-z9-VTX" eventType="touchUpInside" id="GiV-LE-Mus"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -732,6 +735,56 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-pQ-dP0">
+                                <rect key="frame" x="20" y="150" width="374" height="298"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLq-wq-HlG">
+                                        <rect key="frame" x="326" y="9" width="35" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="Post"/>
+                                        <connections>
+                                            <action selector="postBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="70Q-oO-MLW"/>
+                                            <action selector="postCommentBtnClicked:" destination="6pp-z9-VTX" eventType="touchUpInside" id="KpY-DV-u6l"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pEz-bM-tEa">
+                                        <rect key="frame" x="7" y="10" width="53" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelBtnClicked:" destination="9pv-A4-QxB" eventType="touchUpInside" id="W0A-J6-z9F"/>
+                                            <action selector="cancelCmntBtnClicked:" destination="6pp-z9-VTX" eventType="touchUpInside" id="B0g-RL-ZnM"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dFl-2T-Scb">
+                                        <rect key="frame" x="0.0" y="44" width="374" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter Text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7cZ-KP-PhL">
+                                        <rect key="frame" x="7" y="54" width="359" height="236"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Comment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XzT-Mo-HM1">
+                                        <rect key="frame" x="127" y="13" width="120" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="gOO-Lo-BQc" firstAttribute="leading" secondItem="Qwa-Sf-Phu" secondAttribute="leading" id="6cb-Vu-5Ct"/>
@@ -747,16 +800,22 @@
                         <viewLayoutGuide key="safeArea" id="Qwa-Sf-Phu"/>
                     </view>
                     <connections>
+                        <outlet property="cancelComment" destination="pEz-bM-tEa" id="QjO-kT-AuU"/>
+                        <outlet property="commentPost" destination="rvV-pQ-dP0" id="pbF-ka-vAk"/>
                         <outlet property="commentTaskBar" destination="CQK-Ai-BsK" id="ySd-yp-Gt4"/>
+                        <outlet property="commentTxtView" destination="7cZ-KP-PhL" id="g4f-Lk-s1d"/>
                         <outlet property="dislikeBtn" destination="1ru-iA-SLu" id="Wf1-dd-7tV"/>
                         <outlet property="likeBtn" destination="UHf-uE-AUl" id="bOk-cA-0CY"/>
                         <outlet property="likesLbl" destination="dbf-Ts-MkO" id="8Jo-UP-Sxy"/>
+                        <outlet property="postComment" destination="SLq-wq-HlG" id="0Zp-gH-1uA"/>
                         <outlet property="postMessage" destination="vIk-P0-AVh" id="Y6g-Pz-sHt"/>
                         <outlet property="postView" destination="gOO-Lo-BQc" id="EGc-Vx-ZUv"/>
                         <outlet property="tableView" destination="Uag-5i-Kp3" id="zcP-jE-mCL"/>
+                        <segue destination="fF0-SF-YQx" kind="unwind" identifier="reloadSegue" unwindAction="unwindToViewControllerAWithSegue:" id="u3C-dy-cC9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CmK-gp-Ngh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="fF0-SF-YQx" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3400.0000000000005" y="-2315.625"/>
         </scene>
@@ -1092,21 +1151,21 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fM6-96-Lv7">
-                                            <rect key="frame" x="56.333333333333336" y="9.3333333333333339" width="28.333333333333332" height="17.666666666666668"/>
+                                            <rect key="frame" x="56.333333333333336" y="9.3333333333333339" width="29.333333333333332" height="17.666666666666668"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="15"/>
                                             <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WJQ-a4-8hm">
-                                            <rect key="frame" x="56.333333333333329" y="27.666666666666668" width="34.333333333333336" height="11.666666666666666"/>
+                                            <rect key="frame" x="56.333333333333329" y="27.666666666666671" width="33.333333333333336" height="12"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto Light" pointSize="10"/>
                                             <color key="textColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="KkH-Vf-NW6">
-                                            <rect key="frame" x="22.666666666666664" y="15.333333333333334" width="18.666666666666668" height="17.666666666666668"/>
+                                            <rect key="frame" x="23" y="15" width="18" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -1780,7 +1839,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="BIU-XA-BjM">
-                                <rect key="frame" x="-305" y="-20" width="1024" height="882"/>
+                                <rect key="frame" x="-817" y="-20" width="2048" height="882"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8b-fR-vCd">
                                 <rect key="frame" x="50" y="571" width="314" height="60"/>
@@ -2567,7 +2626,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="uje-Q4-jyp">
-                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -3060,7 +3119,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person" catalog="system" id="VbO-nI-bCs">
-                                            <rect key="frame" x="22.666666666666664" y="21.333333333333329" width="18.666666666666668" height="17.666666666666668"/>
+                                            <rect key="frame" x="23" y="21" width="18" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         </imageView>
@@ -3091,7 +3150,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="a5b-7k-Isl">
-                                <rect key="frame" x="-305" y="-20" width="1024" height="936"/>
+                                <rect key="frame" x="-817" y="-20" width="2048" height="936"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging out" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7n-FR-f9r">
                                 <rect key="frame" x="50" y="100" width="314" height="50"/>
@@ -3166,7 +3225,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="person.fill" catalog="system" id="Lya-PW-kbO">
-                                            <rect key="frame" x="23" y="21.666666666666668" width="18" height="17"/>
+                                            <rect key="frame" x="23" y="22" width="18" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" red="0.70588235290000001" green="0.99607843139999996" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>

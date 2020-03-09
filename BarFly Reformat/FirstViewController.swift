@@ -133,7 +133,12 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.tableView?.reloadData()
          
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableView?.reloadData()
     }
     
     @IBAction func locationButtonClicked(_ sender: Any) {
@@ -919,7 +924,7 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     self.cancelBtn.title = sender.passedData!.title!
                     self.cancelBtn.amntBtnPassed = sender
                     self.checkBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
-                    self.cancelBtn.addTarget(self, action: #selector(self.checkClicked(sender:)), for: .touchUpInside)
+                    self.cancelBtn.addTarget(self, action: #selector(self.cancelButtonClicked(sender:)), for: .touchUpInside)
                 }
             }
             return nil
@@ -1904,5 +1909,13 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             self.newPost.removeFromSuperview()
         }
         self.blurEffectView.removeFromSuperview()
+    }
+    
+    @IBAction func unwindToViewControllerA(segue: UIStoryboardSegue) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.main.async {
+                self.tableView!.reloadData()
+            }
+        }
     }
 }

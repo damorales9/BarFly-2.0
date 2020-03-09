@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     
     @IBOutlet var postMessage: UILabel!
     @IBOutlet var likeBtn: CheckClicked!
@@ -30,8 +30,31 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var colorUp: String!
     var colorDown: String!
     
+    @IBOutlet var commentPost: UIView!
+    @IBOutlet var commentTxtView: UITextView!
+    @IBOutlet var cancelComment: UIButton!
+    @IBOutlet var postComment: UIButton!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.commentTxtView.delegate = self
+        
+        self.commentTxtView.text = "Enter Text"
+        self.commentTxtView.textColor = UIColor.lightGray
+        
+        self.commentPost.layer.borderWidth = 5
+        self.commentPost.layer.borderColor = UIColor.black.cgColor
+        self.commentPost.layer.cornerRadius = 10
+        //self.newPost.isHidden = true
+        
+        UIView.animate(withDuration: 0, animations: {
+            self.commentPost.alpha = 0
+        }) { _ in
+            self.commentPost.removeFromSuperview()
+        }
         
         tableView?.delegate=self
         tableView?.dataSource=self
@@ -145,8 +168,8 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.commentMsgLike.cell = cell
         cell.commentMsgDislike.cell = cell
         
-        cell.commentMsgLike.addTarget(self, action: #selector(self.likeBtnClicked(_:)), for: .touchUpInside)
-        cell.commentMsgDislike.addTarget(self, action: #selector(self.dislikeBtnClicked(_:)), for: .touchUpInside)
+        cell.commentMsgLike.addTarget(self, action: #selector(self.commentLikeClicked(_:)), for: .touchUpInside)
+        cell.commentMsgDislike.addTarget(self, action: #selector(self.commentDislikeClicked(_:)), for: .touchUpInside)
         
         cell.layer.cornerRadius = 5
         cell.layer.borderWidth = 2
@@ -435,6 +458,49 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         print("Hi")
     }
     
+    var blurEffect: UIBlurEffect!
+    var blurEffectView: UIVisualEffectView!
     
-
+    @IBAction func addCommentBtnClicked(_ sender: Any) {
+        blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(blurEffectView)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            self.view.addSubview(self.commentPost)
+            self.commentPost.alpha = 1;
+        })
+    }
+    
+    
+    func textViewDidBeginEditing(_ commentTxtView: UITextView) {
+        if commentTxtView.textColor == UIColor.lightGray {
+            commentTxtView.text = nil
+            commentTxtView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ commentTxtView: UITextView) {
+        if commentTxtView.text.isEmpty {
+            commentTxtView.text = "Enter Text"
+            commentTxtView.textColor = UIColor.lightGray
+        }
+    }
+    
+    @IBAction func cancelCmntBtnClicked(_ sender: Any) {
+        commentTxtView.text = "Enter Text"
+        commentTxtView.textColor = UIColor.lightGray
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.commentPost.alpha = 0
+        }) { _ in
+            self.commentPost.removeFromSuperview()
+        }
+        self.blurEffectView.removeFromSuperview()
+    }
+    
+    @IBAction func postCommentBtnClicked(_ sender: Any) {
+    }
+    
 }
