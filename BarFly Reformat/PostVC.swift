@@ -159,8 +159,8 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         cell.commentMsgLike.amountPeople = allComments[indexPath.row].likes
         cell.commentMsgDislike.amountPeople = allComments[indexPath.row].likes
         
-        cell.commentMsgLike.title = currentPost.uid
-        cell.commentMsgDislike.title = currentPost.uid
+        cell.commentMsgLike.title = currentBar
+        cell.commentMsgDislike.title = currentBar
         
         cell.commentMsgLike.uid = allComments[indexPath.row].uid
         cell.commentMsgDislike.uid = allComments[indexPath.row].uid
@@ -449,9 +449,229 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
     }
     
     @IBAction func commentLikeClicked(_ sender: CheckClicked!) {
+        var newAmount = 0
+        let db = Firestore.firestore()
+        let sfReference = db.collection("Bar Feeds").document("\(sender.title!)").collection("feed").document("\(currentPost.uid!)").collection("comments").document("\(sender.uid!)")
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let sfDocument: DocumentSnapshot
+            do {
+                try sfDocument = transaction.getDocument(sfReference)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+            
+            guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from likedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            guard let dislikedBy = sfDocument.data()?["dislikedBy"] as? [String] else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from dislikedBy \(sfDocument)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            var likedArray = [String]()
+            likedArray = likedBy
+            
+            var dislikedArray = [String]()
+            dislikedArray = dislikedBy
+            
+            for s in likedBy {
+                if (s == AppDelegate.user?.uid){
+                    if likedArray.contains(AppDelegate.user!.uid!){
+                        let index = likedArray.firstIndex(of: AppDelegate.user!.uid!)
+                        likedArray.remove(at: index!)
+                    }
+                    transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+                    transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+                    transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
+                    
+                    for p in self.allComments{
+                        if p.uid == sender.uid {
+                            p.likes = likedArray.count - dislikedArray.count
+                            if p.likedBy.contains(AppDelegate.user!.uid!){
+                                let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
+                                p.likedBy.remove(at: index!)
+                            }
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView?.reloadData()
+                    }
+                    return nil
+                }
+            }
+            
+            for i in 0 ..< dislikedArray.count {
+                if (dislikedArray[i] == AppDelegate.user?.uid) {
+                    dislikedArray.remove(at: i)
+                }
+            }
+            
+            likedArray.append(AppDelegate.user!.uid!)
+            transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+            transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+            transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
+            
+            for p in self.allComments{
+                if p.uid == sender.uid {
+                    p.likes = likedArray.count - dislikedArray.count
+                    p.likedBy.append(AppDelegate.user!.uid!)
+                    if p.dislikedBy.contains(AppDelegate.user!.uid!){
+                        let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
+                        p.dislikedBy.remove(at: index!)
+                    }
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+                //sender.cell.likeBtn.setImage(UIImage(named: "grayup30"), for: .normal)
+                //sender.cell.dislikeBtn.setImage(UIImage(named: "down30"), for: .normal)
+            }
+            
+            return nil
+        }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+            }
+        }
+        
     }
     
     @IBAction func commentDislikeClicked(_ sender: CheckClicked!) {
+        var newAmount = 0
+                let db = Firestore.firestore()
+        let sfReference = db.collection("Bar Feeds").document("\(sender.title!)").collection("feed").document("\(currentPost.uid!)").collection("comments").document("\(sender.uid!)")
+                
+                db.runTransaction({ (transaction, errorPointer) -> Any? in
+                    let sfDocument: DocumentSnapshot
+                    do {
+                        try sfDocument = transaction.getDocument(sfReference)
+                    } catch let fetchError as NSError {
+                        errorPointer?.pointee = fetchError
+                        return nil
+                    }
+                    
+                    guard let likedBy = sfDocument.data()?["likedBy"] as? [String] else {
+                        let error = NSError(
+                            domain: "AppErrorDomain",
+                            code: -1,
+                            userInfo: [
+                                NSLocalizedDescriptionKey: "Unable to retrieve population from likedBy \(sfDocument)"
+                            ]
+                        )
+                        errorPointer?.pointee = error
+                        return nil
+                    }
+                    
+                    guard let dislikedBy = sfDocument.data()?["dislikedBy"] as? [String] else {
+                        let error = NSError(
+                            domain: "AppErrorDomain",
+                            code: -1,
+                            userInfo: [
+                                NSLocalizedDescriptionKey: "Unable to retrieve population from dislikedBy \(sfDocument)"
+                            ]
+                        )
+                        errorPointer?.pointee = error
+                        return nil
+                    }
+                    
+                    var dislikedArray = [String]()
+                    dislikedArray = dislikedBy
+                    
+                    var likedArray = [String]()
+                    likedArray = likedBy
+                    
+                    for s in dislikedBy {
+                        if (s == AppDelegate.user?.uid){
+                            if dislikedArray.contains(AppDelegate.user!.uid!){
+                                let index = dislikedArray.firstIndex(of: AppDelegate.user!.uid!)
+                                dislikedArray.remove(at: index!)
+                            }
+                            transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+                            transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+                            transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
+                            
+                            for p in self.allComments{
+                                if p.uid == sender.uid {
+                                    p.likes = likedArray.count - dislikedArray.count
+                                    if p.dislikedBy.contains(AppDelegate.user!.uid!){
+                                        let index = p.dislikedBy.firstIndex(of: AppDelegate.user!.uid!)
+                                        p.dislikedBy.remove(at: index!)
+                                    }
+                                }
+                            }
+                            DispatchQueue.main.async {
+                                self.tableView?.reloadData()
+                            }
+                        }
+                        return nil
+                    }
+                    
+                    for i in 0 ..< likedArray.count {
+                        if (likedArray[i] == AppDelegate.user?.uid) {
+                            likedArray.remove(at: i)
+                        }
+                    }
+                    
+                    dislikedArray.append(AppDelegate.user!.uid!)
+                    
+                    transaction.updateData(["dislikedBy" : dislikedArray], forDocument: sfReference)
+                    transaction.updateData(["likedBy" : likedArray], forDocument: sfReference)
+                    transaction.updateData(["likes": likedArray.count - dislikedArray.count], forDocument: sfReference)
+                    
+                    for p in self.allComments{
+                        if p.uid == sender.uid {
+                            p.likes = likedArray.count - dislikedArray.count
+                            p.dislikedBy.append(AppDelegate.user!.uid!)
+                            if p.likedBy.contains(AppDelegate.user!.uid!){
+                                let index = p.likedBy.firstIndex(of: AppDelegate.user!.uid!)
+                                p.likedBy.remove(at: index!)
+                            }
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        //sender.cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+                        //sender.cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+                        self.tableView?.reloadData()
+                    }
+                    
+        //            DispatchQueue.main.async {
+        //                self.tableView?.reloadData()
+        //                sender.cell.dislikeBtn.setImage(UIImage(named: "graydown30"), for: .normal)
+        //                sender.cell.likeBtn.setImage(UIImage(named: "up30"), for: .normal)
+        //            }
+                        
+                    return nil
+                }) { (object, error) in
+                    if let error = error {
+                        print("Transaction failed: \(error)")
+                    } else {
+                        print("Transaction successfully committed!")
+                    }
+                }
+                
     }
     
     @IBAction func back(_ sender: Any){
@@ -501,6 +721,49 @@ class PostVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
     }
     
     @IBAction func postCommentBtnClicked(_ sender: Any) {
+        var message: String!
+        if commentTxtView.text.isEmpty || commentTxtView.text == "Enter Text" {
+            let alert = UIAlertController(title: "Error", message: "Post can not be empty.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            message = commentTxtView.text
+        }
+        let db = Firestore.firestore()
+        var ref: DocumentReference? = nil
+        ref = db.collection("Bar Feeds").document("\(self.currentBar!)").collection("feed").document("\(self.currentPost.uid!)").collection("comments").addDocument(data: [
+            "message" : "\(message!)",
+            "likes" : 0,
+            "likedBy" : [String](),
+            "dislikedBy" : [String]()
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+        
+        let post = Post()
+        post.message = message!
+        post.likes = 0
+        post.uid = ref!.documentID
+        
+        self.allComments.insert(post, at: 0)
+        
+        self.tableView?.reloadData()
+        
+        commentTxtView.text = "Enter Text"
+            commentTxtView.textColor = UIColor.lightGray
+            
+        UIView.animate(withDuration: 0.2, animations: {
+            self.commentPost.alpha = 0
+        }) { _ in
+            self.commentPost.removeFromSuperview()
+        }
+        self.blurEffectView.removeFromSuperview()
+        
     }
     
 }
