@@ -11,8 +11,10 @@ import FirebaseFirestore
 
 struct Pregame {
     
+    static var NEW = "new"
+    
     var uid: String?
-    var date:Date?
+    var date: String?
     var createdBy: String?
     var bar: String?
     var location: String?
@@ -20,6 +22,28 @@ struct Pregame {
     var invited: [String?]
     var accepted: [String?]
     var declined: [String?]
+    var blocked: [String?]
+    var profileURL: String?
+    var galleryURLs: [String?]
+    
+    static func newPregame(creator: String) -> Pregame {
+        
+        let uid = NEW
+        let date = ""
+        let createdBy = creator
+        let location = ""
+        let description = ""
+        let invited = [String]()
+        let accepted = [String]()
+        let declined = [String]()
+        let blocked = [String]()
+        let bar = ""
+        let profileURL = ""
+        let galleryURLs = [String]()
+        
+        return Pregame(uid: uid, date: date, createdBy: createdBy, bar: bar, location: location, description: description, invited: invited, accepted: accepted, declined: declined, blocked: blocked, profileURL: profileURL, galleryURLs: galleryURLs)
+
+    }
     
     static func getPregame(uid: String, setFunction: @escaping (_ pregame: Pregame?) -> Void) {
         
@@ -32,17 +56,20 @@ struct Pregame {
                 
             if(error == nil) {
     
-                let date = ((document!.get("date")) as! Date)
+                let date = ((document!.get("date")) as! String)
                 let createdBy = ((document!.get("createdBy")) as! String)
                 let location = ((document!.get("location")) as! String)
                 let description = ((document!.get("description")) as! String)
                 let invited = ((document!.get("invited")) as? [String] ?? [String]())
-                let accepted = ((document!.get("invited")) as? [String] ?? [String]())
-                let declined = ((document!.get("invited")) as? [String] ?? [String]())
+                let accepted = ((document!.get("accepted")) as? [String] ?? [String]())
+                let declined = ((document!.get("declined")) as? [String] ?? [String]())
+                let blocked = ((document!.get("blocked")) as? [String] ?? [String]())
                 let bar = ((document!.get("bar")) as! String)
+                let profileURL = ((document!.get("profileURL")) as! String)
+                let galleryURLs = ((document!.get("galleryURLs")) as? [String] ?? [String]())
 
                 
-                pregame = Pregame(uid: uid, date: date, createdBy: createdBy, bar: bar, location: location, description: description, invited: invited, accepted: accepted, declined: declined)
+                pregame = Pregame(uid: uid, date: date, createdBy: createdBy, bar: bar, location: location, description: description, invited: invited, accepted: accepted, declined: declined, blocked: blocked, profileURL: profileURL, galleryURLs: galleryURLs)
                 
                 setFunction(pregame)
                 
@@ -64,7 +91,10 @@ struct Pregame {
                 "description" : description,
                 "invited" : pregame.invited,
                 "accepted" : pregame.accepted,
-                "declined" : pregame.declined
+                "declined" : pregame.declined,
+                "blocked" : pregame.blocked,
+                "profileURL" : pregame.profileURL ?? "nil",
+                "galleryURLs" : pregame.galleryURLs
             ]
 
             Firestore.firestore().collection(LoginVC.PREGAME_DATABASE).document(uid).setData(docData) {err in

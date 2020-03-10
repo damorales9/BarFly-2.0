@@ -12,7 +12,7 @@ import UIKit
 class PregameAcceptedCell: UITableViewCell {
     
     
-    @IBOutlet weak var profileImage: UIView!
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var pregame: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var cancel: UIButton!

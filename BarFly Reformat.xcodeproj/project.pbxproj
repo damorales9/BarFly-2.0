@@ -46,8 +46,11 @@
 		6F885C28236F83C7000F2FD4 /* NonUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */; };
 		6F93BC442406F23D00DD054F /* PregameAcceptedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */; };
 		6F93BC462406F26B00DD054F /* PregameDeclinedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */; };
+		6F93BC4824083AE300DD054F /* PregameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93BC4724083AE300DD054F /* PregameVC.swift */; };
 		6F94729A23918044003A470B /* LogOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729923918044003A470B /* LogOutVC.swift */; };
 		6F94729C23918320003A470B /* GeneralSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F94729B23918320003A470B /* GeneralSettingsVC.swift */; };
+		6FB4E69024141436006166D1 /* EditPregameAcceptedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB4E68F24141436006166D1 /* EditPregameAcceptedVC.swift */; };
+		6FB4E69224146181006166D1 /* CreatePregame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB4E69124146181006166D1 /* CreatePregame.swift */; };
 		6FC0091324044A3B005A7DBB /* Pregame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091224044A3B005A7DBB /* Pregame.swift */; };
 		6FC0091524044EC6005A7DBB /* PregameRequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091424044EC6005A7DBB /* PregameRequestsVC.swift */; };
 		6FC0091724045031005A7DBB /* PregameRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC0091624045031005A7DBB /* PregameRequestCell.swift */; };
@@ -71,6 +74,7 @@
 		6FE48DD0236BBD6800487E27 /* CreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48DCF236BBD6800487E27 /* CreateVC.swift */; };
 		6FE48DD2236C79A000487E27 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48DD1236C79A000487E27 /* TabBarController.swift */; };
 		6FE48DD4236CCA7600487E27 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE48DD3236CCA7600487E27 /* ImagePicker.swift */; };
+		6FE742D5240C3DEF008FACEE /* CreatePregameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE742D4240C3DEF008FACEE /* CreatePregameVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,8 +121,11 @@
 		6F885C27236F83C7000F2FD4 /* NonUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileVC.swift; sourceTree = "<group>"; };
 		6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameAcceptedCell.swift; sourceTree = "<group>"; };
 		6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameDeclinedCell.swift; sourceTree = "<group>"; };
+		6F93BC4724083AE300DD054F /* PregameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameVC.swift; sourceTree = "<group>"; };
 		6F94729923918044003A470B /* LogOutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutVC.swift; sourceTree = "<group>"; };
 		6F94729B23918320003A470B /* GeneralSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsVC.swift; sourceTree = "<group>"; };
+		6FB4E68F24141436006166D1 /* EditPregameAcceptedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPregameAcceptedVC.swift; sourceTree = "<group>"; };
+		6FB4E69124146181006166D1 /* CreatePregame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePregame.swift; sourceTree = "<group>"; };
 		6FC0091224044A3B005A7DBB /* Pregame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pregame.swift; sourceTree = "<group>"; };
 		6FC0091424044EC6005A7DBB /* PregameRequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameRequestsVC.swift; sourceTree = "<group>"; };
 		6FC0091624045031005A7DBB /* PregameRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PregameRequestCell.swift; sourceTree = "<group>"; };
@@ -142,6 +149,7 @@
 		6FE48DCF236BBD6800487E27 /* CreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVC.swift; sourceTree = "<group>"; };
 		6FE48DD1236C79A000487E27 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		6FE48DD3236CCA7600487E27 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		6FE742D4240C3DEF008FACEE /* CreatePregameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePregameVC.swift; sourceTree = "<group>"; };
 		D597B0A76368C04C2BF9830B /* Pods_BarFly_Reformat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BarFly_Reformat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -232,6 +240,10 @@
 				6FC0091624045031005A7DBB /* PregameRequestCell.swift */,
 				6F93BC432406F23D00DD054F /* PregameAcceptedCell.swift */,
 				6F93BC452406F26B00DD054F /* PregameDeclinedCell.swift */,
+				6F93BC4724083AE300DD054F /* PregameVC.swift */,
+				6FE742D4240C3DEF008FACEE /* CreatePregameVC.swift */,
+				6FB4E68F24141436006166D1 /* EditPregameAcceptedVC.swift */,
+				6FB4E69124146181006166D1 /* CreatePregame.swift */,
 			);
 			path = "BarFly Reformat";
 			sourceTree = "<group>";
@@ -411,8 +423,10 @@
 				0E5137F5236C6A19008C00AB /* CustomBarAnnotation.swift in Sources */,
 				6FE48D96236B397900487E27 /* User.swift in Sources */,
 				0EA59D1B2370757E002F05A1 /* BarDetailsView.swift in Sources */,
+				6FE742D5240C3DEF008FACEE /* CreatePregameVC.swift in Sources */,
 				6F94729C23918320003A470B /* GeneralSettingsVC.swift in Sources */,
 				0EAE5C9C236E0F06005F9710 /* CustomCallout.swift in Sources */,
+				6FB4E69224146181006166D1 /* CreatePregame.swift in Sources */,
 				6F2A206823862E2300B0E9D0 /* BarflyBannerColors.swift in Sources */,
 				6F0755042381DEE600765317 /* FavoriteBarCell.swift in Sources */,
 				0EA7B15823E0C29A0029730B /* FriendsGoingListVC.swift in Sources */,
@@ -430,6 +444,7 @@
 				6F075500237F454900765317 /* PreProcess.swift in Sources */,
 				6FC9A058237C8D5C00CDD8C4 /* RequestsVC.swift in Sources */,
 				6F79A864236E6D74005E55A6 /* SearchVC.swift in Sources */,
+				6F93BC4824083AE300DD054F /* PregameVC.swift in Sources */,
 				0EC363DD236B230C00116650 /* FirstViewController.swift in Sources */,
 				6FC9A05A237C9C7700CDD8C4 /* RequestCellView.swift in Sources */,
 				6FE48DD2236C79A000487E27 /* TabBarController.swift in Sources */,
@@ -447,6 +462,7 @@
 				0E3E7F6023FF0E1C00C3D60B /* Post.swift in Sources */,
 				0E154088237ECCA400E52414 /* BarDetails.swift in Sources */,
 				0E154086237E19A400E52414 /* BarDetailsVC.swift in Sources */,
+				6FB4E69024141436006166D1 /* EditPregameAcceptedVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

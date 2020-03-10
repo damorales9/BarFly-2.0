@@ -69,9 +69,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         email.layer.cornerRadius = 15
         password.layer.cornerRadius = 15
-        login.layer.cornerRadius = 10
         create.layer.cornerRadius = 10
-
+        login.layer.cornerRadius = 10
         loginView.layer.cornerRadius = 10   
         
         login.isEnabled = false
